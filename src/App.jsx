@@ -69,14 +69,7 @@ function App() {
               path="encuestas/answer/:id"
               element={<EncuestaAnswerDetails />}
             />
-            <Route
-              path="/404"
-              element={
-                <Suspense fallback={<Loading />}>
-                  <ErrorPage />
-                </Suspense>
-              }
-            />
+          
 
             <Route path="*" element={<Navigate to="/404" />} />
           </Route>
