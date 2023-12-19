@@ -100,6 +100,7 @@ function App() {
                   </Suspense>
                 }
               />
+              <Route path="" element={<Navigate to="/servicios-activos" />} />
 
               <Route path="*" element={<Navigate to="/404" />} />
             </Route>
