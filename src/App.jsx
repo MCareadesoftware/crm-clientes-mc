@@ -50,28 +50,45 @@ function App() {
           <>
             <Route path="/*" element={<Layout />}>
               {/* <Route path="servicios-activos" element={<ServiciosActivos />} /> */}
-              <Route path="servicios-activos" element={<ServiciosActivos />} />
+              <Route
+                path="servicios-activos"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ServiciosActivos />
+                  </Suspense>
+                }
+              />
               <Route
                 path="historial-servicios"
-                element={<HistorialServicios />}
+                element={  <Suspense fallback={<Loading />}>
+                <HistorialServicios />
+              </Suspense>}
               />
               <Route
                 path={"servicios-activos/:id"}
-                element={<ServicioDetails />}
+                element={  <Suspense fallback={<Loading />}>
+                <ServicioDetails />
+              </Suspense>}
               />
 
               <Route
                 path={"historial-servicios/:id"}
-                element={<HistorialServicioDetails />}
+                element={  <Suspense fallback={<Loading />}>
+                <HistorialServicioDetails />
+              </Suspense>}
               />
 
-              <Route path="encuestas" element={<Encuestas />} />
+              <Route path="encuestas" element={  <Suspense fallback={<Loading />}>
+                    <Encuestas />
+                  </Suspense>} />
               <Route
                 path="encuestas/answer/:id"
-                element={<EncuestaAnswerDetails />}
+                element={  <Suspense fallback={<Loading />}>
+                <EncuestaAnswerDetails />
+              </Suspense>}
               />
 
-              <Route path="*" element={<Navigate to="/404"/>} />
+              <Route path="*" element={<Navigate to="/404" />} />
             </Route>
             <Route
               path="/404"
