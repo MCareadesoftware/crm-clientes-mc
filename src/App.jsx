@@ -47,32 +47,41 @@ function App() {
     <main className="App  relative">
       <Routes>
         {isLogedIn ? (
-          <Route path="/" element={<Layout />}>
-            {/* <Route path="servicios-activos" element={<ServiciosActivos />} /> */}
-            <Route path="/servicios-activos" element={<ServiciosActivos />} />
-            <Route
-              path="/historial-servicios"
-              element={<HistorialServicios />}
-            />
-            <Route
-              path={"/servicios-activos/:id"}
-              element={<ServicioDetails />}
-            />
+          <>
+            <Route path="/*" element={<Layout />}>
+              {/* <Route path="servicios-activos" element={<ServiciosActivos />} /> */}
+              <Route path="servicios-activos" element={<ServiciosActivos />} />
+              <Route
+                path="historial-servicios"
+                element={<HistorialServicios />}
+              />
+              <Route
+                path={"servicios-activos/:id"}
+                element={<ServicioDetails />}
+              />
 
-            <Route
-              path={"/historial-servicios/:id"}
-              element={<HistorialServicioDetails />}
-            />
+              <Route
+                path={"historial-servicios/:id"}
+                element={<HistorialServicioDetails />}
+              />
 
-            <Route path="/encuestas" element={<Encuestas />} />
-            <Route
-              path="/encuestas/answer/:id"
-              element={<EncuestaAnswerDetails />}
-            />
-          
+              <Route path="encuestas" element={<Encuestas />} />
+              <Route
+                path="encuestas/answer/:id"
+                element={<EncuestaAnswerDetails />}
+              />
 
-            <Route path="*" element={<Navigate to={"/servicios-activos"}/>} />
-          </Route>
+              <Route path="*" element={<Navigate to="/404"/>} />
+            </Route>
+            <Route
+              path="/404"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ErrorPage />
+                </Suspense>
+              }
+            />
+          </>
         ) : (
           <Route
             path="/"
