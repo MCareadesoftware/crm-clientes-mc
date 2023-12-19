@@ -17,6 +17,7 @@ import ServiciosActivos from "./pages/servicios-activos";
 import ServicioDetails from "./pages/servicios-activos/project-details";
 import HistorialServicios from "./pages/historial-servicios";
 import HistorialServicioDetails from "./pages/historial-servicios/project-details";
+import EncuestaAnswerDetails from "./pages/encuestas/encuesta-details";
 function App() {
   const dispatch = useDispatch();
   const userRedux = useSelector((state) => state.user.user);
@@ -55,6 +56,7 @@ function App() {
             <Route path={"historial-servicios/:id"} element={<HistorialServicioDetails />} />
 
             <Route path="encuestas" element={<Encuestas />} />
+            <Route path="encuestas/answer/:id" element={<EncuestaAnswerDetails />} />
 
             <Route path="*" element={<Navigate to="/404" />} />
           </Route>
