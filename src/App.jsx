@@ -60,32 +60,45 @@ function App() {
               />
               <Route
                 path="historial-servicios"
-                element={  <Suspense fallback={<Loading />}>
-                <HistorialServicios />
-              </Suspense>}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <HistorialServicios />
+                  </Suspense>
+                }
               />
               <Route
                 path={"servicios-activos/:id"}
-                element={  <Suspense fallback={<Loading />}>
-                <ServicioDetails />
-              </Suspense>}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ServicioDetails />
+                  </Suspense>
+                }
               />
 
               <Route
                 path={"historial-servicios/:id"}
-                element={  <Suspense fallback={<Loading />}>
-                <HistorialServicioDetails />
-              </Suspense>}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <HistorialServicioDetails />
+                  </Suspense>
+                }
               />
 
-              <Route path="encuestas" element={  <Suspense fallback={<Loading />}>
+              <Route
+                path="encuestas"
+                element={
+                  <Suspense fallback={<Loading />}>
                     <Encuestas />
-                  </Suspense>} />
+                  </Suspense>
+                }
+              />
               <Route
                 path="encuestas/answer/:id"
-                element={  <Suspense fallback={<Loading />}>
-                <EncuestaAnswerDetails />
-              </Suspense>}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <EncuestaAnswerDetails />
+                  </Suspense>
+                }
               />
 
               <Route path="*" element={<Navigate to="/404" />} />
