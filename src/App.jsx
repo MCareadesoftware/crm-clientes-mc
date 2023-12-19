@@ -71,7 +71,7 @@ function App() {
             />
           
 
-            <Route path="*" element={<Navigate to="/404" />} />
+            <Route path="*" element={<ErrorPage/>} />
           </Route>
         ) : (
           <Route

@@ -17,7 +17,7 @@ function ErrorPage() {
       </div>
       <div className="max-w-[300px] mx-auto w-full">
         <Link
-          to="/"
+          to="/servicios-activos"
           className="btn btn-dark dark:bg-slate-800 block text-center"
         >
           Go to homepage
