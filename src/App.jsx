@@ -18,13 +18,13 @@ import ServicioDetails from "./pages/servicios-activos/project-details";
 import HistorialServicios from "./pages/historial-servicios";
 import HistorialServicioDetails from "./pages/historial-servicios/project-details";
 import EncuestaAnswerDetails from "./pages/encuestas/encuesta-details";
+import ErrorPage from "./pages/404";
 function App() {
   const dispatch = useDispatch();
   const userRedux = useSelector((state) => state.user.user);
   const tokenRedux = useSelector((state) => state.user.token);
 
   const isLogedIn = Boolean(userRedux && tokenRedux);
-
 
   useEffect(() => {
     if (window !== "undefined") {
@@ -35,7 +35,7 @@ function App() {
         ? JSON.parse(localStorage.getItem("user"))
         : null;
 
-        dispatch(
+      dispatch(
         initializeUserState({
           token: tokenLocal,
           user: userLocal,
@@ -50,13 +50,33 @@ function App() {
           <Route path="/*" element={<Layout />}>
             {/* <Route path="servicios-activos" element={<ServiciosActivos />} /> */}
             <Route path="servicios-activos" element={<ServiciosActivos />} />
-            <Route path="historial-servicios" element={<HistorialServicios />} />
-            <Route path={"servicios-activos/:id"} element={<ServicioDetails />} />
+            <Route
+              path="historial-servicios"
+              element={<HistorialServicios />}
+            />
+            <Route
+              path={"servicios-activos/:id"}
+              element={<ServicioDetails />}
+            />
 
-            <Route path={"historial-servicios/:id"} element={<HistorialServicioDetails />} />
+            <Route
+              path={"historial-servicios/:id"}
+              element={<HistorialServicioDetails />}
+            />
 
             <Route path="encuestas" element={<Encuestas />} />
-            <Route path="encuestas/answer/:id" element={<EncuestaAnswerDetails />} />
+            <Route
+              path="encuestas/answer/:id"
+              element={<EncuestaAnswerDetails />}
+            />
+            <Route
+              path="/404"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ErrorPage />
+                </Suspense>
+              }
+            />
 
             <Route path="*" element={<Navigate to="/404" />} />
           </Route>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import ErrorImage from "@/assets/images/all-img/404-2.svg";
-function Error() {
+function ErrorPage() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center text-center py-20 dark:bg-slate-900">
       <img src={ErrorImage} alt="" />
@@ -27,4 +27,4 @@ function Error() {
   );
 }
 
-export default Error;
+export default ErrorPage;
