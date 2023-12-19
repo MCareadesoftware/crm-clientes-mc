@@ -47,31 +47,31 @@ function App() {
     <main className="App  relative">
       <Routes>
         {isLogedIn ? (
-          <Route path="/*" element={<Layout />}>
+          <Route path="/" element={<Layout />}>
             {/* <Route path="servicios-activos" element={<ServiciosActivos />} /> */}
-            <Route path="servicios-activos" element={<ServiciosActivos />} />
+            <Route path="/servicios-activos" element={<ServiciosActivos />} />
             <Route
-              path="historial-servicios"
+              path="/historial-servicios"
               element={<HistorialServicios />}
             />
             <Route
-              path={"servicios-activos/:id"}
+              path={"/servicios-activos/:id"}
               element={<ServicioDetails />}
             />
 
             <Route
-              path={"historial-servicios/:id"}
+              path={"/historial-servicios/:id"}
               element={<HistorialServicioDetails />}
             />
 
-            <Route path="encuestas" element={<Encuestas />} />
+            <Route path="/encuestas" element={<Encuestas />} />
             <Route
-              path="encuestas/answer/:id"
+              path="/encuestas/answer/:id"
               element={<EncuestaAnswerDetails />}
             />
           
 
-            <Route path="*" element={<ErrorPage/>} />
+            <Route path="*" element={<Navigate to={"/servicios-activos"}/>} />
           </Route>
         ) : (
           <Route
