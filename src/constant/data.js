@@ -28,27 +28,27 @@ export const menuItems = [
     icon: FaWpforms,
     link: "encuestas",
   },
-  {
-    title: "Mensajes",
-    icon: TbMessage2Heart,
-    link: "mensajes",
-  },
-  {
-    title: "Beneficios",
-    icon: FaWandSparkles,
-    link: "beneficios",
-  },
+  // {
+  //   title: "Mensajes",
+  //   icon: TbMessage2Heart,
+  //   link: "mensajes",
+  // },
+  // {
+  //   title: "Beneficios",
+  //   icon: FaWandSparkles,
+  //   link: "beneficios",
+  // },
 
-  {
-    title: "Premios",
-    icon: HiOutlineGift,
-    link: "premios",
-  },
-  {
-    title: "Noticias",
-    icon: FaRegNewspaper,
-    link: "noticias",
-  },
+  // {
+  //   title: "Premios",
+  //   icon: HiOutlineGift,
+  //   link: "premios",
+  // },
+  // {
+  //   title: "Noticias",
+  //   icon: FaRegNewspaper,
+  //   link: "noticias",
+  // },
   // {
   //   title: "Pedidos",
   //   icon: RiDashboardLine,
