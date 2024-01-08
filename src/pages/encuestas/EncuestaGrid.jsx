@@ -223,7 +223,7 @@ const EncuestaGrid = ({ project }) => {
             <span>
               {differenceInDays(new Date(project.servicioCotizacion.fechaFin), new Date()) <0 ? "Culminado" : differenceInDays(new Date(project.servicioCotizacion.fechaFin), new Date())   }
             </span>
-          </span>
+            </span>
         </div>
       </div>
 
