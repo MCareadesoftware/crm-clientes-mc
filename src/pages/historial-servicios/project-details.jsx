@@ -26,11 +26,12 @@ import { MdCheck, MdOutlineWorkOutline } from "react-icons/md";
 import { convertFirstLetterCapital } from "../../helpers/stringsHelper";
 import EtapasTareasSeguimiento from "../../components/modules/servicios/EtapasTareasSeguimiento";
 import ActividadServicio from "../../components/modules/servicios/Actividad";
+import Reuniones from "../../components/modules/servicios/Reuniones";
 
 const HistorialServicioDetails = () => {
   const { id } = useParams();
   const [dataServicio, setDataServicio] = useState(null);
-
+  const[citasList,setCitasList]=useState([]);
   const [totalTasks, setTotalTasks] = useState(10);
   const [totalTasksCompleted, setTotalTasksCompleted] = useState(0);
 
@@ -68,11 +69,20 @@ const HistorialServicioDetails = () => {
     } catch (error) {}
   };
 
+  const getCitas = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/serviciosCotizacionesCitas?limit=1000&where[servicioCotizacion][equals]=${id}&sort=createdAt`);
+      setCitasList(response.data.docs);
+      console.log(response.data.docs)
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getTotalTasks();
     getTotalTasksCompleted();
     getTrabajadores();
-    getTareas()
+    getTareas();
+    getCitas()
   }, []);
 
   const getServicioDetails = async () => {
@@ -332,10 +342,16 @@ const HistorialServicioDetails = () => {
             <EtapasTareasSeguimiento idServicio={id}/>
           </Card>
         </div>
-        <div className="xl:col-span-4 lg:col-span-5 col-span-12">
+        <div className="xl:col-span-4 lg:col-span-5 flex flex-col gap-5 col-span-12">
+
+        <Card title="Reuniones" headerslot={<SelectMonth />}>
+           <Reuniones lists={citasList}/>
+          </Card>
           <Card title="Actividad" headerslot={<SelectMonth />}>
            <ActividadServicio lists={tareasList}/>
           </Card>
+          
+          
         </div>
       </div>
     </div>
