@@ -34,10 +34,10 @@ const ServicioDetails = () => {
 
   const [totalTasks, setTotalTasks] = useState(10);
   const [totalTasksCompleted, setTotalTasksCompleted] = useState(0);
-  const[citasList,setCitasList]=useState([]);
+  const [citasList, setCitasList] = useState([]);
 
   const [trabajadoresList, setTrabajadoresList] = useState([]);
-  const[tareasList,setTareasList]=useState([])
+  const [tareasList, setTareasList] = useState([]);
   useEffect(() => {}, []);
   const getTotalTasksCompleted = async () => {
     try {
@@ -65,16 +65,20 @@ const ServicioDetails = () => {
 
   const getTareas = async () => {
     try {
-      const response = await axios.get(`${BACKEND}/etapaTareaServicioCotizaciones?limit=1000&where[servicio][equals]=${id}&sort=createdAt`);
+      const response = await axios.get(
+        `${BACKEND}/etapaTareaServicioCotizaciones?limit=1000&where[servicio][equals]=${id}&sort=createdAt`
+      );
       setTareasList(response.data.docs);
     } catch (error) {}
   };
 
   const getCitas = async () => {
     try {
-      const response = await axios.get(`${BACKEND}/serviciosCotizacionesCitas?limit=1000&where[servicioCotizacion][equals]=${id}&sort=createdAt`);
+      const response = await axios.get(
+        `${BACKEND}/serviciosCotizacionesCitas?limit=1000&where[servicioCotizacion][equals]=${id}&sort=createdAt`
+      );
       setCitasList(response.data.docs);
-      console.log(response.data.docs)
+      console.log(response.data.docs);
     } catch (error) {}
   };
 
@@ -82,8 +86,8 @@ const ServicioDetails = () => {
     getTotalTasks();
     getTotalTasksCompleted();
     getTrabajadores();
-    getTareas()
-    getCitas()
+    getTareas();
+    getCitas();
   }, []);
 
   const getServicioDetails = async () => {
@@ -238,40 +242,44 @@ const ServicioDetails = () => {
           <ul className="divide-y divide-slate-100 dark:divide-slate-700">
             <li className="block py-[10px]">
               <div className="flex space-x-2 rtl:space-x-reverse">
-                <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
-                  <div className="flex-none">
-                    {dataServicio.responsable.foto ? (
-                      <img
-                        src={dataServicio.responsable.foto.url}
-                        alt={"Encargado servicio"}
-                        className=" rounded-full h-8 w-8 object-cover "
-                      />
-                    ) : (
-                      <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                        {dataServicio.responsable.name.charAt(0) +
-                          dataServicio.responsable.name.charAt(1)}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
-                      {dataServicio.responsable.name}
-                    </span>
-                    <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
-                      <span className="text-base inline-block mr-1">
-                        <MdOutlineWorkOutline />
-                      </span>
-                      {convertFirstLetterCapital(
-                        dataServicio.responsable.puesto
+                {typeof dataServicio.responsable === "object" ? (
+                  <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
+                    <div className="flex-none">
+                      {dataServicio.responsable.foto ? (
+                        <img
+                          src={dataServicio.responsable.foto.url}
+                          alt={"Encargado servicio"}
+                          className=" rounded-full h-8 w-8 object-cover "
+                        />
+                      ) : (
+                        <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+                          {dataServicio.responsable.name.charAt(0) +
+                            dataServicio.responsable.name.charAt(1)}
+                        </div>
                       )}
-                    </span>
+                    </div>
+                    <div className="flex-1">
+                      <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
+                        {dataServicio.responsable.name}
+                      </span>
+                      <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
+                        <span className="text-base inline-block mr-1">
+                          <MdOutlineWorkOutline />
+                        </span>
+                        {convertFirstLetterCapital(
+                          dataServicio.responsable.puesto
+                        )}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  "No existe el usuario encargado / responsable"
+                )}
                 <div className="flex-none">
                   <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-700 dark:text-green-300 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
                     <span>
                       {" "}
-                      <MdCheck/>
+                      <MdCheck />
                     </span>
                     <span>Responsable</span>
                   </span>
@@ -340,15 +348,15 @@ const ServicioDetails = () => {
         <div className="xl:col-span-8 lg:col-span-7 col-span-12">
           <Card title="Seguimiento de tareas" noborder>
             {/* <TeamTable /> */}
-            <EtapasTareasSeguimiento idServicio={id}/>
+            <EtapasTareasSeguimiento idServicio={id} />
           </Card>
         </div>
         <div className="xl:col-span-4 lg:col-span-5 flex flex-col gap-5 col-span-12">
-        <Card title="Reuniones" headerslot={<SelectMonth />}>
-           <Reuniones lists={citasList}/>
+          <Card title="Reuniones" headerslot={<SelectMonth />}>
+            <Reuniones lists={citasList} />
           </Card>
           <Card title="Actividad" headerslot={<SelectMonth />}>
-           <ActividadServicio lists={tareasList}/>
+            <ActividadServicio lists={tareasList} />
           </Card>
         </div>
       </div>

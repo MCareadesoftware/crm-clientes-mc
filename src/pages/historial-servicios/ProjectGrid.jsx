@@ -61,13 +61,13 @@ const ProjectGrid = ({ project }) => {
         <div className="flex space-x-4 items-center rtl:space-x-reverse">
           <div className="flex-none">
             <div className="h-10 w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-              {(project?.servicio?.name?.charAt(0) ?? "-") +
-                (project?.servicio?.name?.charAt(1) ?? "-")}
+              {project.servicio.name.charAt(0) +
+                project.servicio.name.charAt(1)}
             </div>
           </div>
           <div className="font-medium text-base leading-6">
             <div className="dark:text-slate-200 text-slate-900 max-w-[160px] truncate">
-              {project?.servicio?.name ?? "--"}
+              {project.servicio.name}
             </div>
           </div>
         </div>
