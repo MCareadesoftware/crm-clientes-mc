@@ -324,7 +324,7 @@ const HistorialServicioDetails = () => {
                         </div>
                       </div>
                     ) : (
-                      "No existe el usuario integrante..."
+                      "--"
                     )}
                     <div className="flex-none">
                       <span className="block text-xs text-slate-600 dark:text-slate-400">
