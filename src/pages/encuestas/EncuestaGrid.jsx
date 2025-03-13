@@ -16,7 +16,7 @@ import { convertFirstLetterCapital } from "../../helpers/stringsHelper";
 import { FaArrowRight, FaCheck, FaClock } from "react-icons/fa";
 const EncuestaGrid = ({ project }) => {
   const dispatch = useDispatch();
-  console.log(project)
+  console.log(project);
   const [start, setStart] = useState(new Date(project.fechaInicio));
   const [end, setEnd] = useState(new Date(project.fechaFin));
   const [totaldays, setTotaldays] = useState(0);
@@ -117,7 +117,10 @@ const EncuestaGrid = ({ project }) => {
         </div>
       ) : (
         <div className="">
-          <Link to={`/encuestas/answer/${project.id}?idform=${project?.formulario.id}`} className="inline-flex items-center space-x-1 dark:hover:bg-blue-400 hover:bg-blue-600 hover:bg-opacity-20 dark:hover:bg-opacity-20 bg-blue-500 bg-opacity-[0.16] text-blue-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
+          <Link
+            to={`/encuestas/answer/${project.id}?idform=${project?.formulario.id}`}
+            className="inline-flex items-center space-x-1 dark:hover:bg-blue-400 hover:bg-blue-600 hover:bg-opacity-20 dark:hover:bg-opacity-20 bg-blue-500 bg-opacity-[0.16] text-blue-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse"
+          >
             <span> </span>
             <span></span>
             <span>Responder</span>
@@ -128,37 +131,43 @@ const EncuestaGrid = ({ project }) => {
         </div>
       )}
 
-
-            {/* description */}
-            <div className="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8">
+      {/* description */}
+      <div className="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8">
         Plan {project.servicioCotizacion.planServicio?.name}
       </div>
 
-       {/* assignee */}
-       <div className="flex space-x-4 rtl:space-x-reverse">
+      {/* assignee */}
+      <div className="flex space-x-4 rtl:space-x-reverse">
         {/* start date */}
         <div>
           <span className="block date-label">Fecha Inicio</span>
           <span className="block date-text">
-            {format(new Date(project.servicioCotizacion.fechaInicio), "dd MMMM , yyyy", {
-              locale: es,
-            })}
+            {format(
+              new Date(project.servicioCotizacion.fechaInicio),
+              "dd MMMM , yyyy",
+              {
+                locale: es,
+              }
+            )}
           </span>
         </div>
         {/* end date */}
         <div>
           <span className="block date-label">Fecha fin</span>
           <span className="block date-text">
-            {format(new Date(project.servicioCotizacion.fechaFin), "dd MMMM , yyyy", {
-              locale: es,
-            })}
+            {format(
+              new Date(project.servicioCotizacion.fechaFin),
+              "dd MMMM , yyyy",
+              {
+                locale: es,
+              }
+            )}
           </span>
         </div>
       </div>
 
-
-        {/* progress bar */}
-        <div className="ltr:text-right rtl:text-left text-xs text-slate-600 dark:text-slate-300 mb-1 font-medium">
+      {/* progress bar */}
+      <div className="ltr:text-right rtl:text-left text-xs text-slate-600 dark:text-slate-300 mb-1 font-medium">
         {(totalTasksCompleted / totalTasks) * 100} %
       </div>
       <ProgressBar
@@ -166,30 +175,32 @@ const EncuestaGrid = ({ project }) => {
         className="bg-primary-500"
       />
 
-
-
-
-
-  {/* assignee and total date */}
-  <div className="grid grid-cols-2 gap-4 mt-6">
+      {/* assignee and total date */}
+      <div className="grid grid-cols-2 gap-4 mt-6">
         {/* assignee */}
-        {project.servicioCotizacion.responsable && (
+        {typeof project.servicioCotizacion.responsable == "object" && (
           <div>
             <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
               Encargado
             </div>
             <div className=" flex justify-start items-center gap-2 ">
-            <div className="h-8 w-8 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                  {project.servicioCotizacion.responsable.name.charAt(0) +
-                    project.servicioCotizacion.responsable.name.charAt(1)}
-                </div>
+              <div className="h-8 w-8 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+                {project.servicioCotizacion.responsable.name.charAt(0) +
+                  project.servicioCotizacion.responsable.name.charAt(1)}
+              </div>
               <div className="  flex flex-col w-full ">
-                <span className=" text-sm">{convertFirstLetterCapital(project.servicioCotizacion.responsable.name)}</span>
+                <span className=" text-sm">
+                  {convertFirstLetterCapital(
+                    project.servicioCotizacion.responsable.name
+                  )}
+                </span>
                 <span
                   style={{ fontSize: "0.6em" }}
                   className=" whitespace-nowrap  text-blue-400 dark:text-blue-400"
                 >
-                  {convertFirstLetterCapital(project.servicioCotizacion.responsable.puesto)}
+                  {convertFirstLetterCapital(
+                    project.servicioCotizacion.responsable.puesto
+                  )}
                 </span>
               </div>
             </div>
@@ -221,13 +232,19 @@ const EncuestaGrid = ({ project }) => {
               <Icon icon="heroicons-outline:clock" />
             </span>
             <span>
-              {differenceInDays(new Date(project.servicioCotizacion.fechaFin), new Date()) <0 ? "Culminado" : differenceInDays(new Date(project.servicioCotizacion.fechaFin), new Date())   }
+              {differenceInDays(
+                new Date(project.servicioCotizacion.fechaFin),
+                new Date()
+              ) < 0
+                ? "Culminado"
+                : differenceInDays(
+                    new Date(project.servicioCotizacion.fechaFin),
+                    new Date()
+                  )}
             </span>
-            </span>
+          </span>
         </div>
       </div>
-
-      
     </Card>
   );
 };

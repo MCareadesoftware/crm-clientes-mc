@@ -157,7 +157,7 @@ const ProjectGrid = ({ project }) => {
       {/* assignee and total date */}
       <div className="grid grid-cols-2 gap-4 mt-6">
         {/* assignee */}
-        {project.responsable && (
+        {typeof project.responsable === "object" && (
           <div>
             <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
               Encargado

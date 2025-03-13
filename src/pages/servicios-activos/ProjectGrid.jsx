@@ -47,13 +47,13 @@ const ProjectGrid = ({ project }) => {
     const response = await axios.get(
       `${BACKEND}/etapaTareaServicioCotizaciones?where[servicio][equals]=${project.id}&limit=10000&depth=0&where[not_equals]=Eliminado`
     );
-    if(response.data.totalDocs!== 0 )setTotalTasks(response.data.totalDocs);
+    if (response.data.totalDocs !== 0) setTotalTasks(response.data.totalDocs);
   };
 
-  useEffect(()=>{
-      getTotalTasks()
-    getTotalTasksCompleted()
-  },[])
+  useEffect(() => {
+    getTotalTasks();
+    getTotalTasksCompleted();
+  }, []);
 
   return (
     <Card>
@@ -158,7 +158,7 @@ const ProjectGrid = ({ project }) => {
       {/* assignee and total date */}
       <div className="grid grid-cols-2 gap-4 mt-6">
         {/* assignee */}
-        {project.responsable && (
+        {typeof project.responsable === "object" && (
           <div>
             <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
               Encargado
@@ -178,7 +178,9 @@ const ProjectGrid = ({ project }) => {
               )}
 
               <div className="  flex flex-col w-full ">
-                <span className=" text-sm">{convertFirstLetterCapital(project.responsable.name)}</span>
+                <span className=" text-sm">
+                  {convertFirstLetterCapital(project.responsable.name)}
+                </span>
                 <span
                   style={{ fontSize: "0.6em" }}
                   className=" whitespace-nowrap  text-blue-400 dark:text-blue-400"

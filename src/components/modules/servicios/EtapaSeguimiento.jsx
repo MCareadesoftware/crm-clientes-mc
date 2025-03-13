@@ -6,7 +6,7 @@ import { es } from "date-fns/locale";
 import { convertFirstLetterCapital } from "../../../helpers/stringsHelper";
 import Tooltip from "../../ui/Tooltip";
 import { BACKEND } from "../../../configs/envConfig";
-const EtapaSeguimiento = ({  data, idServicio }) => {
+const EtapaSeguimiento = ({ data, idServicio }) => {
   const [tareasList, setTareasList] = useState([]);
 
   const fetchTareas = async () => {
@@ -43,7 +43,6 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
         onClose={() => setActiveDrawer((prev) => ({ ...prev, open: false }))}
       /> */}
 
-      
       <h2 className="  font-semibold text-xl text-gray-600">
         {data && data.name}
       </h2>
@@ -53,7 +52,9 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
           <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
             <div className="flex items-center flex-1 space-x-4">
               <h5>
-                <span className="text-gray-500 dark:text-gray-200 text-sm">Total de tareas: </span>
+                <span className="text-gray-500 dark:text-gray-200 text-sm">
+                  Total de tareas:{" "}
+                </span>
                 <span className=" text-sm">{tareasList.length}</span>
               </h5>
               {/* <h5>
@@ -61,7 +62,6 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
                       <span className="">$88.4k</span>
                   </h5> */}
             </div>
-           
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -91,12 +91,14 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
                   <th scope="col" className="px-4 py-3">
                     Link
                   </th>
-                
                 </tr>
               </thead>
               <tbody>
                 {tareasList.map((e) => (
-                  <tr key={e.id} className="border-b  hover:bg-gray-100 hover:dark:bg-gray-950">
+                  <tr
+                    key={e.id}
+                    className="border-b  hover:bg-gray-100 hover:dark:bg-gray-950"
+                  >
                     <th
                       scope="row"
                       className="flex  items-center px-4  max-w-xs py-2 font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap "
@@ -177,8 +179,8 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
                     >
                       <div className="flex items-center  gap-2  whitespace-nowrap">
                         <FaUser className=" text-orange-500 " />
-                        {Boolean(e.responsable.name) &&
-                          convertFirstLetterCapital(e.responsable.name)}
+                        {Boolean(e.responsable?.name ?? "") &&
+                          convertFirstLetterCapital(e.responsable?.name ?? "")}
                       </div>
                     </th>
                     <td className="px-4 py-2">
@@ -201,7 +203,6 @@ const EtapaSeguimiento = ({  data, idServicio }) => {
                         </a>
                       )}
                     </td>
-                   
                   </tr>
                 ))}
               </tbody>
