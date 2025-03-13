@@ -108,6 +108,7 @@ const HistorialServicioDetails = () => {
         <Loading />
       </div>
     );
+  if (typeof dataServicio != "object") return <>no existe el servicio</>;
   return (
     <div className=" space-y-5">
       <div className="grid grid-cols-12 gap-5">
