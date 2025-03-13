@@ -291,37 +291,41 @@ const HistorialServicioDetails = () => {
               dataServicio?.integrantes.map((item, i) => (
                 <li key={i} className="block py-[10px]">
                   <div className="flex space-x-2 rtl:space-x-reverse">
-                    <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
-                      <div className="flex-none">
-                        {item.usuario.foto ? (
-                          <img
-                            src={
-                              trabajadoresList.find(
-                                (trab) => trab.id === item.usuario.id
-                              )?.foto.url
-                            }
-                            alt={"Encargado servicio"}
-                            className=" rounded-full h-8 w-8 object-cover "
-                          />
-                        ) : (
-                          <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                            {item.usuario.name.charAt(0) +
-                              item.usuario.name.charAt(1)}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
-                          {item.usuario.name}
-                        </span>
-                        <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
-                          <span className="text-base inline-block mr-1">
-                            <MdOutlineWorkOutline />
+                    {typeof item.usuario === "object" ? (
+                      <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
+                        <div className="flex-none">
+                          {item.usuario.foto ? (
+                            <img
+                              src={
+                                trabajadoresList.find(
+                                  (trab) => trab.id === item.usuario.id
+                                )?.foto.url
+                              }
+                              alt={"Encargado servicio"}
+                              className=" rounded-full h-8 w-8 object-cover "
+                            />
+                          ) : (
+                            <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+                              {item.usuario.name.charAt(0) +
+                                item.usuario.name.charAt(1)}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
+                            {item.usuario.name}
                           </span>
-                          {item.usuario?.puesto}
-                        </span>
+                          <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
+                            <span className="text-base inline-block mr-1">
+                              <MdOutlineWorkOutline />
+                            </span>
+                            {item.usuario?.puesto}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      "No existe el usuario integrante..."
+                    )}
                     <div className="flex-none">
                       <span className="block text-xs text-slate-600 dark:text-slate-400">
                         {item.date}
