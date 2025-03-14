@@ -748,7 +748,8 @@ const ServicioDetails = () => {
                         {e.status === "En proceso" && (
                           <>
                             {new Date(e?.limitDate) < new Date() ? (
-                              <div className="inline-block w-3 h-3 mr-2 bg-red-700 rounded-full"></div>
+                              // <div className="inline-block w-3 h-3 mr-2 bg-red-700 rounded-full"></div>
+                              <div className="inline-block w-3 h-3 mr-2 bg-orange-500 rounded-full"></div>
                             ) : (
                               <div className="inline-block w-3 h-3 mr-2 bg-blue-500 rounded-full"></div>
                             )}
@@ -757,7 +758,8 @@ const ServicioDetails = () => {
                         {e.status === "Pendiente" && (
                           <>
                             {new Date(e?.limitDate) < new Date() ? (
-                              <div className="inline-block w-3 h-3 mr-2 bg-red-700 rounded-full"></div>
+                              //<div className="inline-block w-3 h-3 mr-2 bg-red-700 rounded-full"></div>
+                              <div className="inline-block w-3 h-3 mr-2 bg-orange-500 rounded-full"></div>
                             ) : (
                               <div className="inline-block w-3 h-3 mr-2 bg-orange-500 rounded-full"></div>
                             )}
@@ -775,7 +777,8 @@ const ServicioDetails = () => {
                             : e.status === "Finalizado"
                             ? "Finalizado"
                             : new Date(e.limitDate) < new Date()
-                            ? "Incumplido"
+                            ? //? "Incumplido"
+                              "Pendiente"
                             : e.status}
                         </span>
                       </div>
