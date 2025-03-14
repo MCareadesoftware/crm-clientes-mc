@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import React from "react";
 
- const lists2 = [
+const lists2 = [
   {
     title: "Project start date",
     desc: "This parcel is paid for by the customer. Please contact the customer for any further information.",
@@ -37,7 +37,7 @@ import React from "react";
     time: "12:32 AM",
   },
 ];
-const ActividadServicio = ({lists}) => {
+const ActividadServicio = ({ lists }) => {
   return (
     <ul className="relative ltr:pl-2 rtl:pr-2">
       {lists.map((item) => (
@@ -58,13 +58,17 @@ const ActividadServicio = ({lists}) => {
         >
           <div className="p-[10px] relative top-[-20px]">
             <h2 className="text-sm font-semibold dark:text-slate-400-900 text-slate-600">
-              {item.name}
+              {item.task.name}
             </h2>
             <p className="text-xs font-light  dark:text-slate-300 text-slate-600  mb-1">
-              Creado por: {item?.responsable?.name}
+              Creado por: {item?.responsible?.name}
             </p>
             <p className="text-xs capitalize dark:text-slate-400">
-               {format(new Date(item.createdAt),"dd MMMM, yyyy - hh:mm a" ,{locale:es})}
+              {format(
+                new Date(item.task.createdAt),
+                "dd MMMM, yyyy - hh:mm a",
+                { locale: es }
+              )}
             </p>
           </div>
         </li>

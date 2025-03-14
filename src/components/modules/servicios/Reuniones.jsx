@@ -21,45 +21,53 @@ const Reuniones = ({ lists }) => {
                 </div>
                 <div className="flex-1">
                   <div className="text-slate-800 dark:text-slate-300 text-sm font-medium mb-1`">
-                    {item.title}
+                    {item.task.name}
                   </div>
                   <div className="text-xs hover:text-[#68768A] font-normal text-slate-600 dark:text-slate-300">
-                    {item.description}
+                    {item?.task?.description ?? ""}
                   </div>
                   <div className="text-slate-400 dark:text-slate-400 text-xs mt-1">
                     {isSameDay(
-                      new Date(item.dateStart),
-                      new Date(item.dateEnd)
+                      new Date(item.task.createdAt),
+                      new Date(item.limitDate)
                     ) &&
                     isSameMonth(
-                      new Date(item.dateStart),
-                      new Date(item.dateEnd)
+                      new Date(item.task.createdAt),
+                      new Date(item.limitDate)
                     ) ? (
                       <>
                         {" "}
-                        {format(new Date(item.dateStart), "hh:mm a", {
+                        {format(new Date(item.task.createdAt), "hh:mm a", {
                           locale: es,
                         })}{" "}
                         -{" "}
-                        {format(new Date(item.dateEnd), "hh:mm a", {
+                        {format(new Date(item.limitDate), "hh:mm a", {
                           locale: es,
                         })}
                         {" ,  "}
-                        {format(new Date(item.dateStart), "MMMM dd, yyyy", {
-                          locale: es,
-                        })}{" "}
+                        {format(
+                          new Date(item.task.createdAt),
+                          "MMMM dd, yyyy",
+                          {
+                            locale: es,
+                          }
+                        )}{" "}
                       </>
                     ) : (
                       <>
-                        {format(new Date(item.dateStart), "hh:mm a , MMMM dd", {
-                          locale: es,
-                        })}
+                        {format(
+                          new Date(item.task.createdAt),
+                          "hh:mm a , MMMM dd",
+                          {
+                            locale: es,
+                          }
+                        )}
                         {" - "}
-                        {format(new Date(item.dateEnd), "hh:mm a , MMMM dd", {
+                        {format(new Date(item.limitDate), "hh:mm a , MMMM dd", {
                           locale: es,
                         })}
                         {" | "}
-                        {format(new Date(item.dateStart), "yyyy", {
+                        {format(new Date(item.task.createdAt), "yyyy", {
                           locale: es,
                         })}
                       </>
@@ -67,7 +75,7 @@ const Reuniones = ({ lists }) => {
                   </div>
 
                   <div className=" my-3">
-                    {item.link && (
+                    {item?.link && (
                       <a
                         target="_blank"
                         className=" hover:bg-green-200 dark:bg-green-600 dark:bg-opacity-10 dark:text-green-300 dark:hover:bg-opacity-20  rounded-full bg-green-100 text-xs font-semibold text-green-700 p-2 "
