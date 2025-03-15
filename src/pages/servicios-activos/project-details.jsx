@@ -105,14 +105,18 @@ const ServicioDetails = () => {
                 },
               },
               {
-                status: {
-                  not_equals: "Incumplido",
-                },
-              },
-              {
-                status: {
-                  not_equals: "Eliminado",
-                },
+                or: [
+                  {
+                    status: {
+                      equals: "Finalizado",
+                    },
+                  },
+                  {
+                    status: {
+                      equals: "Con retraso",
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -768,6 +772,9 @@ const ServicioDetails = () => {
                         {e.status === "Finalizado" && (
                           <div className="inline-block w-3 h-3 mr-2 bg-green-500 rounded-full"></div>
                         )}
+                        {e.status === "Con retraso" && (
+                          <div className="inline-block w-3 h-3 mr-2 bg-green-500 rounded-full"></div>
+                        )}
                         {e.status === "Eliminado" && (
                           <div className="inline-block w-3 h-3 mr-2 bg-black rounded-full"></div>
                         )}
@@ -775,6 +782,8 @@ const ServicioDetails = () => {
                           {e.status === "Eliminado"
                             ? "Eliminado"
                             : e.status === "Finalizado"
+                            ? "Finalizado"
+                            : e.status === "Con retraso"
                             ? "Finalizado"
                             : new Date(e.limitDate) < new Date()
                             ? //? "Incumplido"
