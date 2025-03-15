@@ -749,9 +749,11 @@ const HistorialServicioDetails = () => {
                           <>
                             {new Date(e?.limitDate) < new Date() ? (
                               // <div className="inline-block w-3 h-3 mr-2 bg-red-700 rounded-full"></div>
-                              <div className="inline-block w-3 h-3 mr-2 bg-orange-500 rounded-full"></div>
+                              //<div className="inline-block w-3 h-3 mr-2 bg-orange-500 rounded-full"></div>
+                              <div className="inline-block w-3 h-3 mr-2 bg-green-500 rounded-full"></div>
                             ) : (
-                              <div className="inline-block w-3 h-3 mr-2 bg-blue-500 rounded-full"></div>
+                              //<div className="inline-block w-3 h-3 mr-2 bg-blue-500 rounded-full"></div>
+                              <div className="inline-block w-3 h-3 mr-2 bg-green-500 rounded-full"></div>
                             )}
                           </>
                         )}
@@ -774,13 +776,15 @@ const HistorialServicioDetails = () => {
                         )}
                         <span className="ml-1 text-gray-500 ">
                           {e.status === "Eliminado"
-                            ? "Eliminado"
+                            ? //"Eliminado"
+                              "Entregado"
                             : e.status === "Finalizado"
                             ? "Finalizado"
                             : new Date(e.limitDate) < new Date()
                             ? //!! "Incumplido"  reemplazo temporal
                               "Entregado"
-                            : e.status}
+                            : //e.status
+                              "Entregado"}
                         </span>
                       </div>
                     </td>
