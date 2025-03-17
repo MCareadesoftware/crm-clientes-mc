@@ -33,61 +33,10 @@ import { FaUser } from "react-icons/fa";
 const ServicioDetails = () => {
   const { id } = useParams();
   const [dataServicio, setDataServicio] = useState(null);
-
-  const [totalTasks, setTotalTasks] = useState(10);
-  const [totalTasksPending, setTotalTasksPending] = useState(0);
-  const [totalTasksCompleted, setTotalTasksCompleted] = useState(0);
   const [citasList, setCitasList] = useState([]);
+  const [integrantes, setIntegrantes] = useState([]);
 
-  const [trabajadoresList, setTrabajadoresList] = useState([]);
   const [tareasList, setTareasList] = useState([]);
-  useEffect(() => {
-    sessionStorage.setItem("customScreenTitle", "Detalles");
-  }, []);
-  // const getTotalTasksCompleted = async () => {
-  //   try {
-  //     const stringifiedQuery = qs.stringify(
-  //       {
-  //         where: {
-  //           and: [
-  //             {
-  //               serviceId: {
-  //                 equals: id,
-  //               },
-  //             },
-  //             {
-  //               visibleToClient: {
-  //                 equals: true,
-  //               },
-  //             },
-  //             {
-  //               or: [
-  //                 {
-  //                   status: {
-  //                     equals: "Finalizado",
-  //                   },
-  //                 },
-  //                 {
-  //                   status: {
-  //                     equals: "Con retraso",
-  //                   },
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //         depth: 0,
-  //         limit: 0,
-  //       },
-  //       { addQueryPrefix: true }
-  //     );
-
-  //     const response = await axios.get(
-  //       `${BACKEND}/tareasProyectos${stringifiedQuery}`
-  //     );
-  //     setTotalTasksCompleted(response.data.totalDocs);
-  //   } catch (error) {}
-  // };
   const getTotalTasks = async () => {
     try {
       const stringifiedQuery = qs.stringify(
@@ -120,6 +69,7 @@ const ServicioDetails = () => {
               },
             ],
           },
+          depth: 4,
           limit: 0,
         },
         { addQueryPrefix: true }
@@ -131,99 +81,29 @@ const ServicioDetails = () => {
       const response = await axios.get(
         `${BACKEND}/tareasProyectos${stringifiedQuery}`
       );
-      setTotalTasks(response.data.totalDocs);
+
+      const uniqueArray = [
+        ...new Map(
+          response.data.docs
+            .filter((item) => typeof item.task.defaultResponsible === "object") // Filtra los strings y valores nulos
+            .map((item) => {
+              return [
+                item.task.defaultResponsible.id,
+                item.task.defaultResponsible,
+              ];
+            }) // Crea pares [id, objeto] .
+        ).values(),
+      ];
+
+      setIntegrantes(uniqueArray);
 
       setTareasList(() => response.data.docs.filter((t) => !t.task.isMeeting));
-      setTotalTasksPending(() => {
-        return response.data.docs.reduce((acc, t) => {
-          if (
-            t.status === "Pendiente" ||
-            t.status === "En proceso" ||
-            t.status === "Declinado"
-          )
-            acc++;
-          return acc;
-        }, 0);
-      });
-
-      setTotalTasksCompleted(() => {
-        return response.data.docs.reduce((acc, t) => {
-          if (t.status === "Finalizado" || t.status === "Con retraso") acc++;
-          return acc;
-        }, 0);
-      });
 
       setCitasList(() => response.data.docs.filter((t) => t.task.isMeeting));
     } catch (error) {
       console.log(error);
     }
   };
-  //!tareas por comenzar(pendientes) y en proceso
-  // const getTotalTasksPending = async () => {
-  //   try {
-  //     const stringifiedQuery = qs.stringify(
-  //       {
-  //         where: {
-  //           and: [
-  //             {
-  //               serviceId: {
-  //                 equals: id,
-  //               },
-  //             },
-  //             {
-  //               visibleToClient: {
-  //                 equals: true,
-  //               },
-  //             },
-  //             {
-  //               or: [
-  //                 {
-  //                   status: {
-  //                     equals: "Pendiente",
-  //                   },
-  //                 },
-  //                 {
-  //                   status: {
-  //                     equals: "Declinado",
-  //                   },
-  //                 },
-  //                 {
-  //                   status: {
-  //                     equals: "En proceso",
-  //                   },
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //         depth: 0,
-  //         limit: 0,
-  //       },
-  //       { addQueryPrefix: true }
-  //     );
-
-  //     const response = await axios.get(
-  //       `${BACKEND}/tareasProyectos${stringifiedQuery}`
-  //     );
-  //     setTotalTasksPending(response.data.totalDocs);
-  //   } catch (error) {}
-  // };
-
-  const getTrabajadores = async () => {
-    try {
-      const response = await axios.get(`${BACKEND}/trabajadores?limit=1000`);
-      setTrabajadoresList(response.data.docs);
-    } catch (error) {}
-  };
-
-  // const getTareas = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${BACKEND}/etapaTareaServicioCotizaciones?limit=1000&where[servicio][equals]=${id}&sort=createdAt`
-  //     );
-  //     setTareasList(response.data.docs);
-  //   } catch (error) {}
-  // };
 
   const getCitas = async () => {
     try {
@@ -237,10 +117,6 @@ const ServicioDetails = () => {
 
   useEffect(() => {
     getTotalTasks();
-    //getTotalTasksPending();
-    //getTotalTasksCompleted();
-    getTrabajadores();
-    //getTareas();
     getCitas();
   }, []);
 
@@ -403,7 +279,7 @@ const ServicioDetails = () => {
           <div className="flex flex-col !space-y-4">
             <span className="font-medium">Encargad@s</span>
             <ul className=" divide-slate-100 dark:divide-slate-700">
-              <li className="block ">
+              <li className="px-4 py-2  border-[1px] rounded-md border-[#f0f0f2]">
                 <div className="flex space-x-2 rtl:space-x-reverse">
                   {typeof dataServicio.responsable === "object" ? (
                     <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
@@ -449,54 +325,60 @@ const ServicioDetails = () => {
                   </div>
                 </div>
               </li>
-              {dataServicio.integrantes &&
-                dataServicio?.integrantes.length > 0 &&
-                dataServicio?.integrantes.map((item, i) => (
-                  <li key={i} className="block py-[10px]">
-                    <div className="flex space-x-2 rtl:space-x-reverse">
-                      {typeof item.usuario === "object" ? (
-                        <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
-                          <div className="flex-none">
-                            {item.usuario.foto ? (
-                              <img
-                                src={
-                                  trabajadoresList.find(
-                                    (trab) => trab.id === item.usuario.id
-                                  )?.foto.url
-                                }
-                                alt={"Encargado servicio"}
-                                className=" rounded-full h-8 w-8 object-cover "
-                              />
-                            ) : (
-                              <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                                {item.usuario.name.charAt(0) +
-                                  item.usuario.name.charAt(1)}
+            </ul>
+
+            <ul className="w-full flex flex-wrap gap-2 ">
+              {integrantes &&
+                integrantes.length > 0 &&
+                integrantes.map(
+                  (item, i) =>
+                    item.id != dataServicio.responsable.id && (
+                      <li
+                        key={i}
+                        className="px-4 py-2 w-[49%] border-[1px] rounded-md border-[#f0f0f2]"
+                      >
+                        <div className="flex space-x-2 rtl:space-x-reverse">
+                          {typeof item === "object" ? (
+                            <div className="flex-1 flex space-x-2 rtl:space-x-reverse">
+                              <div className="flex-none">
+                                {item?.foto?.url ? (
+                                  <img
+                                    src={item?.foto?.url}
+                                    alt={"Encargado servicio"}
+                                    className=" rounded-full h-8 w-8 object-cover "
+                                  />
+                                ) : (
+                                  <div className="h-full w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+                                    {item?.name?.charAt(0) ??
+                                      "-" + item?.name?.charAt(1) ??
+                                      "-"}
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
-                              {item.usuario.name}
-                            </span>
-                            <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
-                              <span className="text-base inline-block mr-1">
-                                <MdOutlineWorkOutline />
-                              </span>
-                              {item.usuario?.puesto}
+                              <div className="flex-1">
+                                <span className="block text-slate-600 text-sm dark:text-slate-300 mb-1 font-medium">
+                                  {item?.name}
+                                </span>
+                                <span className="flex font-normal text-xs dark:text-slate-400 text-slate-500">
+                                  <span className="text-base inline-block mr-1">
+                                    <MdOutlineWorkOutline />
+                                  </span>
+                                  {item?.puesto}
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            "--"
+                          )}
+                          <div className="flex-none">
+                            <span className="block text-xs text-slate-600 dark:text-slate-400">
+                              {item.date}
                             </span>
                           </div>
                         </div>
-                      ) : (
-                        "--"
-                      )}
-                      <div className="flex-none">
-                        <span className="block text-xs text-slate-600 dark:text-slate-400">
-                          {item.date}
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                      </li>
+                    )
+                )}
             </ul>
           </div>
 
@@ -637,25 +519,42 @@ const ServicioDetails = () => {
                 <li>
                   <hr />
                 </li>
-                <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Tipo de pago: </span>
-                  <span className="text-sm ">
-                    {dataServicio.servicio.tipoPago}
-                  </span>
-                </li>
-                <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Facturación: </span>
-                  <span className="text-sm ">{dataServicio.facturacion}</span>
-                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span className="font-medium">Facturación</span>
+                    </summary>
+                    <ul className="flex flex-col space-y-2">
+                      <li className="flex flex-row justify-between items-center">
+                        <span className="text-sm font-medium">
+                          Tipo de pago:{" "}
+                        </span>
+                        <span className="text-sm ">
+                          {dataServicio.servicio.tipoPago}
+                        </span>
+                      </li>
+                      <li className="flex flex-row justify-between items-center">
+                        <span className="text-sm font-medium">
+                          Facturación:{" "}
+                        </span>
+                        <span className="text-sm ">
+                          {dataServicio.facturacion}
+                        </span>
+                      </li>
 
-                <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">IGV: </span>
-                  <span className="text-sm ">{dataServicio.igv}</span>
-                </li>
+                      <li className="flex flex-row justify-between items-center">
+                        <span className="text-sm font-medium">IGV: </span>
+                        <span className="text-sm ">{dataServicio.igv}</span>
+                      </li>
 
-                <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Precio: </span>
-                  <span className="text-sm ">{dataServicio.customPrice}</span>
+                      <li className="flex flex-row justify-between items-center">
+                        <span className="text-sm font-medium">Precio: </span>
+                        <span className="text-sm ">
+                          {dataServicio.customPrice}
+                        </span>
+                      </li>
+                    </ul>
+                  </details>
                 </li>
               </ul>
             </div>

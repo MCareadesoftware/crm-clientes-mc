@@ -184,9 +184,14 @@ const HistorialServicios = () => {
 
       {filler === "grid" && !isLoaded && (
         <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
-          {serviciosList.map((project, projectIndex) => (
-            <ProjectGrid project={project} key={projectIndex} />
-          ))}
+          {serviciosList
+            .filter(
+              (project) =>
+                project.estado != "Abandonado" && project.estado != "Congelado"
+            )
+            .map((project, projectIndex) => (
+              <ProjectGrid project={project} key={projectIndex} />
+            ))}
         </div>
       )}
       {filler === "list" && !isLoaded && (
