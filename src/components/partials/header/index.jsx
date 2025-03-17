@@ -16,6 +16,7 @@ import Language from "./Tools/Language";
 import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
+import Collapse from "../../../assets/images/svg/Collapse.jsx";
 
 const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
@@ -76,11 +77,12 @@ const Header = ({ className = "custom-class" }) => {
                   className="text-xl text-slate-900 dark:text-white"
                   onClick={() => setMenuCollapsed(!collapsed)}
                 >
-                  {isRtl ? (
+                  {/* {isRtl ? (
                     <Icon icon="akar-icons:arrow-left" />
                   ) : (
                     <Icon icon="akar-icons:arrow-right" />
-                  )}
+                  )} */}
+                  <Collapse />
                 </button>
               )}
               {width < breakpoints.xl && <Logo />}

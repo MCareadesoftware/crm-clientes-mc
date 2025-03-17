@@ -123,7 +123,7 @@ const EncuestaGrid = ({ project }) => {
           >
             <span> </span>
             <span></span>
-            <span>Responder</span>
+            <span className="text-base">Responder</span>
             <span>
               <FaArrowRight />
             </span>

@@ -43,14 +43,14 @@ const LoginForm = () => {
         password: password,
       });
 
-      if(response.data.user){
+      if (response.data.user) {
         dispatch(
           setUser({ token: response.data.token, user: response.data.user })
         );
         setTimeout(() => {
           navigate("/servicios-activos");
         }, 1500);
-      }else{
+      } else {
         toast.error("Credenciales inválidasxs ", {
           position: "top-right",
           autoClose: 1500,
@@ -62,9 +62,8 @@ const LoginForm = () => {
           theme: "light",
         });
       }
-     
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setIsError(true);
       toast.error("Credenciales inválidas", {
         position: "top-right",
@@ -97,7 +96,7 @@ const LoginForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="name@company.com"
+          placeholder="nombre@empresa.com"
           required=""
         />
       </div>
@@ -123,17 +122,23 @@ const LoginForm = () => {
         <Checkbox
           value={checked}
           onChange={() => setChecked(!checked)}
-          label="Keep me signed in"
+          label="Mantenerme conectado"
         />
-        <Link
+        {/* <Link
           to="/forgot-password"
           className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
         >
-          Forgot Password?{" "}
-        </Link>
+          Olvidé mi contraseña{" "}
+        </Link> */}
       </div>
 
-      <button type="submit" className="btn btn-dark block w-full text-center">{isLoading ?  <FormLoader className={"w-full h-6"} colour={"white"} /> : "Ingresar"}</button>
+      <button type="submit" className="btn btn-dark block w-full text-center">
+        {isLoading ? (
+          <FormLoader className={"w-full h-6"} colour={"white"} />
+        ) : (
+          "Ingresar"
+        )}
+      </button>
     </form>
   );
 };

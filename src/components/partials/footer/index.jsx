@@ -2,6 +2,8 @@ import React from "react";
 import useFooterType from "@/hooks/useFooterType";
 
 const Footer = ({ className = "custom-class" }) => {
+  const currentYear = new Date().toLocaleDateString().split("/")[2];
+
   const [footerType] = useFooterType();
   const footerclassName = () => {
     switch (footerType) {
@@ -18,7 +20,8 @@ const Footer = ({ className = "custom-class" }) => {
       <div className="site-footer px-6 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 py-4">
         <div className="grid md:grid-cols-2 grid-cols-1 md:gap-5">
           <div className="text-center ltr:md:text-start rtl:md:text-right text-sm">
-            COPYRIGHT &copy; 2023 Monstruo Creativo, Todos los derechos reservados
+            COPYRIGHT &copy; {currentYear} Monstruo Creativo, Todos los derechos
+            reservados
           </div>
           {/* <div className="ltr:md:text-right rtl:md:text-end text-center text-sm">
             Hand-crafted & Made by{" "}

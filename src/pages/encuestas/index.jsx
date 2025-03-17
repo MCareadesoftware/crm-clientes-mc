@@ -92,9 +92,7 @@ const Encuestas = () => {
   ];
   const dispatch = useDispatch();
 
-  useEffect(() => {
-
-  }, [filler]);
+  useEffect(() => {}, [filler]);
   const [page, setPage] = useState(1);
   const [formularioMetaData, setFormualriosMetaData] = useState({
     totalPages: 0,
@@ -105,18 +103,17 @@ const Encuestas = () => {
   });
   const [formulariosList, setFormulariosList] = useState([]);
 
-
   const getFormularios = async () => {
-    setIsLoaded(true)
+    setIsLoaded(true);
     try {
       if (userRedux) {
         const response = await axios.get(
-          `${BACKEND}/formularioServicioRespuestas?where[servicioCotizacion.cotizacion.cliente][equals]=${
-            userRedux.user.id
-          }&limit=10&sort=createdAt&page=${page}`        );
+          `${BACKEND}/formularioServicioRespuestas?where[servicioCotizacion.cotizacion.cliente][equals]=${userRedux.user.id}&limit=10&sort=createdAt&page=${page}`
+        );
 
-
-        setFormulariosList(response.data.docs);
+        setFormulariosList(
+          response.data.docs.filter((d) => typeof d?.formulario === "object")
+        );
         setFormualriosMetaData({
           totalPages: response.data.totalPages,
           page: response.data.page,
@@ -126,17 +123,14 @@ const Encuestas = () => {
         });
       }
     } catch (error) {
-
-    }finally{
-      setIsLoaded(false)
+    } finally {
+      setIsLoaded(false);
     }
   };
 
-
   useEffect(() => {
-    getFormularios()
+    getFormularios();
   }, [page]);
-
 
   const pageRange = [];
   const startPage = Math.max(1, page - 2);
@@ -152,12 +146,10 @@ const Encuestas = () => {
       <ToastContainer />
       <div className="flex flex-wrap justify-between items-center mb-4">
         <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
-          Encuestas 
-        </h4>        
+          Encuestas
+        </h4>
       </div>
-      {isLoaded && filler === "grid" && (
-        <GridLoading count={3} />
-      )}
+      {isLoaded && filler === "grid" && <GridLoading count={3} />}
       {isLoaded && filler === "list" && (
         <TableLoading count={projects?.length} />
       )}
@@ -175,8 +167,7 @@ const Encuestas = () => {
         </div>
       )}
 
-
-        {formulariosList && formulariosList?.length > 0 && (
+      {formulariosList && formulariosList?.length > 0 && (
         <div className="flex flex-col items-center py-10">
           <span className="text-sm text-gray-700 dark:text-gray-500 mb-2 ">
             Mostrando

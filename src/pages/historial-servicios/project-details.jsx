@@ -29,6 +29,7 @@ import ActividadServicio from "../../components/modules/servicios/Actividad";
 import Reuniones from "../../components/modules/servicios/Reuniones";
 import qs from "qs";
 import { FaUser } from "react-icons/fa";
+import banner from "../../assets/images/all-img/Banner-Google.webp";
 
 const HistorialServicioDetails = () => {
   const { id } = useParams();
@@ -458,99 +459,88 @@ const HistorialServicioDetails = () => {
                   </span>
                 </li>
 
-                <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">
-                    Casos de éxito Monstruo Creativo:{" "}
-                  </span>
-                  <a
-                    href={dataServicio.servicio?.successCaseVideo || ""}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                  >
-                    Ver
-                  </a>
-                </li>
+                {/* <li className="flex flex-row justify-between items-center">
+                           <span className="text-sm font-medium">
+                             Casos de éxito Monstruo Creativo:{" "}
+                           </span>
+                           <a
+                             href={dataServicio.servicio?.successCaseVideo || ""}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
+                           >
+                             Ver
+                           </a>
+                         </li> */}
                 {/* <li>
-                  <span className="text-sm font-medium">
-                    Video Making-off:{" "}
-                  </span>
-                  <a
-                    href={dataServicio.servicio?.makingOffVideo || ""}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                  >
-                    Ir al video
-                  </a>
-                </li>
-
-                <li>
-                  <span className="text-sm font-medium">
-                    Video del proyecto:{" "}
-                  </span>
-                  <a
-                    href={dataServicio.servicio?.proyectVideo || ""}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                  >
-                    Ir al video
-                  </a>
-                </li>
-
-                 */}
+                           <span className="text-sm font-medium">
+                             Video Making-off:{" "}
+                           </span>
+                           <a
+                             href={dataServicio.servicio?.makingOffVideo || ""}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
+                           >
+                             Ir al video
+                           </a>
+                         </li>
+         
+                         <li>
+                           <span className="text-sm font-medium">
+                             Video del proyecto:{" "}
+                           </span>
+                           <a
+                             href={dataServicio.servicio?.proyectVideo || ""}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
+                           >
+                             Ir al video
+                           </a>
+                         </li>
+         
+                          */}
                 {/* <li>
-                  <span className="text-sm font-medium">Videos reseña: </span>
-                  <a
-                    href={dataServicio.servicio?.reviewVideo || ""}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                  >
-                    Ir al video
-                  </a>
-                </li> */}
+                           <span className="text-sm font-medium">Videos reseña: </span>
+                           <a
+                             href={dataServicio.servicio?.reviewVideo || ""}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
+                           >
+                             Ir al video
+                           </a>
+                         </li> */}
 
                 <li>
                   <hr />
                 </li>
-                <li>
-                  <details>
-                    <summary>
-                      <span className="font-medium">Facturación</span>
-                    </summary>
-                    <ul className="flex flex-col space-y-2">
-                      <li className="flex flex-row justify-between items-center">
-                        <span className="text-sm font-medium">
-                          Tipo de pago:{" "}
-                        </span>
-                        <span className="text-sm ">
-                          {dataServicio.servicio.tipoPago}
-                        </span>
-                      </li>
-                      <li className="flex flex-row justify-between items-center">
-                        <span className="text-sm font-medium">
-                          Facturación:{" "}
-                        </span>
-                        <span className="text-sm ">
-                          {dataServicio.facturacion}
-                        </span>
-                      </li>
+              </ul>
+            </div>
 
-                      <li className="flex flex-row justify-between items-center">
-                        <span className="text-sm font-medium">IGV: </span>
-                        <span className="text-sm ">{dataServicio.igv}</span>
-                      </li>
+            <span className="font-medium">Facturación</span>
+            <div>
+              <ul className="flex flex-col space-y-2">
+                <li className="flex flex-row justify-between items-center">
+                  <span className="text-sm font-medium">Tipo de pago: </span>
+                  <span className="text-sm ">
+                    {dataServicio.servicio.tipoPago}
+                  </span>
+                </li>
+                <li className="flex flex-row justify-between items-center">
+                  <span className="text-sm font-medium">Facturación: </span>
+                  <span className="text-sm ">{dataServicio.facturacion}</span>
+                </li>
 
-                      <li className="flex flex-row justify-between items-center">
-                        <span className="text-sm font-medium">Precio: </span>
-                        <span className="text-sm ">
-                          {dataServicio.customPrice}
-                        </span>
-                      </li>
-                    </ul>
-                  </details>
+                <li className="flex flex-row justify-between items-center">
+                  <span className="text-sm font-medium">IGV: </span>
+                  <span className="text-sm ">{dataServicio.igv}</span>
+                </li>
+
+                <li className="flex flex-row justify-between items-center">
+                  <span className="text-sm font-medium">Precio: </span>
+                  <span className="text-sm ">{dataServicio.customPrice}</span>
                 </li>
               </ul>
             </div>
@@ -726,9 +716,19 @@ const HistorialServicioDetails = () => {
           </Card>
         </div>
         <div className="xl:col-span-4 lg:col-span-5 flex flex-col gap-5 col-span-12">
-          <Card title="Reuniones" headerslot={<SelectMonth />}>
-            <Reuniones lists={citasList} />
-          </Card>
+          <div
+            onClick={() =>
+              window.open("https://g.page/r/CZG5gGrpqwwvEAE/review", "_blank")
+            }
+            className="hover:cursor-pointer rounded-md"
+          >
+            {/* <Reuniones lists={citasList} /> */}
+            <img
+              src={banner}
+              alt="banner"
+              className="object-cover w-full rounded-md"
+            />
+          </div>
           <Card title="Actividad" headerslot={<SelectMonth />}>
             <ActividadServicio lists={tareasList} />
           </Card>

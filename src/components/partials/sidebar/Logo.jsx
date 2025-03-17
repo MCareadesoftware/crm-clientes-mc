@@ -5,10 +5,11 @@ import useDarkMode from "@/hooks/useDarkMode";
 import useSidebar from "@/hooks/useSidebar";
 import useSemiDark from "@/hooks/useSemiDark";
 import useSkin from "@/hooks/useSkin";
-
+import collapse from "@/assets/images/svg/collapse.svg";
 // import images
 import MobileLogo from "@/assets/images/logo/sidebar-logo.webp";
 import MobileLogoWhite from "@/assets/images/logo/sidebar-logo.webp";
+import Collapse from "../../../assets/images/svg/Collapse";
 
 const SidebarLogo = ({ menuHover }) => {
   const [isDark] = useDarkMode();
@@ -19,8 +20,8 @@ const SidebarLogo = ({ menuHover }) => {
   const [skin] = useSkin();
   return (
     <div
-      className={` logo-segment flex justify-between items-center bg-white dark:bg-slate-800 z-[9] py-6  px-4 
-      ${menuHover ? "logo-hovered" : ""}
+      className={`  flex justify-between  items-center gap-2 bg-white dark:bg-slate-800 z-[9] py-6  px-4 
+      ${menuHover ? "" : ""}
       ${
         skin === "bordered"
           ? " border-b border-r-0 border-slate-200 dark:border-slate-700"
@@ -50,16 +51,9 @@ const SidebarLogo = ({ menuHover }) => {
       </Link>
 
       {(!collapsed || menuHover) && (
-        <div
-          onClick={() => setMenuCollapsed(!collapsed)}
-          className={`h-4 w-4 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
-          ${
-            collapsed
-              ? ""
-              : "ring-2 ring-inset ring-offset-4 ring-black-900 dark:ring-slate-400 bg-slate-900 dark:bg-slate-400 dark:ring-offset-slate-700"
-          }
-          `}
-        ></div>
+        <button onClick={() => setMenuCollapsed(!collapsed)}>
+          <Collapse />
+        </button>
       )}
     </div>
   );

@@ -6,8 +6,16 @@ import { BACKEND } from "../../configs/envConfig";
 import EncuestaDetailsPageDetails from "./encuesta-details-pageQuestion";
 import { toast } from "react-toastify";
 import { FaCheck } from "react-icons/fa";
+import { motion } from "framer-motion";
+
 const EncuestaAnswerDetails = () => {
   const { id } = useParams();
+
+  const pageVariants = {
+    initial: { opacity: 0, x: 50 },
+    animate: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+  };
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -193,8 +201,16 @@ const EncuestaAnswerDetails = () => {
       </div>
     );
   return (
-    <div>
-      <div className=" mx-auto  max-w-5xl">
+    <div className="flex flex-col gap-4">
+      <h5>Formulario {encuestaDetails.formulario?.servicio?.name}</h5>
+      <motion.div
+        key={currentPage} // Importante para que React detecte los cambios de página
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        className=" mx-auto  max-w-5xl w-full dark:bg-gray-800 bg-white p-6 rounded-xl space-y-4"
+      >
         <EncuestaDetailsPageDetails
           updateMediaId={updateMediaId}
           updateMediaObj={updateMediaObj}
@@ -203,7 +219,35 @@ const EncuestaAnswerDetails = () => {
           updateRespuestaListMultiple={updateRespuestaListMultiple}
           questionData={answersList.find((e) => e.page === currentPage)}
         />
-      </div>
+        {currentPage && totalPages && currentPage < totalPages && (
+          <div className="flex flex-row gap-8 w-full justify-center">
+            <button
+              onClick={() => setCurrenPage((prev) => prev - 1)}
+              className={`${
+                currentPage === 1 &&
+                "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
+              } hover:bg-opacity-10 transition duration-300 flex justify-center gap-2 items-center  font-bold p-2 rounded-md max-w-[200px] w-full bg-[#789be9] bg-opacity-20 text-[#5182ea] shadow-md`}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+
+            <button
+              onClick={() => setCurrenPage((prev) => prev + 1)}
+              className={`${
+                currentPage === totalPages &&
+                "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
+              } hover:bg-opacity-10 transition duration-300 flex justify-center gap-2 items-center  font-bold p-2 rounded-md max-w-[200px] w-full bg-[#789be9] bg-opacity-20 text-[#5182ea] shadow-md`}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
+        {/* <div className="text-xs text-gray-500 w-full text-center pt-4">
+          Pregunta {currentPage} de {totalPages}
+        </div> */}
+      </motion.div>
 
       {answersList.length > 0 && currentPage === answersList.length && (
         <div className=" flex justify-center pt-10 ">
@@ -217,13 +261,13 @@ const EncuestaAnswerDetails = () => {
         </div>
       )}
 
-      <div className=" flex justify-center mt-10">
+      {/* <div className=" flex justify-center mt-10">
         <Pagination
           totalPages={totalPages}
           handlePageChange={setCurrenPage}
           currentPage={currentPage}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
