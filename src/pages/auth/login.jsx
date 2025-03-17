@@ -9,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import LogoWhite from "@/assets/images/logo/logo-white.svg";
 import Logo from "@/assets/images/logo/sidebar-logo.webp";
 import Illustration from "@/assets/images/auth/ils1.svg";
-import loginBg from "@/assets/images/auth/login_bg.jpg";
+import loginBg from "@/assets/images/auth/login_bg.webp";
 import { motion, AnimatePresence } from "framer-motion";
 
 //==================logos apps===================
@@ -52,7 +52,7 @@ const login = () => {
     }, displayTime);
 
     return () => clearInterval(interval);
-  }, [images.length, displayTime]);
+  }, [images.length]);
 
   return (
     <>

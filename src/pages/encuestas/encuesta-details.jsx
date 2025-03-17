@@ -20,7 +20,7 @@ const EncuestaAnswerDetails = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrenPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [answersList, setAnswerList] = useState([]);
   const [tipoFormulario, setTipoFormulario] = useState("");
   const idForm = searchParams.get("idform");
@@ -222,7 +222,7 @@ const EncuestaAnswerDetails = () => {
         {currentPage && totalPages && currentPage < totalPages && (
           <div className="flex flex-row gap-8 w-full justify-center">
             <button
-              onClick={() => setCurrenPage((prev) => prev - 1)}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
               className={`${
                 currentPage === 1 &&
                 "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
@@ -233,7 +233,7 @@ const EncuestaAnswerDetails = () => {
             </button>
 
             <button
-              onClick={() => setCurrenPage((prev) => prev + 1)}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
               className={`${
                 currentPage === totalPages &&
                 "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
@@ -264,7 +264,7 @@ const EncuestaAnswerDetails = () => {
       {/* <div className=" flex justify-center mt-10">
         <Pagination
           totalPages={totalPages}
-          handlePageChange={setCurrenPage}
+          handlePageChange={setCurrentPage}
           currentPage={currentPage}
         />
       </div> */}
