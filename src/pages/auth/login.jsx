@@ -21,7 +21,7 @@ import logoLucuma from "@/assets/images/webp-logos/Logo-Lucuma.webp";
 import logoMundoDigital from "@/assets/images/webp-logos/Logo-MundoDigital.webp";
 import logoNodo from "@/assets/images/webp-logos/Logo-Nodo.webp";
 import logoSeoluciones from "@/assets/images/webp-logos/Logo-Seoluciones.webp";
-import logoW3b from "@/assets/images/webp-logos/Logo-W3b.webp";
+import logoW3b from "@/assets/images/webp-logos/Logo-W3B.webp";
 
 //===============================================
 
