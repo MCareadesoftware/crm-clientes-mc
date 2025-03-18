@@ -118,7 +118,7 @@ const login = () => {
 
                   <h4 className="font-medium">Clientes</h4>
                   <div className="text-slate-500 text-base">
-                    Ingresa a tu panel de cliente usando Monstruo Cretivo
+                    Ingresa a tu panel de cliente usando Monstruo Creativo
                     Dashboard
                   </div>
                 </div>
