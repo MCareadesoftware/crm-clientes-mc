@@ -42,16 +42,61 @@ const login = () => {
     logoW3b,
   ];
 
+  const names = [
+    "Monstruo Creativo",
+    "All Savfe",
+    "Aura BTL",
+    "Conviertelo",
+    "Lucuma",
+    "Mundo Digital",
+    "Nodo",
+    "Seoluciones",
+    "W3b.PE",
+  ];
+
   const currentYear = new Date().toLocaleDateString().split("/")[2];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentNameIndex, setCurrentNameIndex] = useState(0);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  //     setCurrentNameIndex((prevIndex) => (prevIndex + 1) % names.length);
+  //   }, displayTime);
+
+  //   return () => clearInterval(interval);
+  // }, [images.length]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, displayTime);
+    let interval = null;
 
-    return () => clearInterval(interval);
+    // Función para cambiar la imagen
+    const updateImage = () => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentNameIndex((prevIndex) => (prevIndex + 1) % names.length);
+    };
+
+    // Función para manejar la visibilidad de la página
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (interval) clearInterval(interval); // Pausar intervalo
+      } else {
+        updateImage(); // Asegurar que la imagen cambie al volver
+        interval = setInterval(updateImage, displayTime); // Reanudar intervalo
+      }
+    };
+
+    // Iniciar el intervalo cuando el componente se monta
+    interval = setInterval(updateImage, displayTime);
+
+    // Escuchar cambios de visibilidad de la página
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      if (interval) clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [images.length]);
 
   return (
@@ -82,7 +127,7 @@ const login = () => {
                   </Link> */}
 
                   <div className="relative w-full h-[100px] overflow-hidden">
-                    <AnimatePresence mode="popLayout">
+                    <AnimatePresence mode="wait">
                       <motion.div
                         key={currentImageIndex}
                         initial={{
@@ -96,14 +141,15 @@ const login = () => {
                           opacity: 1,
                           rotateY: 0,
                           z: 0,
-                          transition: { duration: 1 },
+                          transition: { duration: 0.5 },
                         }}
                         exit={{
                           scale: 0.8,
                           opacity: 0,
                           rotateY: 90,
                           z: -100,
-                          transition: { duration: 1 },
+                          transition: { duration: 0.5 },
+                          opacity: 0,
                         }}
                         className="absolute w-full h-full flex items-center justify-center"
                       >
@@ -118,8 +164,8 @@ const login = () => {
 
                   <h4 className="font-medium">Clientes</h4>
                   <div className="text-slate-500 text-base">
-                    Ingresa a tu panel de cliente usando Monstruo Creativo
-                    Dashboard
+                    Ingresa a tu panel de cliente para revisar tus servicios
+                    adquiridos
                   </div>
                 </div>
                 <LoginForm />
@@ -143,8 +189,8 @@ const login = () => {
                 </div> */}
               </div>
               <div className="auth-footer text-center">
-                Copyright {currentYear}, Monstruo Creativo Todos los derechos
-                reservados .
+                Copyright {currentYear}, <b>{names[currentNameIndex]}</b>. Todos
+                los derechos reservados .
               </div>
             </div>
           </div>
