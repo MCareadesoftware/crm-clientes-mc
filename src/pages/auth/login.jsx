@@ -121,7 +121,7 @@ const login = () => {
 
     // Función para cambiar la imagen
     const updateImage = () => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesWhite.length);
       setCurrentNameIndex((prevIndex) => (prevIndex + 1) % names.length);
     };
 
@@ -145,7 +145,7 @@ const login = () => {
       if (interval) clearInterval(interval);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [images.length]);
+  }, [imagesWhite.length]);
 
   return (
     <>
