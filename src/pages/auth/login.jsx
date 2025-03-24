@@ -66,17 +66,17 @@ const login = () => {
     logoW3bWhiteExtended,
   ];
 
-  // const backgroundColors = [
-  //   "#ff6400",
-  //   "#6950e8",
-  //   "#270059",
-  //   "#be1a18",
-  //   "#ff7900",
-  //   "#0ec6aa",
-  //   "#fa1e37",
-  //   "#121b3a",
-  //   "#ea1341",
-  // ];
+  const backgroundColors = [
+    "#ff6400",
+    "#6950e8",
+    "#270059",
+    "#be1a18",
+    "#ff7900",
+    "#0ec6aa",
+    "#fa1e37",
+    "#121b3a",
+    "#ea1341",
+  ];
 
   // const images = [
   //   Logo,
