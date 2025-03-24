@@ -6,38 +6,38 @@ import useDarkMode from "@/hooks/useDarkMode";
 import { ToastContainer } from "react-toastify";
 
 // image import
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
-import Logo from "@/assets/images/logo/sidebar-logo.webp";
-import Illustration from "@/assets/images/auth/ils1.svg";
-import loginBg from "@/assets/images/auth/login_bg.webp";
+// import LogoWhite from "@/assets/images/logo/logo-white.svg";
+// import Logo from "@/assets/images/logo/sidebar-logo.webp";
+// import Illustration from "@/assets/images/auth/ils1.svg";
+// import loginBg from "@/assets/images/auth/login_bg.webp";
 import { motion, AnimatePresence } from "framer-motion";
 
 //==================logos apps===================
 
-import logoAllSavfe from "@/assets/images/webp-logos/Logo-AllSavfe.webp";
-import logoAura from "@/assets/images/webp-logos/Logo-Aura.webp";
-import logoConviertelo from "@/assets/images/webp-logos/Logo-Conviertelo.webp";
-import logoLucuma from "@/assets/images/webp-logos/Logo-Lucuma.webp";
-import logoMundoDigital from "@/assets/images/webp-logos/Logo-MundoDigital.webp";
-import logoNodo from "@/assets/images/webp-logos/Logo-Nodo.webp";
-import logoSeoluciones from "@/assets/images/webp-logos/Logo-Seoluciones.webp";
-import logoW3b from "@/assets/images/webp-logos/Logo-W3B.webp";
+// import logoAllSavfe from "@/assets/images/webp-logos/Logo-AllSavfe.webp";
+// import logoAura from "@/assets/images/webp-logos/Logo-Aura.webp";
+// import logoConviertelo from "@/assets/images/webp-logos/Logo-Conviertelo.webp";
+// import logoLucuma from "@/assets/images/webp-logos/Logo-Lucuma.webp";
+// import logoMundoDigital from "@/assets/images/webp-logos/Logo-MundoDigital.webp";
+// import logoNodo from "@/assets/images/webp-logos/Logo-Nodo.webp";
+// import logoSeoluciones from "@/assets/images/webp-logos/Logo-Seoluciones.webp";
+// import logoW3b from "@/assets/images/webp-logos/Logo-W3B.webp";
 
 // =============================== white logos ==================================
 
-import logoMCWhite from "@/assets/images/webp-logos/white/logo-MC-1.webp";
-import logoAllSavfeWhite from "@/assets/images/webp-logos/white/Logo-AllSavfe-1.webp";
-import logoAuraWhite from "@/assets/images/webp-logos/white/Logo-Aura-1.webp";
-import logoConvierteloWhite from "@/assets/images/webp-logos/white/Logo-Conviertelo-1.webp";
-import logoLucumaWhite from "@/assets/images/webp-logos/white/Logo-Lucuma-1.webp";
-import logoMundoDigitalWhite from "@/assets/images/webp-logos/white/Logo-MundoDigital-1.webp";
-import logoNodoWhite from "@/assets/images/webp-logos/white/Logo-Nodo-1.webp";
-import logoSeolucionesWhite from "@/assets/images/webp-logos/white/Logo-Seoluciones-1.webp";
-import logoW3bWhite from "@/assets/images/webp-logos/white/Logo-W3B-1.webp";
+// import logoMCWhite from "@/assets/images/webp-logos/white/logo-MC-1.webp";
+// import logoAllSavfeWhite from "@/assets/images/webp-logos/white/Logo-AllSavfe-1.webp";
+// import logoAuraWhite from "@/assets/images/webp-logos/white/Logo-Aura-1.webp";
+// import logoConvierteloWhite from "@/assets/images/webp-logos/white/Logo-Conviertelo-1.webp";
+// import logoLucumaWhite from "@/assets/images/webp-logos/white/Logo-Lucuma-1.webp";
+// import logoMundoDigitalWhite from "@/assets/images/webp-logos/white/Logo-MundoDigital-1.webp";
+// import logoNodoWhite from "@/assets/images/webp-logos/white/Logo-Nodo-1.webp";
+// import logoSeolucionesWhite from "@/assets/images/webp-logos/white/Logo-Seoluciones-1.webp";
+// import logoW3bWhite from "@/assets/images/webp-logos/white/Logo-W3B-1.webp";
 
 // ================================== white extended logos ===================================
 
-import logoMCWhiteExtended from "@/assets/images/webp-logos/white-extended/logo-MC-NGV.webp";
+import logoMCWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-MC-NGV.webp";
 import logoAllSavfeWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-AllSavfe-NGV.webp";
 import logoAuraWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-AuraBTL-NGV.webp";
 import logoConvierteloWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-Conviertelo-NGV.webp";
@@ -66,29 +66,29 @@ const login = () => {
     logoW3bWhiteExtended,
   ];
 
-  const backgroundColors = [
-    "#ff6400",
-    "#6950e8",
-    "#270059",
-    "#be1a18",
-    "#ff7900",
-    "#0ec6aa",
-    "#fa1e37",
-    "#121b3a",
-    "#ea1341",
-  ];
+  // const backgroundColors = [
+  //   "#ff6400",
+  //   "#6950e8",
+  //   "#270059",
+  //   "#be1a18",
+  //   "#ff7900",
+  //   "#0ec6aa",
+  //   "#fa1e37",
+  //   "#121b3a",
+  //   "#ea1341",
+  // ];
 
-  const images = [
-    Logo,
-    logoAllSavfe,
-    logoAura,
-    logoConviertelo,
-    logoLucuma,
-    logoMundoDigital,
-    logoNodo,
-    logoSeoluciones,
-    logoW3b,
-  ];
+  // const images = [
+  //   Logo,
+  //   logoAllSavfe,
+  //   logoAura,
+  //   logoConviertelo,
+  //   logoLucuma,
+  //   logoMundoDigital,
+  //   logoNodo,
+  //   logoSeoluciones,
+  //   logoW3b,
+  // ];
 
   const names = [
     "Monstruo Creativo",
