@@ -23,12 +23,60 @@ import logoNodo from "@/assets/images/webp-logos/Logo-Nodo.webp";
 import logoSeoluciones from "@/assets/images/webp-logos/Logo-Seoluciones.webp";
 import logoW3b from "@/assets/images/webp-logos/Logo-W3B.webp";
 
+// =============================== white logos ==================================
+
+import logoMCWhite from "@/assets/images/webp-logos/white/logo-MC-1.webp";
+import logoAllSavfeWhite from "@/assets/images/webp-logos/white/Logo-AllSavfe-1.webp";
+import logoAuraWhite from "@/assets/images/webp-logos/white/Logo-Aura-1.webp";
+import logoConvierteloWhite from "@/assets/images/webp-logos/white/Logo-Conviertelo-1.webp";
+import logoLucumaWhite from "@/assets/images/webp-logos/white/Logo-Lucuma-1.webp";
+import logoMundoDigitalWhite from "@/assets/images/webp-logos/white/Logo-MundoDigital-1.webp";
+import logoNodoWhite from "@/assets/images/webp-logos/white/Logo-Nodo-1.webp";
+import logoSeolucionesWhite from "@/assets/images/webp-logos/white/Logo-Seoluciones-1.webp";
+import logoW3bWhite from "@/assets/images/webp-logos/white/Logo-W3B-1.webp";
+
+// ================================== white extended logos ===================================
+
+import logoMCWhiteExtended from "@/assets/images/webp-logos/white-extended/logo-MC-NGV.webp";
+import logoAllSavfeWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-AllSavfe-NGV.webp";
+import logoAuraWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-AuraBTL-NGV.webp";
+import logoConvierteloWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-Conviertelo-NGV.webp";
+import logoLucumaWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-Lucuma-NGV.webp";
+import logoMundoDigitalWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-MundoDigital-NGV.webp";
+import logoNodoWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-Nodo-NGV.webp";
+import logoSeolucionesWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-Seoluciones-NGV.webp";
+import logoW3bWhiteExtended from "@/assets/images/webp-logos/white-extended/Logo-w3b-NGV.webp";
+
 //===============================================
 
 const displayTime = 3000;
 
 const login = () => {
   const [isDark] = useDarkMode();
+
+  const imagesWhite = [
+    logoMCWhiteExtended,
+    logoAllSavfeWhiteExtended,
+    logoAuraWhiteExtended,
+    logoConvierteloWhiteExtended,
+    logoLucumaWhiteExtended,
+    logoMundoDigitalWhiteExtended,
+    logoNodoWhiteExtended,
+    logoSeolucionesWhiteExtended,
+    logoW3bWhiteExtended,
+  ];
+
+  const backgroundColors = [
+    "#ff6400",
+    "#6950e8",
+    "#270059",
+    "#be1a18",
+    "#ff7900",
+    "#0ec6aa",
+    "#fa1e37",
+    "#121b3a",
+    "#ea1341",
+  ];
 
   const images = [
     Logo,
@@ -113,8 +161,87 @@ const login = () => {
                 </span>
               </h4>
             </div> */}
-            <div className="">
-              <img src={loginBg} alt="" className="h-screen object-cover" />
+            <div className="h-screen w-full flex">
+              {/* <img src={loginBg} alt="" className="h-screen object-cover" /> */}
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  style={{
+                    backgroundColor:
+                      currentImageIndex == 0
+                        ? backgroundColors.at(-1)
+                        : backgroundColors?.[currentImageIndex - 1],
+                  }}
+                  key={currentImageIndex}
+                  // initial={{
+                  //   scale: 1,
+                  //   opacity: 0,
+                  //   //z: -100,
+                  //   // Se eliminó rotateY: -90
+                  // }}
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                    //z: 0,
+                    // Se eliminó rotateY: 0
+                    backgroundColor: backgroundColors[currentImageIndex],
+                    transition: { duration: 0.5 },
+                  }}
+                  // exit={{
+                  //   scale: 1,
+                  //   opacity: 0,
+                  //   //z: -100,
+                  //   // Se eliminó rotateY: 90
+                  //   transition: { duration: 0.5 },
+                  // }}
+                  className="relative  w-full h-full flex flex-col gap-2 items-center justify-center"
+                >
+                  <div className="max-w-[600px] w-full p-4 space-y-4">
+                    <motion.div
+                      initial={{
+                        scale: 0.8,
+                        opacity: 0,
+                        rotateY: -90,
+                        z: -100,
+                      }}
+                      animate={{
+                        scale: 1,
+                        opacity: 1,
+                        rotateY: 0,
+                        z: 0,
+                        transition: { duration: 0.5 },
+                      }}
+                      exit={{
+                        scale: 0.8,
+                        opacity: 0,
+                        rotateY: 90,
+                        z: -100,
+                        transition: { duration: 0.5 },
+                        opacity: 0,
+                      }}
+                      className="relative flex w-full justify-center pb-[30px]"
+                    >
+                      <img
+                        src={imagesWhite[currentImageIndex]}
+                        alt={`Slide ${currentImageIndex + 1}`}
+                        className="h-[150px] "
+                      />
+                    </motion.div>
+                    <h3 className="!text-white">¡Bienvenido de nuevo!</h3>
+                    <p className="text-white">
+                      <span className="text-xl text-white">
+                        <b>Estás en el lugar correcto</b>
+                      </span>
+                      <br />
+                      Construimos soluciones que transforman ideas en
+                      realidades. Únete a nosotros y lleva tu negocio al
+                      siguiente nivel.
+                    </p>
+                  </div>
+
+                  {/* Fondo con transición por opacidad */}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
           <div className="right-column relative">
@@ -127,7 +254,7 @@ const login = () => {
                   </Link> */}
 
                   <div className="relative w-full h-[100px] overflow-hidden">
-                    <AnimatePresence mode="wait">
+                    {/* <AnimatePresence mode="wait">
                       <motion.div
                         key={currentImageIndex}
                         initial={{
@@ -159,10 +286,10 @@ const login = () => {
                           className="max-w-full max-h-full object-contain"
                         />
                       </motion.div>
-                    </AnimatePresence>
+                    </AnimatePresence> */}
                   </div>
 
-                  <h4 className="font-medium">Clientes</h4>
+                  <h3 className="font-medium">Clientes</h3>
                   <div className="text-slate-500 text-base">
                     Ingresa a tu panel de cliente para revisar tus servicios
                     adquiridos
@@ -189,8 +316,8 @@ const login = () => {
                 </div> */}
               </div>
               <div className="auth-footer text-center">
-                Copyright {currentYear}, <b>{names[currentNameIndex]}</b>. Todos
-                los derechos reservados .
+                Copyright © {currentYear}, <b>{names[currentNameIndex]}</b>.
+                Todos los derechos reservados .
               </div>
             </div>
           </div>
