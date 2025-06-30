@@ -6,14 +6,17 @@ import SimpleBar from "simplebar-react";
 import useSemiDark from "@/hooks/useSemiDark";
 import useSkin from "@/hooks/useSkin";
 import useDarkMode from "@/hooks/useDarkMode";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import Icon from "@/components/ui/Icon";
 
 // import images
 import MobileLogo from "@/assets/images/logo/sidebar-logo.webp";
+import LogoMCLarge from "@/assets/images/logo/LogoMCLarge.png";
+import LogoMCLargeWhite from "@/assets/images/logo/LogoMCLargeWhite.png";
 import MobileLogoWhite from "@/assets/images/logo/sidebar-logo.webp";
 import svgRabitImage from "@/assets/images/svg/rabit.svg";
+import { socialNetworks } from "../../../constant/data";
 
 const MobileMenu = ({ className = "custom-class" }) => {
   const scrollableNodeRef = useRef();
@@ -33,49 +36,62 @@ const MobileMenu = ({ className = "custom-class" }) => {
   // skin
   const [skin] = useSkin();
   const [isDark] = useDarkMode();
+  console.log(isDark);
   const [mobileMenu, setMobileMenu] = useMobileMenu();
   return (
-    <div
-      className={`${className} fixed  top-0 bg-white dark:bg-slate-800 shadow-lg  h-full   w-[248px]`}
-    >
-      <div className="logo-segment flex justify-between items-center bg-white dark:bg-slate-800 z-[9] h-[85px]  px-4 ">
-        <Link to="/dashboard">
-          <div className="flex items-center space-x-4">
-            <div className="logo-icon">
-              {!isDark && !isSemiDark ? (
-                <img className=" w-6 h-6" src={MobileLogo} alt="" />
-              ) : (
-                <img className=" w-6 h-6" src={MobileLogoWhite} alt="" />
-              )}
-            </div>
-            <div>
-              <h1 className=" text-sm font-semibold text-slate-900 dark:text-slate-100">
-                Monstruo Creativo
+    <div className={isSemiDark ? "dark" : ""}>
+      <div className={`${className} fixed top-0 bg-white dark:bg-slate-800 shadow-lg h-full w-[248px] flex flex-col`}>
+        <div className="logo-segment flex justify-between items-center bg-white dark:bg-slate-800 z-[9] h-[85px] px-4">
+          <Link to="/dashboard">
+            <div className="flex items-center">
+              <h1>
+                <img className="w-40" src={isDark ? LogoMCLargeWhite : LogoMCLarge} alt="Logo Monstruo Creativo" />
               </h1>
             </div>
-          </div>
-        </Link>
-        <button
-          type="button"
-          onClick={() => setMobileMenu(!mobileMenu)}
-          className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-        >
-          <Icon icon="heroicons:x-mark" />
-        </button>
-      </div>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="cursor-pointer text-slate-900 dark:text-white text-2xl"
+          >
+            <Icon icon="heroicons:bars-3" className="text-orange-500" />
+          </button>
+        </div>
 
-      <div
-        className={`h-[60px]  absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none ${
-          scroll ? " opacity-100" : " opacity-0"
-        }`}
-      ></div>
-      <SimpleBar
-        className="sidebar-menu px-4 h-[calc(100%-80px)]"
-        scrollableNodeProps={{ ref: scrollableNodeRef }}
-      >
-        <Navmenu menus={menuItems} />
-        
-      </SimpleBar>
+        <div
+          className={`h-[60px] absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none ${
+            scroll ? " opacity-100" : " opacity-0"
+          }`}
+        ></div>
+
+        <SimpleBar
+          className="sidebar-menu px-4 flex-1"
+          scrollableNodeProps={{ ref: scrollableNodeRef }}
+        >
+          <Navmenu menus={menuItems} />
+        </SimpleBar>
+
+        {/* Redes sociales en la parte inferior */}
+        <div className="px-4 pb-4 mt-auto">
+          <div className="flex flex-col bg-slate-50 dark:bg-slate-800 rounded-md p-2">
+            <>
+              {socialNetworks.map((s) => (
+                <NavLink className="w-full px-2.5 py-3 rounded-md flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" to={s.link} key={s.title}>
+                  <span className="menu-icon flex-grow-0">
+                    <s.icon />
+                  </span>
+                  <span className="text-box flex-grow text-sm">{s.title}</span>
+                  <Icon icon="heroicons:chevron-right" />
+                </NavLink>
+              ))}
+              <div className="w-full mt-4 px-2 py-2 flex flex-row justify-between">
+                <span className="text-box text-sm">@monstruocreativo</span>
+                <span className="text-box text-sm">2025</span>
+              </div>
+            </>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

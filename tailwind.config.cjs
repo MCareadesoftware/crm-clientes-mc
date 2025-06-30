@@ -123,6 +123,9 @@ module.exports = {
           800: "#1E293B",
           900: "#0F172A",
         },
+        orange: {
+          500: "#FF7E0C",
+        },
       },
 
       fontFamily: {

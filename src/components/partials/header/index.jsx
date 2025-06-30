@@ -77,11 +77,6 @@ const Header = ({ className = "custom-class" }) => {
                   className="text-xl text-slate-900 dark:text-white"
                   onClick={() => setMenuCollapsed(!collapsed)}
                 >
-                  {/* {isRtl ? (
-                    <Icon icon="akar-icons:arrow-left" />
-                  ) : (
-                    <Icon icon="akar-icons:arrow-right" />
-                  )} */}
                   <Collapse />
                 </button>
               )}

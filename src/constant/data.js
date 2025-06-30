@@ -1,5 +1,5 @@
 import { RiDashboardLine } from "react-icons/ri";
-import { BsBoxes } from "react-icons/bs";
+import { BsBoxes, BsFacebook, BsInstagram, BsLinkedin, BsTiktok, BsYoutube } from "react-icons/bs";
 import { FaRegRectangleList } from "react-icons/fa6";
 import { TbMessage2Heart } from "react-icons/tb";
 import { FaWandSparkles } from "react-icons/fa6";
@@ -55,6 +55,34 @@ export const menuItems = [
   //   link: "",
   // },
 
+];
+
+export const socialNetworks = [
+  {
+    title: "Instagram",
+    icon: BsInstagram,
+    link: "https://www.instagram.com/monstruocreativo",
+  },
+  {
+    title: "Facebook",
+    icon: BsFacebook,
+    link: "https://www.facebook.com/monstruocreativo",
+  },
+  {
+    title: "YouTube",
+    icon: BsYoutube,
+    link: "https://www.youtube.com/monstruocreativo",
+  },
+  {
+    title: "TikTok",
+    icon: BsTiktok,
+    link: "https://www.tiktok.com/@monstruocreativo",
+  },
+  {
+    title: "LinkedIn",
+    icon: BsLinkedin,
+    link: "https://www.linkedin.com/company/monstruocreativo",
+  },
 ];
 
 export const topMenu = [

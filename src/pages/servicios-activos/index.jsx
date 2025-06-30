@@ -148,49 +148,6 @@ const ServiciosActivos = () => {
         <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
           Servicios Activos
         </h4>
-        {/* <div
-          className={`${
-            width < breakpoints.md ? "space-x-rb" : ""
-          } md:flex md:space-x-4 md:justify-end items-center rtl:space-x-reverse`}
-        >
-          <Button
-            icon="heroicons:list-bullet"
-            text="List view"
-            disabled={isLoaded}
-            className={`${
-              filler === "list"
-                ? "bg-slate-900 dark:bg-slate-700  text-white"
-                : " bg-white dark:bg-slate-800 dark:text-slate-300"
-            }   h-min text-sm font-normal`}
-            iconClass=" text-lg"
-            onClick={() => setfiller("list")}
-          />
-          <Button
-            icon="heroicons-outline:view-grid"
-            text="Grid view"
-            disabled={isLoaded}
-            className={`${
-              filler === "grid"
-                ? "bg-slate-900 dark:bg-slate-700 text-white"
-                : " bg-white dark:bg-slate-800 dark:text-slate-300"
-            }   h-min text-sm font-normal`}
-            iconClass=" text-lg"
-            onClick={() => setfiller("grid")}
-          />
-          <Button
-            icon="heroicons-outline:filter"
-            text="On going"
-            className="bg-white dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-900 hover:text-white btn-md  h-min text-sm font-normal"
-            iconClass=" text-lg"
-          />
-          <Button
-            icon="heroicons-outline:plus"
-            text="Add Project"
-            className="btn-dark dark:bg-slate-800  h-min text-sm font-normal"
-            iconClass=" text-lg"
-            onClick={() => dispatch(toggleAddModal(true))}
-          />
-        </div> */}
       </div>
       {isLoaded && filler === "grid" && (
         <GridLoading count={projects?.length} />
@@ -213,7 +170,7 @@ const ServiciosActivos = () => {
       )}
 
 
-{serviciosList && serviciosList?.length > 0 && (
+      {serviciosList && serviciosList?.length > 0 && (
         <div className="flex flex-col items-center py-10">
           <span className="text-sm text-gray-700 dark:text-gray-500 mb-2 ">
             Mostrando
@@ -271,8 +228,6 @@ const ServiciosActivos = () => {
           </nav>
         </div>
       )}
-      {/* <AddProject />
-      <EditProject /> */}
     </div>
   );
 };

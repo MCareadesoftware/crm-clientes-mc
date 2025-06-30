@@ -13,6 +13,7 @@ import { es } from "date-fns/locale";
 import axios from "axios";
 import { BACKEND } from "../../configs/envConfig";
 import { convertFirstLetterCapital } from "../../helpers/stringsHelper";
+import { BackgroundColorStatusMap, itemColorStatusMap, TextColorStatusMap } from "../../utils/ColorData";
 const ProjectGrid = ({ project }) => {
   project;
   const dispatch = useDispatch();
@@ -56,19 +57,19 @@ const ProjectGrid = ({ project }) => {
   }, []);
 
   return (
-    <div onClick={() => handleClick(project)} className="hover:cursor-pointer">
+    <div>
       <Card>
-        {/* header */}
+        {/* Header */}
         <header className="flex justify-between items-center">
           <div className="flex space-x-4 items-center rtl:space-x-reverse">
             <div className="flex-none">
-              <div className="h-10 w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+              <div className="h-8 w-8 bg-orange-500 rounded-md text-sm text-white dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
                 {project.servicio.name.charAt(0) +
                   project.servicio.name.charAt(1)}
               </div>
             </div>
             <div className="font-medium text-base leading-6">
-              <div className="dark:text-slate-200 text-slate-900 max-w-[160px] truncate">
+              <div className="dark:text-gray-200 text-gray-900 max-w-[160px] truncate">
                 {project.servicio.name}
               </div>
             </div>
@@ -77,87 +78,65 @@ const ProjectGrid = ({ project }) => {
           <div className="text-slate-600 dark:text-slate-400 text-sm ">
             Plan {project.planServicio?.name}
           </div>
-          {/* <div>
-          <Dropdown
-            classMenuItems=" w-[130px]"
-            label={
-              <span className="text-lg inline-flex flex-col items-center justify-center h-8 w-8 rounded-full bg-gray-500-f7 dark:bg-slate-900 dark:text-slate-400">
-                <Icon icon="heroicons-outline:dots-vertical" />
-              </span>
-            }
-          >
-            <div>
-              <Menu.Item onClick={() => handleClick(project)}>
-                <div
-                  className="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white
-                   w-full border-b border-b-gray-500 border-opacity-10   px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center
-                     capitalize rtl:space-x-reverse"
-                >
-                  <span className="text-base">
-                    <Icon icon="heroicons:eye" />
-                  </span>
-                  <span>Ver</span>
-                </div>
-              </Menu.Item>
-              
-            </div>
-          </Dropdown>
-        </div> */}
         </header>
 
-        {/**estado */}
-        <div className="flex flex-row gap-2 w-full py-6">
-          <span className="font-medium ">Estado:</span>
-          <span
-            className={`
-            ${
-              project.estado == "En proceso"
-                ? "text-green-500"
-                : project.estado == "Por comenzar"
-                ? "text-blue-600"
-                : "text-gray-700"
-            }
-          `}
-          >
-            {project.estado}
-          </span>
-        </div>
-        {/* assignee */}
-        <div className="flex space-x-4 rtl:space-x-reverse">
-          {/* start date */}
-          <div>
-            <span className="block date-label">Fecha Inicio</span>
-            <span className="block date-text">
-              {format(new Date(project.fechaInicio), "dd MMMM , yyyy", {
-                locale: es,
-              })}
-            </span>
-          </div>
-          {/* end date */}
-          <div>
-            <span className="block date-label">Fecha fin</span>
-            <span className="block date-text">
-              {format(new Date(project.fechaFin), "dd MMMM , yyyy", {
-                locale: es,
-              })}
-            </span>
+        {/* Estado */}
+        <div className="flex flex-col gap-1 w-full py-2">
+          <span className="font-medium text-xs">Estado:</span>
+          <div className={`flex flex-row gap-2`}>
+            <div className={`${BackgroundColorStatusMap[project.estado]} flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md`}>
+              <div className={`w-2 h-2 ${itemColorStatusMap[project.estado]} rounded-full animate-pulse`}></div>
+              <span className="text-slate-800 text-xs font-medium">{project.estado}</span>
+            </div>
+            {project.estado !== "Terminado con exito" && (
+              <div className="bg-green-100 flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md">
+                <div className={`w-2 h-2 bg-green-500 rounded-full animate-pulse`}></div>
+                <span className="text-slate-800 text-xs font-medium">
+                  {differenceInDays(new Date(project.fechaFin), new Date())} días restantes
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* progress bar */}
-        {/* <div className="ltr:text-right rtl:text-left text-xs text-slate-600 dark:text-slate-300 mb-1 font-medium">
-        {(totalTasksCompleted / totalTasks) * 100} %
-      </div> */}
-        {/* <ProgressBar
-        value={(totalTasksCompleted / totalTasks) * 100}
-        className="bg-primary-500"
-      /> */}
-        {/* assignee and total date */}
-        <div className="grid grid-cols-2 gap-4 mt-6">
+        {/* Fechas */}
+        <div className="flex space-x-4 gap-1 rtl:space-x-reverse py-2">
+
+          {/* start date */}
+          <div className="flex flex-col gap-1">
+            <span className="block text-xs font-medium text-slate-600 dark:text-slate-400">Fecha Inicio</span>
+            <div className="flex flex-row items-center justify-center gap-2">
+              <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
+              <span className="block text-xs font-medium">
+                {format(new Date(project.fechaInicio), "dd MMMM , yyyy", {
+                  locale: es,
+                })}
+              </span>
+            </div>
+          </div>
+
+          <div className="w-px h-full bg-gray-300 dark:bg-slate-600"></div>
+          
+          {/* end date */}
+          <div className="flex flex-col gap-1">
+            <span className="block text-xs font-medium text-slate-600 dark:text-slate-400">Fecha fin</span>
+            <div className="flex flex-row items-center justify-center gap-2">
+              <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
+              <span className="block text-xs font-medium">
+                {format(new Date(project.fechaFin), "dd MMMM , yyyy", {
+                  locale: es,
+                })}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Enbargado */}
+        <div className="grid grid-cols-2 gap-1 py-2">
           {/* assignee */}
           {typeof project.responsable === "object" && (
             <div>
-              <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
+              <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-1">
                 Encargado
               </div>
               <div className=" flex justify-start items-center gap-2 ">
@@ -175,50 +154,35 @@ const ProjectGrid = ({ project }) => {
                 )}
 
                 <div className="  flex flex-col w-full ">
-                  <span className=" text-sm">
+                  <span className=" text-sm font-medium">
                     {convertFirstLetterCapital(project.responsable.name)}
                   </span>
                   <span
                     style={{ fontSize: "0.6em" }}
-                    className=" whitespace-nowrap  text-blue-400 dark:text-blue-400"
+                    className=" whitespace-nowrap  text-slate-600 dark:text-slate-400"
                   >
                     {convertFirstLetterCapital(project.responsable.puesto)}
                   </span>
                 </div>
               </div>
-              {/* <div className="flex justify-start -space-x-1.5 rtl:space-x-reverse">
-          {assignee?.map((user, userIndex) => (
-            <div
-              className="h-6 w-6 rounded-full ring-1 ring-slate-100"
-              key={userIndex}
-            >
-              <img
-                src={user.image}
-                alt={user.label}
-                className="w-full h-full rounded-full"
-              />
-            </div>
-          ))}
-          <div className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-300 text-xs ring-2 ring-slate-100 dark:ring-slate-700 rounded-full h-6 w-6 flex flex-col justify-center items-center">
-            +2
-          </div>
-        </div> */}
             </div>
           )}
 
-          {/* total date */}
-          <div className="ltr:text-right rtl:text-left">
-            <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-              <span>
-                {" "}
-                <Icon icon="heroicons-outline:clock" />
-              </span>
-              <span>
-                {differenceInDays(new Date(project.fechaFin), new Date())}
-              </span>
-              <span>dias para culminar</span>
-            </span>
+        </div>
+        
+        <hr className="my-4" />
+
+        {/* Ver cotización y ver más */}
+        <div className="flex flex-row gap-2 justify-between">
+          <div className="flex flex-row gap-2 hover:cursor-pointer">
+            <Icon icon="heroicons-outline:eye" className="text-orange-500 dark:text-orange-500" />
+            <span className="text-slate-600 dark:text-slate-400 text-xs font-medium">Ver cotización</span>
           </div>
+          <div className="flex flex-row gap-2 hover:cursor-pointer"  onClick={() => handleClick(project)}>
+            <span className="text-slate-600 dark:text-slate-400 text-xs font-medium">Ver más</span>
+            <Icon icon="heroicons-outline:arrow-right" className="text-orange-500 dark:text-orange-500" />
+          </div>
+
         </div>
       </Card>
     </div>

@@ -7,7 +7,8 @@
     @apply h-full overflow-x-hidden dark:text-slate-300 text-slate-600 font-normal;
     &.light,
     &.skin--default {
-      @apply bg-slate-100;
+      //@apply bg-slate-100;
+      @apply bg-gray-50;
     }
     &.lght,
     &.skin--bordered {

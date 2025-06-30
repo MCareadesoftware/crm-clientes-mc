@@ -30,6 +30,7 @@ import Reuniones from "../../components/modules/servicios/Reuniones";
 import qs from "qs";
 import { FaUser } from "react-icons/fa";
 import banner from "../../assets/images/all-img/Banner-Google.webp";
+import { BackgroundColorStatusMap, itemColorStatusMap } from "../../utils/ColorData";
 
 const ServicioDetails = () => {
   const { id } = useParams();
@@ -141,17 +142,74 @@ const ServicioDetails = () => {
       </div>
     );
   if (typeof dataServicio != "object") return <>no existe el servicio</>;
+
   return (
     <div className=" space-y-5">
-      <div className="flex md:flex-row flex-col gap-4 justify-between md:center  ">
-        <h5>{dataServicio.servicio.name}</h5>
-        <h6>
-          Plan: <b>{dataServicio.planServicio.name}</b>
-        </h6>
-        <h6>
-          Estado: <b>{dataServicio.estado}</b>
-        </h6>
+      {/* Header */}
+
+      <div className="flex flex-row justify-start items-start border bg-white p-4 rounded-md px-8">
+        
+        <div className="flex flex-col gap-1 w-1/5">
+          <span className="text-xs text-gray-500" > 
+            Plan
+          </span>
+          <span className="text-xs font-medium text-slate-700" > 
+            {dataServicio.planServicio.name}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-1 border-l border-gray-200 pl-4 w-1/5">
+          <span className="text-xs text-gray-500" > 
+            Estado
+          </span>
+
+          <div className={`${BackgroundColorStatusMap[dataServicio.estado]} flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md w-fit `}>
+          <div className={`w-2 h-2 ${itemColorStatusMap[dataServicio.estado]} rounded-full animate-pulse`}></div>
+          <span className="text-slate-800 text-xs font-medium">{dataServicio.estado}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 border-l border-gray-200 pl-4 w-1/5">
+          <span className="text-xs text-gray-500" > 
+            Fecha inicio
+          </span>
+          <div className="flex flex-row items-center justify-start gap-2">
+            <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
+            <span className="block text-xs font-medium">
+              {format(new Date(dataServicio.fechaInicio), "dd MMMM , yyyy", {
+                locale: es,
+              })}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 border-l border-gray-200 pl-4 w-1/5">
+          <span className="text-xs text-gray-500" > 
+            Fecha fin
+          </span>
+          <div className="flex flex-row items-center justify-start gap-2">
+            <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
+            <span className="block text-xs font-medium">
+              {format(new Date(dataServicio.fechaFin), "dd MMMM , yyyy", {
+                locale: es,
+              })}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 border-l border-gray-200 pl-4 w-1/5">
+          <span className="text-xs text-gray-500" > 
+            Cotización
+          </span>
+          <div className="flex flex-row gap-2 items-center hover:cursor-pointer">
+            <Icon icon="heroicons-outline:eye" className="text-blue-500 dark:text-blue-500" />
+            <span className="text-sm font-medium text-slate-700" > 
+              Previsualizar
+            </span>
+          </div>
+        </div>
       </div>
+
       <div className="flex md:flex-row flex-col gap-5">
         {/* <Card className="xl:col-span-3 col-span-12 lg:col-span-5 h-full">
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">

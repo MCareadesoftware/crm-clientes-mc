@@ -26,7 +26,7 @@ const Card = ({
         `}
     >
       {(title || subtitle) && (
-        <header className={`card-header ${noborder ? "no-border" : ""}`}>
+        <header className={`card-header bg-red-500 ${noborder ? "no-border" : ""}`}>
           <div>
             {title && <div className={`card-title ${titleClass}`}>{title}</div>}
             {subtitle && <div className="card-subtitle">{subtitle}</div>}

@@ -10,6 +10,8 @@ import collapse from "@/assets/images/svg/collapse.svg";
 import MobileLogo from "@/assets/images/logo/sidebar-logo.webp";
 import MobileLogoWhite from "@/assets/images/logo/sidebar-logo.webp";
 import Collapse from "../../../assets/images/svg/Collapse";
+import LogoMCLarge from "@/assets/images/logo/LogoMCLarge.png";
+import LogoMCLargeWhite from "@/assets/images/logo/LogoMCLargeWhite.png";
 
 const SidebarLogo = ({ menuHover }) => {
   const [isDark] = useDarkMode();
@@ -32,18 +34,10 @@ const SidebarLogo = ({ menuHover }) => {
     >
       <Link to="/servicios-activos">
         <div className="flex items-center space-x-4">
-          <div className="logo-icon">
-            {!isDark && !isSemiDark ? (
-              <img className=" w-8 h-8" src={MobileLogo} alt="" />
-            ) : (
-              <img className=" w-8 h-8" src={MobileLogoWhite} alt="" />
-            )}
-          </div>
-
           {(!collapsed || menuHover) && (
-            <div>
-              <h1 className=" text-base font-semibold text-slate-900 dark:text-slate-100">
-                Monstruo Creativo
+            <div className="flex items-center">
+              <h1>
+                <img className="w-40" src={isDark ? LogoMCLargeWhite : LogoMCLarge} alt="Logo Monstruo Creativo" />
               </h1>
             </div>
           )}
@@ -52,7 +46,7 @@ const SidebarLogo = ({ menuHover }) => {
 
       {(!collapsed || menuHover) && (
         <button onClick={() => setMenuCollapsed(!collapsed)}>
-          <Collapse />
+          <Collapse className="text-orange-500" />
         </button>
       )}
     </div>

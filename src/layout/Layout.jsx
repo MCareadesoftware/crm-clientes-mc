@@ -68,7 +68,7 @@ const Layout = () => {
         }`}
       >
         {/* md:min-h-screen will h-full*/}
-        <div className="page-content   page-min-height  ">
+        <div className="page-content page-min-height">
           <div
             className={
               contentWidth === "boxed" ? "container mx-auto" : "container-fluid"
