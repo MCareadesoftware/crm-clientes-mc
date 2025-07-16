@@ -10,6 +10,7 @@ const Card = ({
   bodyClass = "p-6",
   noborder,
   titleClass = "custom-class",
+  icon,
 }) => {
   const [skin] = useSkin();
 
@@ -26,9 +27,20 @@ const Card = ({
         `}
     >
       {(title || subtitle) && (
-        <header className={`card-header bg-red-500 ${noborder ? "no-border" : ""}`}>
+        <header className={`card-header  ${noborder ? "no-border" : ""}`}>
           <div>
-            {title && <div className={`card-title ${titleClass}`}>{title}</div>}
+            {title && (
+              <div className={`card-title ${titleClass} flex items-center gap-3`}>
+                {icon && (
+                  <img 
+                    src={icon} 
+                    alt="icon" 
+                    className="w-6 h-6"
+                  />
+                )}
+                {title}
+              </div>
+            )}
             {subtitle && <div className="card-subtitle">{subtitle}</div>}
           </div>
           {headerslot && <div className="card-header-slot">{headerslot}</div>}

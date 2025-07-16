@@ -83,9 +83,14 @@ const EncuestaDetailsPageDetails = ({
 
   return (
     <div className=" dark:bg-gray-800 bg-white  p-4 rounded-md">
-      <h1 className=" font-bold text-xl text-gray-800 dark:text-blue-300">
-        {questionData?.preguntaTexto}
-      </h1>
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-shrink-0">
+          <img src="/letter of services.svg" alt="Pregunta" className="w-8 h-8" />
+        </div>
+        <h1 className=" font-bold text-xl text-gray-800 dark:text-blue-300">
+          {questionData?.preguntaTexto}
+        </h1>
+      </div>
       {questionData.linkYoutube && (
         <div className=" w-full flex justify-center pt-10">
           <div className=" rounded-xl w-full">

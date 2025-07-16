@@ -76,13 +76,19 @@ const MobileMenu = ({ className = "custom-class" }) => {
           <div className="flex flex-col bg-slate-50 dark:bg-slate-800 rounded-md p-2">
             <>
               {socialNetworks.map((s) => (
-                <NavLink className="w-full px-2.5 py-3 rounded-md flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" to={s.link} key={s.title}>
+                <a 
+                  href={s.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full px-2.5 py-3 rounded-md flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" 
+                  key={s.title}
+                >
                   <span className="menu-icon flex-grow-0">
-                    <s.icon />
+                    <img src={s.icon} alt={s.title} className="min-w-[20px] min-h-[20px] w-5 h-5" />
                   </span>
                   <span className="text-box flex-grow text-sm">{s.title}</span>
                   <Icon icon="heroicons:chevron-right" />
-                </NavLink>
+                </a>
               ))}
               <div className="w-full mt-4 px-2 py-2 flex flex-row justify-between">
                 <span className="text-box text-sm">@monstruocreativo</span>

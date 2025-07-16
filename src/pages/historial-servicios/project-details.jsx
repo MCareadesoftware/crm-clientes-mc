@@ -140,13 +140,9 @@ const HistorialServicioDetails = () => {
   return (
     <div className=" space-y-5">
       <div className="flex md:flex-row flex-col gap-4 justify-between md:center  ">
-        <h5>{dataServicio.servicio.name}</h5>
-        <h6>
-          Plan: <b>{dataServicio.planServicio.name}</b>
-        </h6>
-        <h6>
-          Estado: <b>{dataServicio.estado}</b>
-        </h6>
+        <span className="font-semibold text-[20px] dark:text-slate-200">{dataServicio.servicio.name}</span>
+        <span className="font-semibold text-[20px] dark:text-slate-200">Plan: <span className="font-bold dark:text-white">{dataServicio.planServicio.name}</span></span>
+        <span className="font-semibold text-[20px] dark:text-slate-200">Estado: <span className="font-bold dark:text-white">{dataServicio.estado}</span></span>
       </div>
       <div className="flex md:flex-row flex-col gap-5">
         {/* <Card className="xl:col-span-3 col-span-12 lg:col-span-5 h-full">
@@ -190,19 +186,42 @@ const HistorialServicioDetails = () => {
           </div>
         </Card> */}
         {/* end single column*/}
-        <Card title="Descripción del servicio" className="flex flex-col w-full">
+        <Card title="Descripción del servicio" icon="/letterservices.svg" className="flex flex-col w-full bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
           <div className="flex flex-col justify-between">
             {/* <div className="text-base font-medium text-slate-800 dark:text-slate-100 mb-3">
               Descripción del servicio
             </div> */}
 
-            <p className="text-sm text-slate-600 dark:text-slate-300  whitespace-pre-line">
-              {dataServicio.customDescriptionActive
-                ? dataServicio?.customDescriptionText
-                : dataServicio.servicio.preciosUnitarios.find(
-                    (serv) => serv.plan.id === dataServicio.planServicio.id
-                  )?.descripcion}
-            </p>
+            {/* Nuevo diseño con checks verdes */}
+            <ul className="space-y-2 bg-slate-100 dark:bg-slate-700 rounded-xl p-6">
+              {(() => {
+                const descripcionServicio = (dataServicio.customDescriptionActive
+                  ? dataServicio?.customDescriptionText
+                  : dataServicio.servicio.preciosUnitarios.find(
+                      (serv) => serv.plan.id === dataServicio.planServicio.id
+                    )?.descripcion
+                ) || '';
+                const lineasDescripcion = descripcionServicio
+                  .split('\n')
+                  .filter(line => line.trim() !== '');
+                if (lineasDescripcion.length > 0) {
+                  return lineasDescripcion.map((line, idx) => {
+                    const cleanLine = line.replace(/✓/g, '').replace(/\s+$/, '').trim();
+                    return (
+                      <li key={idx} className="flex items-center gap-2 text-[#16213E] dark:text-slate-200 font-semibold">
+                        <span className="mr-2 text-lg text-[#16213E] dark:text-slate-200">•</span>
+                        <span className="flex-1">{cleanLine}</span>
+                        <img src="/chackk.svg" alt="check" className="w-5 h-5 ml-1" />
+                      </li>
+                    );
+                  });
+                } else {
+                  return (
+                    <li className="text-slate-400 italic">No hay descripción disponible para este servicio.</li>
+                  );
+                }
+              })()}
+            </ul>
             {/* <div className="flex flex-wrap mt-8">
               <div className="xl:mr-8 mr-4 mb-3 space-y-1">
                 <div className="font-semibold text-slate-500 dark:text-slate-400">
@@ -258,7 +277,7 @@ const HistorialServicioDetails = () => {
                 <div className="text-xs font-medium text-slate-600 dark:text-slate-300">
                   Fecha de Fin
                 </div>
-                <div className="text-xs text-warning-500">
+                <div className="text-xs text-warning-500 dark:text-warning-400">
                   {format(new Date(dataServicio.fechaFin), "dd MMMM, yyyy", {
                     locale: es,
                   })}
@@ -269,12 +288,12 @@ const HistorialServicioDetails = () => {
           </div>
         </Card>
 
-        <Card title="Detalles" className="flex flex-col w-full">
+        <Card title="Detalles" icon="/lt2.svg" className="flex flex-col w-full bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
           {/* <div className="-mx-6 custom-calender mb-6">
             <CalendarView />
           </div> */}
           <div className="flex flex-col !space-y-4">
-            <span className="font-medium">Encargad@s</span>
+            <span className="font-medium dark:text-slate-200">Encargad@s</span>
             <ul className=" divide-slate-100 dark:divide-slate-700">
               <li className="px-4 py-2  border-[1px] rounded-md border-[#f0f0f2]">
                 <div className="flex space-x-2 rtl:space-x-reverse">
@@ -312,12 +331,9 @@ const HistorialServicioDetails = () => {
                     "No existe el usuario encargado / responsable"
                   )}
                   <div className="flex-none">
-                    <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-700 dark:text-green-300 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-                      <span>
-                        {" "}
-                        <MdCheck />
-                      </span>
-                      <span>Responsable</span>
+                    <span className="inline-flex items-center gap-2 bg-[#f4ffef] dark:bg-green-900 px-4 py-2 rounded-lg">
+                      <img src="/state.svg" alt="Responsable" className="w-3 h-3" />
+                      <span className="text-[#16213E] dark:text-green-200 font-semibold text-base">Responsable</span>
                     </span>
                   </div>
                 </div>
@@ -380,15 +396,15 @@ const HistorialServicioDetails = () => {
           </div>
 
           <div className="flex flex-col !space-y-4 !py-4">
-            <span className="font-medium">Datos adicionales</span>
+            <span className="font-medium dark:text-slate-200">Datos adicionales</span>
             <div>
               <ul className="flex flex-col space-y-2">
                 {dataServicio?.fechaFin && (
                   <li className="flex flex-row justify-between items-center">
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium dark:text-slate-300">
                       Días para la entrega:{" "}
                     </span>
-                    <span className="text-sm ">
+                    <span className="text-sm dark:text-slate-200 ">
                       {differenceInDays(
                         parseISO(dataServicio?.fechaFin),
                         new Date()
@@ -398,10 +414,10 @@ const HistorialServicioDetails = () => {
                 )}
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">
-                    Duración hasta la fecha:{" "}
-                  </span>
-                  <span className="text-sm ">
+                                      <span className="text-sm font-medium dark:text-slate-300">
+                      Duración hasta la fecha:{" "}
+                    </span>
+                    <span className="text-sm dark:text-slate-200 ">
                     {differenceInDays(
                       new Date(),
                       parseISO(dataServicio.fechaInicio)
@@ -410,53 +426,53 @@ const HistorialServicioDetails = () => {
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">
-                    Información enviada:{" "}
-                  </span>
-                  <span className="text-sm ">
+                                      <span className="text-sm font-medium dark:text-slate-300">
+                      Información enviada:{" "}
+                    </span>
+                    <span className="text-sm dark:text-slate-200 ">
                     {dataServicio.informacionEnviada}
                   </span>
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">
-                    Capacitación hecha:{" "}
-                  </span>
-                  <span className="text-sm ">
+                                      <span className="text-sm font-medium dark:text-slate-300">
+                      Capacitación hecha:{" "}
+                    </span>
+                    <span className="text-sm dark:text-slate-200 ">
                     {dataServicio.capacitacionHecha}
                   </span>
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Sub-area: </span>
-                  <span className="text-sm ">{dataServicio.subarea}</span>
+                                      <span className="text-sm font-medium dark:text-slate-300">Sub-area: </span>
+                    <span className="text-sm dark:text-slate-200 ">{dataServicio.subarea}</span>
                 </li>
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Plantilla: </span>
-                  <span className="text-sm ">
-                    {dataServicio.servicio.template}
-                  </span>
+                                      <span className="text-sm font-medium dark:text-slate-300">Plantilla: </span>
+                    <span className="text-sm dark:text-slate-200 ">
+                      {dataServicio.servicio.template}
+                    </span>
                 </li>
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Categoría: </span>
-                  <span className="text-sm ">
-                    {dataServicio.servicio.categoria}
-                  </span>
+                                      <span className="text-sm font-medium dark:text-slate-300">Categoría: </span>
+                    <span className="text-sm dark:text-slate-200 ">
+                      {dataServicio.servicio.categoria}
+                    </span>
                 </li>
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Activo: </span>
-                  <span className="text-sm ">
-                    {dataServicio.active ? "Si" : "No"}
-                  </span>
+                                      <span className="text-sm font-medium dark:text-slate-300">Activo: </span>
+                    <span className="text-sm dark:text-slate-200 ">
+                      {dataServicio.active ? "Si" : "No"}
+                    </span>
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">
-                    Es cuenta publicitaria:{" "}
-                  </span>
-                  <span className="text-sm ">
-                    {dataServicio.isCuentaPublicitaria ? "Si" : "No"}
-                  </span>
+                                      <span className="text-sm font-medium dark:text-slate-300">
+                      Es cuenta publicitaria:{" "}
+                    </span>
+                    <span className="text-sm dark:text-slate-200 ">
+                      {dataServicio.isCuentaPublicitaria ? "Si" : "No"}
+                    </span>
                 </li>
 
                 {/* <li className="flex flex-row justify-between items-center">
@@ -514,33 +530,33 @@ const HistorialServicioDetails = () => {
                          </li> */}
 
                 <li>
-                  <hr />
+                  <hr className="border-slate-200 dark:border-slate-700" />
                 </li>
               </ul>
             </div>
 
-            <span className="font-medium">Facturación</span>
+            <span className="font-medium dark:text-slate-200">Facturación</span>
             <div>
               <ul className="flex flex-col space-y-2">
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Tipo de pago: </span>
-                  <span className="text-sm ">
+                  <span className="text-sm font-medium dark:text-slate-300">Tipo de pago: </span>
+                  <span className="text-sm dark:text-slate-200 ">
                     {dataServicio.servicio.tipoPago}
                   </span>
                 </li>
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Facturación: </span>
-                  <span className="text-sm ">{dataServicio.facturacion}</span>
+                  <span className="text-sm font-medium dark:text-slate-300">Facturación: </span>
+                  <span className="text-sm dark:text-slate-200 ">{dataServicio.facturacion}</span>
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">IGV: </span>
-                  <span className="text-sm ">{dataServicio.igv}</span>
+                  <span className="text-sm font-medium dark:text-slate-300">IGV: </span>
+                  <span className="text-sm dark:text-slate-200 ">{dataServicio.igv}</span>
                 </li>
 
                 <li className="flex flex-row justify-between items-center">
-                  <span className="text-sm font-medium">Precio: </span>
-                  <span className="text-sm ">{dataServicio.customPrice}</span>
+                  <span className="text-sm font-medium dark:text-slate-300">Precio: </span>
+                  <span className="text-sm dark:text-slate-200 ">{dataServicio.customPrice}</span>
                 </li>
               </ul>
             </div>
@@ -563,7 +579,7 @@ const HistorialServicioDetails = () => {
           <Card
             title="Seguimiento de tareas"
             noborder
-            className="overflow-x-auto"
+            className="overflow-x-auto bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
           >
             {/* <TeamTable /> */}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -599,7 +615,7 @@ const HistorialServicioDetails = () => {
                 {tareasList.map((e) => (
                   <tr
                     key={e.id}
-                    className="border-b  hover:bg-gray-100 hover:dark:bg-gray-950"
+                    className="border-b hover:bg-gray-100 hover:dark:bg-gray-950 dark:border-slate-700"
                   >
                     <th
                       scope="row"
@@ -729,7 +745,7 @@ const HistorialServicioDetails = () => {
               className="object-cover w-full rounded-md"
             />
           </div>
-          <Card title="Actividad" headerslot={<SelectMonth />}>
+          <Card title="Actividad" headerslot={<SelectMonth />} className="dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
             <ActividadServicio lists={tareasList} />
           </Card>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, Fragment, useRef } from "react";
+import React, { useState, useEffect, Suspense, Fragment, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "@/components/partials/header";
 import Sidebar from "@/components/partials/sidebar";
@@ -17,6 +17,8 @@ import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import Loading from "@/components/Loading";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalDescuento from "@/components/ui/ModalDescuento";
+import ModalAyuda from "@/components/ui/ModalAyuda";
 const Layout = () => {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -38,6 +40,8 @@ const Layout = () => {
   // mobile menu
   const [mobileMenu, setMobileMenu] = useMobileMenu();
   const nodeRef = useRef(null);
+  const [openDescuento, setOpenDescuento] = useState(false);
+  const [openAyuda, setOpenAyuda] = useState(false);
 
   return (
     <>
@@ -61,6 +65,32 @@ const Layout = () => {
           onClick={() => setMobileMenu(false)}
         ></div>
       )}
+      {/* Botones flotantes laterales */}
+      <div className="fixed right-0 top-3/4 z-50 flex flex-col items-end gap-4" style={{ transform: 'translateY(-50%)' }}>
+        {/* Botón Descuentos */}
+        <button
+          className="flex flex-col items-center justify-center bg-[#2684FC] rounded-l-md shadow-md w-[58px] h-40 mb-2 focus:outline-none py-2 transition-shadow hover:shadow-lg"
+          tabIndex={0}
+          aria-label="Descuentos"
+          onClick={() => setOpenDescuento(true)}
+        >
+          <span className="text-white font-bold text-sm leading-tight text-center mb-2" style={{ writingMode: 'vertical-lr', textOrientation: 'mixed' }}>Descuentos</span>
+          <img src="/percent.svg" alt="Descuentos" className="w-7 h-7" />
+        </button>
+        {/* Botón Ayuda */}
+        <button
+          className="flex flex-col items-center justify-center bg-[#FE6400] rounded-l-md shadow-md w-[58px] h-40 focus:outline-none py-2 transition-shadow hover:shadow-lg"
+          tabIndex={0}
+          aria-label="Ayuda"
+          onClick={() => setOpenAyuda(true)}
+        >
+          <span className="text-white font-bold text-sm leading-tight text-center mb-2" style={{ writingMode: 'vertical-lr', textOrientation: 'mixed' }}>Ayuda</span>
+          <img src="/contact_support.svg" alt="Ayuda" className="w-7 h-7" />
+        </button>
+      </div>
+      {/* Modal de descuento fuera del contenedor de botones flotantes */}
+      <ModalDescuento open={openDescuento} onClose={() => setOpenDescuento(false)} />
+      <ModalAyuda open={openAyuda} onClose={() => setOpenAyuda(false)} />
       {/* <Settings /> */}
       <div
         className={`content-wrapper transition-all duration-150 ${

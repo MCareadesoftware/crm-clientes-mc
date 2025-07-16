@@ -70,21 +70,26 @@ const Sidebar = () => {
         {/* Redes sociales en la parte inferior */}
         <div className="px-4 pb-4 mt-auto">
           <div className="flex flex-col bg-slate-50 dark:bg-slate-800 rounded-md p-2">
-            <>
-              {socialNetworks.map((s) => (
-                <NavLink className="w-full px-2.5 py-3 rounded-md flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" to={s.link} key={s.title}>
-                  <span className="menu-icon flex-grow-0">
-                    <s.icon />
-                  </span>
-                  <span className="text-box flex-grow text-sm">{s.title}</span>
-                  <Icon icon="heroicons:chevron-right" />
-                </NavLink>
-              ))}
+            {socialNetworks.map((s) => (
+              <NavLink className="w-full px-2.5 py-3 rounded-md flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" to={s.link} key={s.title}>
+                <span className="menu-icon flex-grow-0">
+                  <img src={s.icon} alt={s.title} className="min-w-[20px] min-h-[20px] w-5 h-5" />
+                </span>
+                {!collapsed && (
+                  <>
+                    <span className="text-box flex-grow text-sm">{s.title}</span>
+                    <Icon icon="heroicons:chevron-right" />
+                  </>
+                )}
+              </NavLink>
+            ))}
+            {/* Footer solo si no está colapsado */}
+            {!collapsed && (
               <div className="w-full mt-4 px-2 py-2 flex flex-row justify-between border-t border-slate-200 dark:border-slate-700">
                 <span className="text-box text-sm text-slate-500 dark:text-slate-400">@monstruocreativo</span>
                 <span className="text-box text-sm text-slate-500 dark:text-slate-400">2025</span>
               </div>
-            </>
+            )}
           </div>
         </div>
       </div>

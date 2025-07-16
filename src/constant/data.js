@@ -60,27 +60,27 @@ export const menuItems = [
 export const socialNetworks = [
   {
     title: "Instagram",
-    icon: BsInstagram,
+    icon: "/instagram.svg",
     link: "https://www.instagram.com/monstruocreativo",
   },
   {
     title: "Facebook",
-    icon: BsFacebook,
+    icon: "/fb.svg",
     link: "https://www.facebook.com/monstruocreativo",
   },
   {
     title: "YouTube",
-    icon: BsYoutube,
+    icon: "/youtube.svg",
     link: "https://www.youtube.com/monstruocreativo",
   },
   {
     title: "TikTok",
-    icon: BsTiktok,
+    icon: "/tiktok.svg",
     link: "https://www.tiktok.com/@monstruocreativo",
   },
   {
     title: "LinkedIn",
-    icon: BsLinkedin,
+    icon: "/linkedin.svg",
     link: "https://www.linkedin.com/company/monstruocreativo",
   },
 ];

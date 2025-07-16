@@ -57,134 +57,134 @@ const ProjectGrid = ({ project }) => {
   }, []);
 
   return (
-    <div>
-      <Card>
-        {/* Header */}
-        <header className="flex justify-between items-center">
-          <div className="flex space-x-4 items-center rtl:space-x-reverse">
-            <div className="flex-none">
-              <div className="h-8 w-8 bg-orange-500 rounded-md text-sm text-white dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                {project.servicio.name.charAt(0) +
-                  project.servicio.name.charAt(1)}
-              </div>
-            </div>
-            <div className="font-medium text-base leading-6">
-              <div className="dark:text-gray-200 text-gray-900 max-w-[160px] truncate">
-                {project.servicio.name}
-              </div>
-            </div>
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-100 dark:border-slate-700 p-6 hover:shadow-md transition-shadow">
+      {/* Header con ícono naranja y título */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-orange-500 rounded-md flex items-center justify-center">
+            <span className="text-white font-bold text-base">
+              {project.servicio.name.charAt(0) + project.servicio.name.charAt(1)}
+            </span>
           </div>
-          {/* description */}
-          <div className="text-slate-600 dark:text-slate-400 text-sm ">
-            Plan {project.planServicio?.name}
-          </div>
-        </header>
-
-        {/* Estado */}
-        <div className="flex flex-col gap-1 w-full py-2">
-          <span className="font-medium text-xs">Estado:</span>
-          <div className={`flex flex-row gap-2`}>
-            <div className={`${BackgroundColorStatusMap[project.estado]} flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md`}>
-              <div className={`w-2 h-2 ${itemColorStatusMap[project.estado]} rounded-full animate-pulse`}></div>
-              <span className="text-slate-800 text-xs font-medium">{project.estado}</span>
-            </div>
-            {project.estado !== "Terminado con exito" && (
-              <div className="bg-green-100 flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md">
-                <div className={`w-2 h-2 bg-green-500 rounded-full animate-pulse`}></div>
-                <span className="text-slate-800 text-xs font-medium">
-                  {differenceInDays(new Date(project.fechaFin), new Date())} días restantes
-                </span>
-              </div>
-            )}
+          <div>
+            <h3 className="font-semibold text-[#16213E] dark:text-slate-100 text-base leading-tight">
+              {project.servicio.name}
+            </h3>
+            <span className="text-xs text-gray-400 dark:text-slate-400 font-semibold tracking-wide">
+              PLAN {project.planServicio?.name?.toUpperCase()}
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* Fechas */}
-        <div className="flex space-x-4 gap-1 rtl:space-x-reverse py-2">
+      {/* Estado */}
+      <div className="mb-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-medium text-gray-400 dark:text-slate-400">Estado:</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`${
+            project.estado === "Terminado con exito"
+              ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
+              : project.estado === "Abandonado"
+              ? "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300"
+              : project.estado === "Congelado"
+              ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
+              : "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
+          } text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-2`}>
+            <span className={`w-2 h-2 rounded-full ${
+              project.estado === "Terminado con exito"
+                ? "bg-green-500 dark:bg-green-300"
+                : project.estado === "Abandonado"
+                ? "bg-red-500 dark:bg-red-300"
+                : project.estado === "Congelado"
+                ? "bg-blue-500 dark:bg-blue-300"
+                : "bg-blue-500 dark:bg-blue-300"
+            }`}></span>
+            {project.estado}
+          </span>
+          {project.estado !== "Terminado con exito" && (
+            <span className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full">
+              {differenceInDays(new Date(project.fechaFin), new Date())} días restantes
+            </span>
+          )}
+        </div>
+      </div>
 
-          {/* start date */}
-          <div className="flex flex-col gap-1">
-            <span className="block text-xs font-medium text-slate-600 dark:text-slate-400">Fecha Inicio</span>
-            <div className="flex flex-row items-center justify-center gap-2">
-              <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
-              <span className="block text-xs font-medium">
-                {format(new Date(project.fechaInicio), "dd MMMM , yyyy", {
-                  locale: es,
-                })}
-              </span>
-            </div>
+      {/* Fechas */}
+      <div className="mb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Icon icon="heroicons-outline:calendar" className="w-4 h-4 text-gray-400 dark:text-slate-400" />
+            <span className="text-sm text-[#16213E] dark:text-slate-100 font-semibold">
+              {format(new Date(project.fechaInicio), "d 'de' MMMM, yyyy", { locale: es })}
+            </span>
           </div>
-
-          <div className="w-px h-full bg-gray-300 dark:bg-slate-600"></div>
-          
-          {/* end date */}
-          <div className="flex flex-col gap-1">
-            <span className="block text-xs font-medium text-slate-600 dark:text-slate-400">Fecha fin</span>
-            <div className="flex flex-row items-center justify-center gap-2">
-              <Icon icon="heroicons-outline:calendar" className="text-slate-600 dark:text-slate-400" />
-              <span className="block text-xs font-medium">
-                {format(new Date(project.fechaFin), "dd MMMM , yyyy", {
-                  locale: es,
-                })}
-              </span>
-            </div>
+          <div className="w-px h-6 bg-gray-200 dark:bg-slate-700 mx-2"></div>
+          <div className="flex items-center gap-2">
+            <Icon icon="heroicons-outline:calendar" className="w-4 h-4 text-gray-400 dark:text-slate-400" />
+            <span className="text-sm text-[#16213E] dark:text-slate-100 font-semibold">
+              {format(new Date(project.fechaFin), "d 'de' MMMM, yyyy", { locale: es })}
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* Enbargado */}
-        <div className="grid grid-cols-2 gap-1 py-2">
-          {/* assignee */}
-          {typeof project.responsable === "object" && (
-            <div>
-              <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-1">
-                Encargado
-              </div>
-              <div className=" flex justify-start items-center gap-2 ">
-                {project.responsable.foto ? (
-                  <img
-                    src={project.responsable.foto.url}
-                    alt={"Encargado servicio"}
-                    className=" rounded-full h-8 w-8 object-cover "
-                  />
-                ) : (
-                  <div className="h-8 w-8 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                    {project.responsable.name.charAt(0) +
-                      project.responsable.name.charAt(1)}
-                  </div>
-                )}
-
-                <div className="  flex flex-col w-full ">
-                  <span className=" text-sm font-medium">
-                    {convertFirstLetterCapital(project.responsable.name)}
-                  </span>
-                  <span
-                    style={{ fontSize: "0.6em" }}
-                    className=" whitespace-nowrap  text-slate-600 dark:text-slate-400"
-                  >
-                    {convertFirstLetterCapital(project.responsable.puesto)}
-                  </span>
-                </div>
-              </div>
+      {/* Encargado */}
+      <div className="mb-4">
+        <div className="text-xs text-gray-400 dark:text-slate-400 font-medium mb-2">Encargado:</div>
+        <div className="flex items-center gap-3">
+          {project.responsable?.foto ? (
+            <img
+              src={project.responsable.foto.url}
+              alt="Encargado"
+              className="w-9 h-9 rounded-full object-cover border-2 border-orange-500"
+            />
+          ) : (
+            <div className="w-9 h-9 bg-orange-500 rounded-full flex items-center justify-center text-white text-base font-semibold border-2 border-orange-500">
+              {project.responsable?.name?.charAt(0) || "?"}
             </div>
           )}
-
-        </div>
-        
-        <hr className="my-4" />
-
-        {/* Ver cotización y ver más */}
-        <div className="flex flex-row gap-2 justify-between">
-          <div className="flex flex-row gap-2 hover:cursor-pointer">
-            <Icon icon="heroicons-outline:eye" className="text-orange-500 dark:text-orange-500" />
-            <span className="text-slate-600 dark:text-slate-400 text-xs font-medium">Ver cotización</span>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-[#16213E] dark:text-slate-100 leading-tight">
+              {convertFirstLetterCapital(project.responsable?.name || "Sin asignar")}
+            </span>
+            <span className="text-xs text-gray-400 dark:text-slate-400 font-medium leading-tight">
+              {convertFirstLetterCapital(project.responsable?.puesto || "")}
+            </span>
           </div>
-          <div className="flex flex-row gap-2 hover:cursor-pointer"  onClick={() => handleClick(project)}>
-            <span className="text-slate-600 dark:text-slate-400 text-xs font-medium">Ver más</span>
-            <Icon icon="heroicons-outline:arrow-right" className="text-orange-500 dark:text-orange-500" />
-          </div>
-
         </div>
-      </Card>
+      </div>
+
+      {/* Estado de facturación y precio */}
+      <div className="mb-4">
+        <div className="text-xs text-gray-400 dark:text-slate-400 font-medium mb-2">Estado de facturación:</div>
+        <div className="flex items-center justify-between w-full">
+          <span className="bg-[#FBEAEA] dark:bg-red-900 text-[#E23434] dark:text-red-300 text-xs font-semibold px-3 py-1 rounded-md flex items-center gap-2">
+            <span className="w-2 h-2 bg-[#E23434] dark:bg-red-300 rounded-full"></span>
+            {project.facturacion || "Deuda"}
+          </span>
+          <span className="text-xl font-bold text-[#16213E] dark:text-white">S/. {Number(project.customPrice || project.precioTotal || 0).toFixed(2)}</span>
+        </div>
+      </div>
+
+      {/* Línea divisoria */}
+      <div className="border-t border-gray-100 dark:border-slate-700 mb-4"></div>
+
+      {/* Botones de acción */}
+      <div className="flex items-center justify-between">
+        <button className="flex items-center gap-2 text-orange-500 dark:text-orange-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
+          <Icon icon="heroicons-outline:eye" className="w-4 h-4" />
+          <span className="text-sm font-medium">Ver cotización</span>
+        </button>
+        <button 
+          onClick={() => handleClick(project)}
+          className="flex items-center gap-2 text-orange-500 dark:text-orange-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+        >
+          <span className="text-sm font-medium">Ver más</span>
+          <Icon icon="heroicons-outline:arrow-right" className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 };

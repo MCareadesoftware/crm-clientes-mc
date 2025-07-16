@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useParams } from "react-router-dom";
 import { menuItems } from "@/constant/data";
 import Icon from "@/components/ui/Icon";
 
 const Breadcrumbs = () => {
   const location = useLocation();
+  const { id } = useParams();
   const locationName = location.pathname.replace("/", "");
 
   const [isHide, setIsHide] = useState(null);
@@ -25,7 +26,11 @@ const Breadcrumbs = () => {
       setIsHide(currentChild?.isHide || false);
       setGroupTitle(currentChild?.title);
     }
-  }, [location, locationName]);
+
+    if (id) {
+      console.log("ID de la URL:", id);
+    }
+  }, [location, locationName, id]);
 
   return (
     <>
@@ -34,25 +39,40 @@ const Breadcrumbs = () => {
           <ul className="breadcrumbs">
             <li className="text-primary-500">
               <NavLink to="/servicios-activos" className="text-lg">
-                <Icon icon="heroicons-outline:home" />
+                <img src="/other_houses.svg" alt="Inicio" className="w-5 h-5" />
               </NavLink>
               <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
                 <Icon icon="heroicons:chevron-right" />
               </span>
             </li>
-            {groupTitle && (
-              <li className="text-primary-500">
-                <button type="button" className="capitalize">
-                  {groupTitle}
-                </button>
-                <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
-                  <Icon icon="heroicons:chevron-right" />
-                </span>
-              </li>
+            {/* Breadcrumb especial para encuestas/answer */}
+            {location.pathname.includes("/encuestas/answer/") ? (
+              <>
+                <li className="text-primary-500">
+                  <NavLink to="/encuestas" className="capitalize">Encuestas</NavLink>
+                  <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
+                    <Icon icon="heroicons:chevron-right" />
+                  </span>
+                </li>
+                <li className="capitalize text-slate-500 dark:text-slate-400">Formulario Google Ads</li>
+              </>
+            ) : (
+              <>
+                {groupTitle && (
+                  <li className="text-primary-500">
+                    <button type="button" className="capitalize">
+                      {groupTitle}
+                    </button>
+                    <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
+                      <Icon icon="heroicons:chevron-right" />
+                    </span>
+                  </li>
+                )}
+                <li className="capitalize text-slate-500 dark:text-slate-400">
+                  {locationName}
+                </li>
+              </>
             )}
-            <li className="capitalize text-slate-500 dark:text-slate-400">
-              {locationName}
-            </li>
           </ul>
         </div>
       ) : null}

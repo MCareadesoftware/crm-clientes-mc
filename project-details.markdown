@@ -136,6 +136,9 @@ const ServicioDetails = () => {
     getServicioDetails();
   }, []);
 
+  // Log para ver la información que trae el backend
+  console.log('dataServicio:', dataServicio);
+
   if (!dataServicio)
     return (
       <div>
@@ -145,7 +148,7 @@ const ServicioDetails = () => {
   if (typeof dataServicio != "object") return <>no existe el servicio</>;
 
   return (
-    <div className=" space-y-5">
+    <div className="space-y-5">
       {/* Header */}
 
       <div className="flex flex-row justify-start items-start border bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 p-4 rounded-md px-8">
@@ -159,7 +162,7 @@ const ServicioDetails = () => {
           </span>
         </div>
 
-        <div className="flex flex-col gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
+        <div className="flex flex-col gap-1 border-l border-gray-200 pl-4 w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Estado
           </span>
@@ -212,47 +215,6 @@ const ServicioDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* <Card className="xl:col-span-3 col-span-12 lg:col-span-5 h-full">
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-            <GroupChart4
-              statistics={[
-                {
-                  title: "Tareas Totales",
-                  count: totalTasks.toString(),
-                  bg: "bg-info-500",
-                  text: "text-info-500",
-                  percent: "25.67% ",
-                  icon: "heroicons-outline:menu-alt-1",
-                },
-                {
-                  title: "Tareas pendientes ",
-                  count: totalTasksPending.toString(),
-
-                  bg: "bg-warning-500",
-                  text: "text-warning-500",
-                  percent: "8.67%",
-                  icon: "heroicons-outline:chart-pie",
-                },
-
-                {
-                  title: "Tareas completadas",
-                  count: totalTasksCompleted.toString(),
-                  bg: "bg-success-500 col-span-2",
-                  text: "text-success-500",
-                  percent: "11.67%  ",
-                  icon: "heroicons-outline:calculator",
-                },
-              ]}
-            />
-          </div>
-          <div className="bg-slate-50 dark:bg-slate-900 rounded-md p-4 mt-4">
-            <span className="block dark:text-slate-400 text-sm text-slate-600">
-              Progress
-            </span>
-            <DonutChart total={totalTasks} completed={totalTasksCompleted} />
-          </div>
-        </Card> */}
-        {/* end single column*/}
         <Card title="Descripción del servicio" className="flex flex-col w-full dark:bg-slate-800 dark:border-slate-700">
           <div className="flex flex-col justify-between">
             {/* <div className="text-base font-medium text-slate-800 dark:text-slate-100 mb-3">
@@ -669,11 +631,11 @@ const ServicioDetails = () => {
           </div>
         </Card>
 
-        <Card title="Links" className="flex flex-col w-full dark:bg-slate-800 dark:border-slate-700">
+        <Card title="Links" className="flex flex-col w-full">
           <ul className="flex flex-col space-y-2">
             <li className="flex flex-row justify-between items-center">
-              <span className="text-sm font-medium dark:text-slate-200">Formulario</span>
-              <span className="text-sm flex items-center gap-2 dark:text-slate-200">
+              <span className="text-sm font-medium">Formulario</span>
+              <span className="text-sm flex items-center gap-2">
                 {dataServicio.linkFormulario ? "Sí" : "No"}
                 {dataServicio.linkFormulario && (
                   <a
@@ -690,8 +652,8 @@ const ServicioDetails = () => {
               </span>
             </li>
             <li className="flex flex-row justify-between items-center">
-              <span className="text-sm font-medium dark:text-slate-200">Link web oficial</span>
-              <span className="text-sm flex items-center gap-2 dark:text-slate-200">
+              <span className="text-sm font-medium">Link web oficial</span>
+              <span className="text-sm flex items-center gap-2">
                 {dataServicio.linkWebOficial ? "Sí" : "No"}
                 {dataServicio.linkWebOficial && (
                   <a
@@ -708,8 +670,8 @@ const ServicioDetails = () => {
               </span>
             </li>
             <li className="flex flex-row justify-between items-center">
-              <span className="text-sm font-medium dark:text-slate-200">Link demo - desarrollo</span>
-              <span className="text-sm flex items-center gap-2 dark:text-slate-200">
+              <span className="text-sm font-medium">Link demo - desarrollo</span>
+              <span className="text-sm flex items-center gap-2">
                 {dataServicio.linkDemo ? "Sí" : "No"}
                 {dataServicio.linkDemo && (
                   <a
@@ -726,8 +688,8 @@ const ServicioDetails = () => {
               </span>
             </li>
             <li className="flex flex-row justify-between items-center">
-              <span className="text-sm font-medium dark:text-slate-200">Link capacitación</span>
-              <span className="text-sm flex items-center gap-2 dark:text-slate-200">
+              <span className="text-sm font-medium">Link capacitación</span>
+              <span className="text-sm flex items-center gap-2">
                 {dataServicio.linkCapacitacion ? "Sí" : "No"}
                 {dataServicio.linkCapacitacion && (
                   <a
@@ -902,7 +864,7 @@ const ServicioDetails = () => {
                               target="_blank"
                               rel={"noreferrer"}
                               className=" text-blue-600 hover:underline text-sm"
-                              >
+                            >
                               Ver
                             </a>
                           )}

@@ -58,16 +58,15 @@ const EncuestaGrid = ({ project }) => {
   return (
     <Card>
       {/* header */}
-      <header className="flex justify-between items-end">
-        <div className="flex space-x-4 items-center rtl:space-x-reverse">
-          <div className="flex-none">
-            <div className="h-10 w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-              {project.formulario.servicio?.name.charAt(0) +
-                project.formulario.servicio?.name.charAt(1)}
-            </div>
+      <header className="flex justify-between items-center">
+        <div className="flex items-center">
+          <div className="h-10 w-10 rounded-md flex items-center justify-center" style={{ backgroundColor: "#FE6400" }}>
+            <span className="text-white font-bold">
+              {project.formulario.servicio?.name.slice(0, 2).toUpperCase()}
+            </span>
           </div>
-          <div className="font-medium text-base leading-6">
-            <div className="dark:text-slate-200 text-slate-900 max-w-[160px] truncate">
+          <div className="ml-3">
+            <div className="font-bold text-lg dark:text-slate-200">
               {project.formulario.servicio?.name}
             </div>
           </div>
@@ -99,37 +98,31 @@ const EncuestaGrid = ({ project }) => {
         </div> */}
       </header>
       {/* description */}
-      <div className="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8">
+      <div className="mt-4">
+        <div className="text-sm text-slate-600 dark:text-slate-400">
         Formulario de {project.formulario?.tipo === "entrada" && "entrada"}{" "}
         {project.formulario?.tipo === "satisfaccion" && "satisfacción"}
       </div>
 
+        <div className="flex mt-2">
+          <div className="flex">
       {project.respondido ? (
-        <div className="">
-          <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-            <span>
-              {" "}
-              <FaCheck />
-            </span>
-            <span></span>
+              <div className="flex items-center bg-green-50 dark:bg-green-900 text-green-600 dark:text-green-300 font-bold px-3 py-1 rounded-full text-xs">
+                <span className="w-2 h-2 bg-green-500 dark:bg-green-300 rounded-full mr-1.5"></span>
             <span>Respondido</span>
-          </span>
         </div>
       ) : (
-        <div className="">
           <Link
             to={`/encuestas/answer/${project.id}?idform=${project?.formulario.id}`}
-            className="inline-flex items-center space-x-1 dark:hover:bg-blue-400 hover:bg-blue-600 hover:bg-opacity-20 dark:hover:bg-opacity-20 bg-blue-500 bg-opacity-[0.16] text-blue-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse"
+                className="bg-blue-50 dark:bg-blue-700 hover:bg-blue-100 dark:hover:bg-blue-800 text-blue-600 dark:text-white font-bold px-3 py-1 rounded-full flex items-center text-xs transition-colors"
           >
-            <span> </span>
-            <span></span>
-            <span className="text-base">Responder</span>
-            <span>
-              <FaArrowRight />
-            </span>
+                <span>Responder</span>
+                <svg className="ml-1.5 w-4 h-4 text-blue-600 dark:text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
           </Link>
+            )}
+          </div>
         </div>
-      )}
+      </div>
 
       {/* description */}
       <div className="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8">
@@ -137,112 +130,99 @@ const EncuestaGrid = ({ project }) => {
       </div>
 
       {/* assignee */}
-      <div className="flex space-x-4 rtl:space-x-reverse">
-        {/* start date */}
+      <div className="mt-6 grid grid-cols-2 gap-4">
         <div>
-          <span className="block date-label">Fecha Inicio</span>
-          <span className="block date-text">
+          <span className="block text-xs text-slate-500 dark:text-slate-400">Fecha Inicio</span>
+          <div className="flex items-center mt-1">
+            <Icon icon="heroicons-outline:calendar" className="text-slate-400 mr-2" />
+            <span className="text-sm font-medium">
             {format(
               new Date(project.servicioCotizacion.fechaInicio),
-              "dd MMMM , yyyy",
+                "d 'de' MMMM, yyyy",
               {
                 locale: es,
               }
             )}
           </span>
         </div>
-        {/* end date */}
+        </div>
         <div>
-          <span className="block date-label">Fecha fin</span>
-          <span className="block date-text">
+          <span className="block text-xs text-slate-500 dark:text-slate-400">Fecha fin</span>
+          <div className="flex items-center mt-1">
+            <Icon icon="heroicons-outline:calendar" className="text-slate-400 mr-2" />
+            <span className="text-sm font-medium">
             {format(
               new Date(project.servicioCotizacion.fechaFin),
-              "dd MMMM , yyyy",
+                "d 'de' MMMM, yyyy",
               {
                 locale: es,
               }
             )}
           </span>
+          </div>
         </div>
       </div>
 
       {/* progress bar */}
-      <div className="ltr:text-right rtl:text-left text-xs text-slate-600 dark:text-slate-300 mb-1 font-medium">
-        {(totalTasksCompleted / totalTasks) * 100} %
+      <div className="mt-6">
+        <span className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Estado del formulario:</span>
+        <div className="flex items-center">
+          <div className="w-full bg-gray-200 rounded-full h-2 flex-1">
+            <div
+              className="h-2 rounded-full"
+              style={{ width: `${(totalTasksCompleted / totalTasks) * 100}%`, backgroundColor: "#2684FC" }}
+            ></div>
+          </div>
+          <span className="text-xs font-medium ml-2 w-10 text-right">{(totalTasksCompleted / totalTasks) * 100}%</span>
+        </div>
       </div>
-      <ProgressBar
-        value={(totalTasksCompleted / totalTasks) * 100}
-        className="bg-primary-500"
-      />
 
       {/* assignee and total date */}
-      <div className="grid grid-cols-2 gap-4 mt-6">
-        {/* assignee */}
+      <div className="mt-6">
+        <span className="block text-xs text-slate-500 dark:text-slate-400 mb-2">Encargado:</span>
+        <div className="flex items-center">
         {typeof project.servicioCotizacion.responsable == "object" && (
-          <div>
-            <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
-              Encargado
+            <>
+              {(() => {
+                const responsable = project.servicioCotizacion.responsable;
+                const fotoUrl = responsable?.foto?.url;
+                const isValidUrl = fotoUrl && typeof fotoUrl === 'string' && fotoUrl.trim() !== '';
+                if (isValidUrl) {
+                  return (
+                    <img
+                      src={fotoUrl}
+                      alt="Encargado servicio"
+                      className="rounded-full h-10 w-10 object-cover"
+                    />
+                  );
+                } else {
+                  const name = responsable.name || "";
+                  const parts = name.trim().split(" ");
+                  const first = parts[0]?.charAt(0) || "";
+                  const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+                  return (
+                    <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center">
+                      <span className="text-white font-medium">
+                        {(first + last).toUpperCase()}
+                      </span>
             </div>
-            <div className=" flex justify-start items-center gap-2 ">
-              <div className="h-8 w-8 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                {project.servicioCotizacion.responsable.name.charAt(0) +
-                  project.servicioCotizacion.responsable.name.charAt(1)}
-              </div>
-              <div className="  flex flex-col w-full ">
-                <span className=" text-sm">
+                  );
+                }
+              })()}
+              <div className="ml-3">
+                <div className="font-medium text-sm">
                   {convertFirstLetterCapital(
                     project.servicioCotizacion.responsable.name
                   )}
-                </span>
-                <span
-                  style={{ fontSize: "0.6em" }}
-                  className=" whitespace-nowrap  text-blue-400 dark:text-blue-400"
-                >
+                </div>
+                <div className="text-xs text-slate-500">
                   {convertFirstLetterCapital(
                     project.servicioCotizacion.responsable.puesto
                   )}
-                </span>
+                </div>
               </div>
-            </div>
-            {/* <div className="flex justify-start -space-x-1.5 rtl:space-x-reverse">
-          {assignee?.map((user, userIndex) => (
-            <div
-              className="h-6 w-6 rounded-full ring-1 ring-slate-100"
-              key={userIndex}
-            >
-              <img
-                src={user.image}
-                alt={user.label}
-                className="w-full h-full rounded-full"
-              />
-            </div>
-          ))}
-          <div className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-300 text-xs ring-2 ring-slate-100 dark:ring-slate-700 rounded-full h-6 w-6 flex flex-col justify-center items-center">
-            +2
-          </div>
-        </div> */}
-          </div>
-        )}
-
-        {/* total date */}
-        <div className="ltr:text-right rtl:text-left">
-          <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-            <span>
-              {" "}
-              <Icon icon="heroicons-outline:clock" />
-            </span>
-            <span>
-              {differenceInDays(
-                new Date(project.servicioCotizacion.fechaFin),
-                new Date()
-              ) < 0
-                ? "Culminado"
-                : differenceInDays(
-                    new Date(project.servicioCotizacion.fechaFin),
-                    new Date()
-                  )}
-            </span>
-          </span>
+            </>
+          )}
         </div>
       </div>
     </Card>

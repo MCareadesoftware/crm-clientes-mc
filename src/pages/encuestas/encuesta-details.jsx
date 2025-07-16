@@ -201,15 +201,42 @@ const EncuestaAnswerDetails = () => {
       </div>
     );
   return (
-    <div className="flex flex-col gap-4">
-      <h5>Formulario {encuestaDetails.formulario?.servicio?.name}</h5>
+    
+    <div className="w-full flex flex-col">
+        <h5>Formulario {encuestaDetails.formulario?.servicio?.name}</h5>
+      {/* Título principal fuera del contenedor */}
+      <div className="w-full flex flex-col items-center p-7">
+        <div className="w-full max-w-4xl px-4 flex flex-col gap-4">
+          {/* Flayer estático superior */}
+          <div className="w-full flex flex-col items-center justify-center">
+            <div className="relative w-full flex items-center justify-between bg-white rounded-xl overflow-hidden mb-6" style={{ minHeight: 180 }}>
+              {/* Fondo decorativo inferior */}
+              <img src="/Ellipse 9.svg" alt="fondo" className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full pointer-events-none select-none" style={{zIndex:1}} />
+              {/* Persona izquierda */}
+              <div className="z-10 flex-1 flex justify-center items-end min-w-[120px]">
+                <img src="/Layer_1.svg" alt="persona" className="w-32 md:w-40 lg:w-44 xl:w-48" />
+              </div>
+              {/* Centro: banner servicio */}
+              <div className="z-10 flex-1 flex flex-col items-center justify-center">
+                <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 min-w-[220px] max-w-xs">
+                  <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>Servicio</span>
+                  <span className="text-white font-bold text-2xl md:text-3xl text-center">{encuestaDetails.formulario?.servicio?.name || 'Servicio'}</span>
+                </div>
+              </div>
+              {/* Planta derecha */}
+              <div className="z-10 flex-1 flex justify-center items-end min-w-[80px]">
+                <img src="/planta.svg" alt="planta" className="w-20 md:w-24 lg:w-28 xl:w-32" />
+              </div>
+            </div>
+          </div>
+          {/* Fin flayer */}
       <motion.div
         key={currentPage} // Importante para que React detecte los cambios de página
         initial="initial"
         animate="animate"
         exit="exit"
         variants={pageVariants}
-        className=" mx-auto  max-w-5xl w-full dark:bg-gray-800 bg-white p-6 rounded-xl space-y-4"
+            className="w-full mx-auto dark:bg-gray-800 bg-white p-6 rounded-xl space-y-4"
       >
         <EncuestaDetailsPageDetails
           updateMediaId={updateMediaId}
@@ -226,10 +253,11 @@ const EncuestaAnswerDetails = () => {
               className={`${
                 currentPage === 1 &&
                 "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-              } hover:bg-opacity-10 transition duration-300 flex justify-center gap-2 items-center  font-bold p-2 rounded-md max-w-[200px] w-full bg-[#789be9] bg-opacity-20 text-[#5182ea] shadow-md`}
+                  } flex justify-center gap-2 items-center font-bold p-2 rounded-md max-w-[200px] w-full bg-white text-[#FE6400] border border-[#FFE3C2] shadow-sm hover:bg-orange-50 transition duration-300`}
               disabled={currentPage === 1}
             >
-              Anterior
+                  <img src="/keyboard_backspace.svg" alt="Anterior" className="mr-2 w-6 h-6" />
+                  <span className="text-xl">Anterior</span>
             </button>
 
             <button
@@ -237,10 +265,11 @@ const EncuestaAnswerDetails = () => {
               className={`${
                 currentPage === totalPages &&
                 "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-              } hover:bg-opacity-10 transition duration-300 flex justify-center gap-2 items-center  font-bold p-2 rounded-md max-w-[200px] w-full bg-[#789be9] bg-opacity-20 text-[#5182ea] shadow-md`}
+                  } flex justify-center gap-2 items-center font-bold text-xl p-2 rounded-md max-w-[200px] w-full bg-[#FE6400] text-white border border-[#FE6400] shadow-sm hover:bg-orange-600 transition duration-300`}
               disabled={currentPage === totalPages}
             >
-              Siguiente
+                  <span className="text-xl">Siguiente</span>
+                  <img src="/flechaderecha.svg" alt="Flecha" className="ml-2 w-6 h-6" />
             </button>
           </div>
         )}
@@ -268,6 +297,8 @@ const EncuestaAnswerDetails = () => {
           currentPage={currentPage}
         />
       </div> */}
+        </div>
+      </div>
     </div>
   );
 };

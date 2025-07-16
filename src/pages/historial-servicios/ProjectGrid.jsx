@@ -55,27 +55,18 @@ const ProjectGrid = ({ project }) => {
   }, []);
 
   return (
-    <div onClick={() => handleClick(project)} className="hover:cursor-pointer">
-      <Card>
-        {/* header */}
-        <header className="flex justify-between items-center">
-          <div className="flex space-x-4 items-center rtl:space-x-reverse">
-            <div className="flex-none">
-              <div className="h-10 w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                {project.servicio.name.charAt(0) +
-                  project.servicio.name.charAt(1)}
-              </div>
-            </div>
-            <div className="font-medium text-base leading-6">
-              <div className="dark:text-slate-200 text-slate-900 max-w-[160px] truncate">
-                {project.servicio.name}
-              </div>
-            </div>
+    <div className="hover:cursor-pointer" onClick={() => handleClick(project)} tabIndex={0} role="button" aria-label={`Ver detalles de ${project.servicio.name}`}> 
+      <Card className="p-5 rounded-xl border border-slate-100 shadow-sm bg-white transition hover:shadow-md relative dark:bg-slate-800 dark:border-slate-700">
+        {/* Plan en la esquina superior derecha */}
+        <span className="absolute top-4 right-4 text-xs text-slate-500 font-medium dark:text-white">Plan {project.planServicio?.name}</span>
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-2">
+          <div className="h-8 w-8 rounded bg-[#FE6400] flex items-center justify-center text-white font-bold text-sm">
+            {project.servicio.name.charAt(0)}{project.servicio.name.charAt(1)}
           </div>
-          {/* description */}
-          <div className="text-slate-600 dark:text-slate-400 text-sm ">
-            Plan {project.planServicio?.name}
-          </div>
+          <span className="font-semibold text-slate-900 text-base dark:text-white">{project.servicio.name}</span>
+          {/* <span className="text-slate-600 dark:text-slate-400 text-sm ">{project.planServicio?.name}</span> */}
+        </div>
           {/* <div>
           <Dropdown
             classMenuItems=" w-[130px]"
@@ -102,12 +93,10 @@ const ProjectGrid = ({ project }) => {
             </div>
           </Dropdown>
         </div> */}
-        </header>
-        {/**estado */}
-        <div className="flex flex-row gap-2 w-full py-6">
-          <span className="font-medium ">Estado:</span>
-          <span
-            className={`
+        {/* Estado */}
+        <div className="mb-2 flex items-center gap-2">
+          <span className="text-xs text-slate-700 dark:text-white">Estado:</span>
+          <span className={`
             ${
               project.estado == "Terminado con exito"
                 ? "text-green-500"
@@ -117,30 +106,26 @@ const ProjectGrid = ({ project }) => {
                 ? "text-blue-400"
                 : "text-gray-700"
             }
-          `}
-          >
+          `}>
             {project.estado}
           </span>
         </div>
-        {/* assignee */}
-        <div className="flex space-x-4 rtl:space-x-reverse">
-          {/* start date */}
-          <div>
-            <span className="block date-label">Fecha Inicio</span>
-            <span className="block date-text">
-              {format(new Date(project.fechaInicio), "dd MMMM , yyyy", {
-                locale: es,
-              })}
-            </span>
+        {/* Fechas */}
+        <div className="flex items-center mb-3">
+          <div className="flex-1 flex flex-col text-xs text-slate-700 dark:text-white">
+            <span className="text-slate-500 dark:text-white">Fecha inicio:</span>
+            <div className="flex items-center gap-1 mt-1">
+              <svg className="w-4 h-4 text-slate-400 dark:text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              <span className="text-slate-900 font-bold dark:text-white">{format(new Date(project.fechaInicio), "d 'de' MMMM, yyyy", { locale: es })}</span>
+            </div>
           </div>
-          {/* end date */}
-          <div>
-            <span className="block date-label">Fecha fin</span>
-            <span className="block date-text">
-              {format(new Date(project.fechaFin), "dd MMMM , yyyy", {
-                locale: es,
-              })}
-            </span>
+          <div className="h-7 border-l border-slate-200 mx-3 dark:border-slate-600"></div>
+          <div className="flex-1 flex flex-col text-xs text-slate-700 dark:text-white">
+            <span className="text-slate-500 dark:text-white">Fecha fin:</span>
+            <div className="flex items-center gap-1 mt-1">
+              <svg className="w-4 h-4 text-slate-400 dark:text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              <span className="text-slate-900 font-bold dark:text-white">{format(new Date(project.fechaFin), "d 'de' MMMM, yyyy", { locale: es })}</span>
+            </div>
           </div>
         </div>
         {/* progress bar */}
@@ -148,41 +133,22 @@ const ProjectGrid = ({ project }) => {
           100 %
         </div>
         <ProgressBar value={100} className="bg-primary-500" /> */}
-        {/* assignee and total date */}
-        <div className="grid grid-cols-2 gap-4 mt-6">
-          {/* assignee */}
-          {typeof project.responsable === "object" && (
-            <div>
-              <div className="text-slate-600 dark:text-slate-400 text-xs font-normal mb-3">
-                Encargado
-              </div>
-              <div className=" flex justify-start items-center gap-2 ">
-                {project.responsable.foto ? (
-                  <img
-                    src={project.responsable.foto.url}
-                    alt={"Encargado servicio"}
-                    className=" rounded-full h-8 w-8 object-cover "
-                  />
-                ) : (
-                  <div className="h-8 w-8 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
-                    {project.responsable.name.charAt(0) +
-                      project.responsable.name.charAt(1)}
-                  </div>
-                )}
-
-                <div className="  flex flex-col w-full ">
-                  <span className=" text-sm">
-                    {convertFirstLetterCapital(project.responsable.name)}
-                  </span>
-                  <span
-                    style={{ fontSize: "0.6em" }}
-                    className=" whitespace-nowrap  text-blue-400 dark:text-blue-400"
-                  >
-                    {convertFirstLetterCapital(project.responsable.puesto)}
-                  </span>
-                </div>
-              </div>
-              {/* <div className="flex justify-start -space-x-1.5 rtl:space-x-reverse">
+        {/* Encargado */}
+        <div className="text-xs text-slate-700 mb-1 dark:text-white mt-8">Encargado:</div>
+        <div className="flex items-center gap-2">
+          {project.responsable?.foto?.url ? (
+            <img src={project.responsable.foto.url} alt="Encargado" className="h-7 w-7 rounded-full object-cover" />
+          ) : (
+            <div className="h-7 w-7 rounded-full bg-[#FE6400] text-white flex items-center justify-center font-bold text-xs">
+              {project.responsable?.name?.charAt(0)}{project.responsable?.name?.charAt(1)}
+            </div>
+          )}
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold text-[#072142] leading-tight dark:text-white">{convertFirstLetterCapital(project.responsable?.name)}</span>
+            <span className="text-xs text-slate-400 leading-tight dark:text-white/70">{convertFirstLetterCapital(project.responsable?.puesto)}</span>
+          </div>
+        </div>
+        {/* <div className="flex justify-start -space-x-1.5 rtl:space-x-reverse">
           {assignee?.map((user, userIndex) => (
             <div
               className="h-6 w-6 rounded-full ring-1 ring-slate-100"
@@ -199,15 +165,11 @@ const ProjectGrid = ({ project }) => {
             +2
           </div>
         </div> */}
-            </div>
-          )}
-
-          {/* total date */}
-          <div className="ltr:text-right rtl:text-left">
-            <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-              Finalizado
-            </span>
-          </div>
+        {/* total date */}
+        <div className="ltr:text-right rtl:text-left">
+          <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
+            Finalizado
+          </span>
         </div>
       </Card>
     </div>
