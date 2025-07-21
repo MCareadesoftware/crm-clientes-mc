@@ -32,12 +32,16 @@ const EncuestaAnswerDetails = () => {
     );
     setEncuestaDetails(responseEncuestaDetails.data);
   };
+
   const getAllQuestions = async () => {
     try {
       if (idForm) {
         const responsetQuestions = await axios.get(
-          `${BACKEND}/formularioServicioPregunta?where[formulario][equals]=${idForm}&limit=1000&sort=createdAt`
+          `${BACKEND}/formularioServicioPregunta?where[formulario][equals]=${idForm}&limit=1000&sort=createdAt&where[active][not_equals]=false`
         );
+
+        console.log(responsetQuestions.data);
+
         setTotalPages(responsetQuestions.data.docs.length);
 
         if (responsetQuestions.data.docs.length > 0) {
@@ -138,6 +142,7 @@ const EncuestaAnswerDetails = () => {
     // Set the state with the updated array
     setAnswerList(updatedData);
   };
+
   const updateRespuestaListMultiple = (pageToUpdate, newValue, puntaje) => {
     // Use map to create a new array with the updated object
     const updatedData = answersList.map((obj) => {
@@ -207,6 +212,7 @@ const EncuestaAnswerDetails = () => {
       {/* Título principal fuera del contenedor */}
       <div className="w-full flex flex-col items-center p-7">
         <div className="w-full max-w-4xl px-4 flex flex-col gap-4">
+          
           {/* Flayer estático superior */}
           <div className="w-full flex flex-col items-center justify-center">
             <div className="relative w-full flex items-center justify-between bg-white rounded-xl overflow-hidden mb-6" style={{ minHeight: 180 }}>
@@ -230,52 +236,55 @@ const EncuestaAnswerDetails = () => {
             </div>
           </div>
           {/* Fin flayer */}
-      <motion.div
-        key={currentPage} // Importante para que React detecte los cambios de página
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={pageVariants}
-            className="w-full mx-auto dark:bg-gray-800 bg-white p-6 rounded-xl space-y-4"
-      >
-        <EncuestaDetailsPageDetails
-          updateMediaId={updateMediaId}
-          updateMediaObj={updateMediaObj}
-          updateRespuesta={updateRespuesta}
-          updateRespuestaListSingle={updateRespuestaListSingle}
-          updateRespuestaListMultiple={updateRespuestaListMultiple}
-          questionData={answersList.find((e) => e.page === currentPage)}
-        />
-        {currentPage && totalPages && currentPage < totalPages && (
-          <div className="flex flex-row gap-8 w-full justify-center">
-            <button
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className={`${
-                currentPage === 1 &&
-                "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-                  } flex justify-center gap-2 items-center font-bold p-2 rounded-md max-w-[200px] w-full bg-white text-[#FE6400] border border-[#FFE3C2] shadow-sm hover:bg-orange-50 transition duration-300`}
-              disabled={currentPage === 1}
-            >
-                  <img src="/keyboard_backspace.svg" alt="Anterior" className="mr-2 w-6 h-6" />
-                  <span className="text-xl">Anterior</span>
-            </button>
 
-            <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className={`${
-                currentPage === totalPages &&
-                "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-                  } flex justify-center gap-2 items-center font-bold text-xl p-2 rounded-md max-w-[200px] w-full bg-[#FE6400] text-white border border-[#FE6400] shadow-sm hover:bg-orange-600 transition duration-300`}
-              disabled={currentPage === totalPages}
-            >
-                  <span className="text-xl">Siguiente</span>
-                  <img src="/flechaderecha.svg" alt="Flecha" className="ml-2 w-6 h-6" />
-            </button>
-          </div>
-        )}
-        {/* <div className="text-xs text-gray-500 w-full text-center pt-4">
-          Pregunta {currentPage} de {totalPages}
-        </div> */}
+        <motion.div
+          key={currentPage} // Importante para que React detecte los cambios de página
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={pageVariants}
+          className="w-full mx-auto dark:bg-gray-800 bg-white p-6 rounded-xl space-y-4"
+        >
+
+          <EncuestaDetailsPageDetails
+            updateMediaId={updateMediaId}
+            updateMediaObj={updateMediaObj}
+            updateRespuesta={updateRespuesta}
+            updateRespuestaListSingle={updateRespuestaListSingle}
+            updateRespuestaListMultiple={updateRespuestaListMultiple}
+            questionData={answersList.find((e) => e.page === currentPage)}
+          />
+
+          {currentPage && totalPages && currentPage < totalPages && (
+            <div className="flex flex-row gap-8 w-full justify-center">
+              <button
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                className={`${
+                  currentPage === 1 &&
+                  "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
+                    } flex justify-center gap-2 items-center font-bold p-2 rounded-md max-w-[200px] w-full bg-white text-[#FE6400] border border-[#FFE3C2] shadow-sm hover:bg-orange-50 transition duration-300`}
+                disabled={currentPage === 1}
+              >
+                <img src="/keyboard_backspace.svg" alt="Anterior" className="mr-2 w-6 h-6" />
+                <span className="text-xl">Anterior</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className={`${
+                  currentPage === totalPages &&
+                  "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
+                    } flex justify-center gap-2 items-center font-bold text-xl p-2 rounded-md max-w-[200px] w-full bg-[#FE6400] text-white border border-[#FE6400] shadow-sm hover:bg-orange-600 transition duration-300`}
+                disabled={currentPage === totalPages}
+              >
+                    <span className="text-xl">Siguiente</span>
+                    <img src="/flechaderecha.svg" alt="Flecha" className="ml-2 w-6 h-6" />
+              </button>
+            </div>
+          )}
+          {/* <div className="text-xs text-gray-500 w-full text-center pt-4">
+            Pregunta {currentPage} de {totalPages}
+          </div> */}
       </motion.div>
 
       {answersList.length > 0 && currentPage === answersList.length && (
