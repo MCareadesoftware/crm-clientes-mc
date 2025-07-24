@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, NavLink, useParams } from "react-router-dom";
 import { menuItems } from "@/constant/data";
 import Icon from "@/components/ui/Icon";
+import axios from "axios";
+import { BACKEND } from "../../configs/envConfig";
 
 const Breadcrumbs = () => {
   const location = useLocation();
@@ -10,6 +12,7 @@ const Breadcrumbs = () => {
 
   const [isHide, setIsHide] = useState(null);
   const [groupTitle, setGroupTitle] = useState("");
+  const [serviceName, setServiceName] = useState("");
 
   useEffect(() => {
     const currentMenuItem = menuItems.find(
@@ -28,9 +31,26 @@ const Breadcrumbs = () => {
     }
 
     if (id) {
-      console.log("ID de la URL:", id);
+      // console.log("ID de la URL:", id);
+      
+      // Si estamos en historial-servicios o servicios-activos con ID, obtener el nombre del servicio
+      if (location.pathname.includes("/historial-servicios/") || location.pathname.includes("/servicios-activos/")) {
+        getServiceName(id);
+      }
     }
   }, [location, locationName, id]);
+
+  const getServiceName = async (serviceId) => {
+    try {
+      const response = await axios.get(`${BACKEND}/serviciosCotizaciones/${serviceId}`);
+      if (response.data && response.data.servicio) {
+        setServiceName(response.data.servicio.name);
+      }
+    } catch (error) {
+      console.error("Error obteniendo nombre del servicio:", error);
+      setServiceName("Servicio");
+    }
+  };
 
   return (
     <>
@@ -55,6 +75,20 @@ const Breadcrumbs = () => {
                   </span>
                 </li>
                 <li className="capitalize text-slate-500 dark:text-slate-400">Formulario Google Ads</li>
+              </>
+            ) : (location.pathname.includes("/historial-servicios/") || location.pathname.includes("/servicios-activos/")) && id ? (
+              <>
+                <li className="text-primary-500">
+                  <NavLink to={location.pathname.includes("/historial-servicios/") ? "/historial-servicios" : "/servicios-activos"} className="capitalize">
+                    {location.pathname.includes("/historial-servicios/") ? "Historial de servicios" : "Servicios activos"}
+                  </NavLink>
+                  <span className="breadcrumbs-icon rtl:transform rtl:rotate-180">
+                    <Icon icon="heroicons:chevron-right" />
+                  </span>
+                </li>
+                <li className="capitalize text-slate-500 dark:text-slate-400">
+                  {serviceName || "Cargando..."}
+                </li>
               </>
             ) : (
               <>

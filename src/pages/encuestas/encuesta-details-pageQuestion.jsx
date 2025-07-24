@@ -83,14 +83,16 @@ const EncuestaDetailsPageDetails = ({
 
   return (
     <div className=" dark:bg-gray-800 bg-white  p-4 rounded-md">
+
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-shrink-0">
           <img src="/letter of services.svg" alt="Pregunta" className="w-8 h-8" />
         </div>
-        <h1 className=" font-bold text-xl text-gray-800 dark:text-blue-300">
+        <h1 className=" font-bold text-lg text-gray-800 dark:text-blue-300">
           {questionData?.preguntaTexto}
         </h1>
       </div>
+
       {questionData.linkYoutube && (
         <div className=" w-full flex justify-center pt-10">
           <div className=" rounded-xl w-full">
@@ -115,7 +117,9 @@ const EncuestaDetailsPageDetails = ({
               className=" rounded-md"
             />
           </div>
-        )}
+        )
+      }
+
       {questionData.preguntaMedia &&
         !questionData?.preguntaMedia?.mimeType.startsWith("image/") && (
           <div className=" w-full flex justify-start py-8 items-center gap-4">
@@ -128,7 +132,8 @@ const EncuestaDetailsPageDetails = ({
               {questionData.preguntaMedia.filename}
             </a>
           </div>
-        )}
+        )
+      }
 
       {questionData.tipo === "alternativas" && (
         <div>
@@ -164,6 +169,7 @@ const EncuestaDetailsPageDetails = ({
           ))}
         </div>
       )}
+
       {questionData.tipo === "respuesta" && (
         <div className=" pt-10">
           <label
@@ -286,6 +292,7 @@ const EncuestaDetailsPageDetails = ({
           </label>
         )}
       </div>}
+      
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Card = ({
   return (
     <div
       className={`
-        card rounded-md bg-white dark:bg-slate-800   ${
+        card rounded-md bg-white dark:bg-slate-800 ${
           skin === "bordered"
             ? " border border-slate-200 dark:border-slate-700"
             : "shadow-base"
@@ -30,12 +30,12 @@ const Card = ({
         <header className={`card-header  ${noborder ? "no-border" : ""}`}>
           <div>
             {title && (
-              <div className={`card-title ${titleClass} flex items-center gap-3`}>
+              <div className={`card-title ${titleClass} flex items-center gap-3 text-sm`}>
                 {icon && (
                   <img 
                     src={icon} 
                     alt="icon" 
-                    className="w-6 h-6"
+                    className="w-4 h-4"
                   />
                 )}
                 {title}

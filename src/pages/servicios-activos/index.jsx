@@ -110,11 +110,13 @@ const ServiciosActivos = () => {
   const getServicios = async () => {
     try {
       if (userRedux) {
-        const response = await axios.get(
-          `${BACKEND}/serviciosCotizaciones?where[cotizacion.cliente][equals]=${
-            userRedux.user.id
-          }&where[fechaInicio][less_than_equal]=${new Date()}&where[fechaFin][greater_than_equal]=${new Date()}&limit=10&sort=createdAt&page=${page}`
-        );
+        // const response = await axios.get(
+        //   `${BACKEND}/serviciosCotizaciones?where[cotizacion.cliente][equals]=${
+        //     userRedux.user.id
+        //   }&where[fechaInicio][less_than_equal]=${new Date()}&where[fechaFin][greater_than_equal]=${new Date()}&limit=10&sort=createdAt&page=${page}`
+        // );
+
+        const response = await axios.get(`${BACKEND}/serviciosCotizaciones?where[cotizacion.cliente][equals]=${userRedux.user.id}&where[estado][equals]=En proceso&limit=10&sort=createdAt&page=${page}`)
         setServiciosList(response.data.docs);
         setServiciosMetaData({
           totalPages: response.data.totalPages,

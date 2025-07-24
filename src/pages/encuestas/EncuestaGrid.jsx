@@ -13,11 +13,11 @@ import { es } from "date-fns/locale";
 import axios from "axios";
 import { BACKEND } from "../../configs/envConfig";
 import { convertFirstLetterCapital } from "../../helpers/stringsHelper";
-import { FaArrowRight, FaCheck, FaClock } from "react-icons/fa";
+import { FaArrowRight, FaCheck, FaClock, FaEye } from "react-icons/fa";
 const EncuestaGrid = ({ project }) => {
   const dispatch = useDispatch();
-  console.log(project);
-  const [start, setStart] = useState(new Date(project.fechaInicio));
+
+  const [start] = useState(new Date(project.fechaInicio));
   const [end, setEnd] = useState(new Date(project.fechaFin));
   const [totaldays, setTotaldays] = useState(0);
 
@@ -43,6 +43,7 @@ const EncuestaGrid = ({ project }) => {
     );
     setTotalTasksCompleted(response.data.totalDocs);
   };
+
   const getTotalTasks = async () => {
     const response = await axios.get(
       `${BACKEND}/etapaTareaServicioCotizaciones?where[servicio][equals]=${project.servicioCotizacion.id}&limit=10000&depth=0&where[not_equals]=Eliminado`
@@ -57,6 +58,7 @@ const EncuestaGrid = ({ project }) => {
 
   return (
     <Card>
+
       {/* header */}
       <header className="flex justify-between items-center">
         <div className="flex items-center">
@@ -71,54 +73,32 @@ const EncuestaGrid = ({ project }) => {
             </div>
           </div>
         </div>
-        {/* <div>
-          <Dropdown
-            classMenuItems=" w-[130px]"
-            label={
-              <span className="text-lg inline-flex flex-col items-center justify-center h-8 w-8 rounded-full bg-gray-500-f7 dark:bg-slate-900 dark:text-slate-400">
-                <Icon icon="heroicons-outline:dots-vertical" />
-              </span>
-            }
-          >
-            <div>
-              <Menu.Item onClick={() => handleClick(project)}>
-                <div
-                  className="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white
-                   w-full border-b border-b-gray-500 border-opacity-10   px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center
-                     capitalize rtl:space-x-reverse"
-                >
-                  <span className="text-base">
-                    <Icon icon="heroicons:eye" />
-                  </span>
-                  <span>Ver</span>
-                </div>
-              </Menu.Item>
-            </div>
-          </Dropdown>
-        </div> */}
       </header>
+
       {/* description */}
       <div className="mt-4">
         <div className="text-sm text-slate-600 dark:text-slate-400">
-        Formulario de {project.formulario?.tipo === "entrada" && "entrada"}{" "}
-        {project.formulario?.tipo === "satisfaccion" && "satisfacción"}
-      </div>
+          Formulario de {project.formulario?.tipo === "entrada" && "entrada"}{" "}
+          {project.formulario?.tipo === "satisfaccion" && "satisfacción"}
+        </div>
 
         <div className="flex mt-2">
           <div className="flex">
-      {project.respondido ? (
-              <div className="flex items-center bg-green-50 dark:bg-green-900 text-green-600 dark:text-green-300 font-bold px-3 py-1 rounded-full text-xs">
-                <span className="w-2 h-2 bg-green-500 dark:bg-green-300 rounded-full mr-1.5"></span>
-            <span>Respondido</span>
-        </div>
-      ) : (
-          <Link
-            to={`/encuestas/answer/${project.id}?idform=${project?.formulario.id}`}
+            {project.respondido ? (
+              <Link
+                to={`/encuestas/answer/${project.id}`}
+                className=" bg-green-50 dark:bg-green-700 hover:bg-green-100 dark:hover:bg-green-800 text-green-600 dark:text-white font-bold px-3 py-1 rounded-full flex items-center text-xs transition-colors"
+              >
+                <span className="flex flex-row items-center justify-center gap-1">Ver respuestas <FaEye className="ml-1" /></span>
+              </Link>
+            ) : (
+              <Link
+                to={`/encuestas/answer/${project.id}?idform=${project?.formulario.id}`}
                 className="bg-blue-50 dark:bg-blue-700 hover:bg-blue-100 dark:hover:bg-blue-800 text-blue-600 dark:text-white font-bold px-3 py-1 rounded-full flex items-center text-xs transition-colors"
-          >
+              >
                 <span>Responder</span>
                 <svg className="ml-1.5 w-4 h-4 text-blue-600 dark:text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-          </Link>
+              </Link>
             )}
           </div>
         </div>
@@ -164,7 +144,7 @@ const EncuestaGrid = ({ project }) => {
       </div>
 
       {/* progress bar */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <span className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Estado del formulario:</span>
         <div className="flex items-center">
           <div className="w-full bg-gray-200 rounded-full h-2 flex-1">
@@ -175,7 +155,7 @@ const EncuestaGrid = ({ project }) => {
           </div>
           <span className="text-xs font-medium ml-2 w-10 text-right">{(totalTasksCompleted / totalTasks) * 100}%</span>
         </div>
-      </div>
+      </div> */}
 
       {/* assignee and total date */}
       <div className="mt-6">
@@ -225,6 +205,7 @@ const EncuestaGrid = ({ project }) => {
           )}
         </div>
       </div>
+
     </Card>
   );
 };

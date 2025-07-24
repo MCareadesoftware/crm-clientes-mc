@@ -5,7 +5,7 @@ import axios from "axios";
 import { BACKEND } from "../../configs/envConfig";
 import EncuestaDetailsPageDetails from "./encuesta-details-pageQuestion";
 import { toast } from "react-toastify";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaDownload, FaExternalLinkAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const EncuestaAnswerDetails = () => {
@@ -26,6 +26,8 @@ const EncuestaAnswerDetails = () => {
   const idForm = searchParams.get("idform");
   const [encuestaDetails, setEncuestaDetails] = useState(null);
 
+  console.log(encuestaDetails);
+
   const getEncuestaDetails = async () => {
     const responseEncuestaDetails = await axios.get(
       `${BACKEND}/formularioServicioRespuestas/${id}`
@@ -39,8 +41,6 @@ const EncuestaAnswerDetails = () => {
         const responsetQuestions = await axios.get(
           `${BACKEND}/formularioServicioPregunta?where[formulario][equals]=${idForm}&limit=1000&sort=createdAt&where[active][not_equals]=false`
         );
-
-        console.log(responsetQuestions.data);
 
         setTotalPages(responsetQuestions.data.docs.length);
 
@@ -198,17 +198,116 @@ const EncuestaAnswerDetails = () => {
 
   if (encuestaDetails.respondido)
     return (
-      <div className="  min-h-[600px] max-w-5xl mx-auto flex justify-center items-center">
-        {" "}
-        <div className=" flex justify-center items-center text-green-600  bg-opacity-10 bg-green-500 dark:bg-opacity-20 shadow-lg dark:text-green-300 p-4  rounded-md dark:bg-green-700 gap-4">
-          Respondido <FaCheck className=" " />
+      <div className="mx-auto w-full px-4 py-6 overflow-y-auto">
+
+        {/* Centro: banner servicio */}
+        <div className="z-10 flex-1 flex flex-col items-center justify-center gap-6 mb-8">
+          {encuestaDetails.formulario?.linkVideoFinal && (
+            <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 min-w-[350px] lg:min-w-[600px] max-w-xs lg:max-w-xs">
+              <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>{encuestaDetails.formulario?.servicio?.name}</span>
+              {(() => {
+                const videoUrl = encuestaDetails.formulario?.linkVideoFinal;
+                // Extraer el ID del video de YouTube
+                const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
+                const match = videoUrl.match(youtubeRegex);
+                
+                if (match) {
+                  const videoId = match[1];
+                  return (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+                      title="YouTube video player"
+                      className="w-full h-[24rem] rounded-lg"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  );
+                } else {
+                  // Fallback en caso de que el formato no sea reconocido
+                  return (
+                    <div className="w-full h-[24rem] rounded-lg bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500">Enlace de YouTube no válido</span>
+                    </div>
+                  );
+                }
+              })()}
+            </div>
+          )}
+
+          {encuestaDetails?.formulario?.formularioPdf && (
+            <button
+              onClick={() => {
+                window.open(`${encuestaDetails?.formulario?.formularioPdf?.url}`, '_blank');
+              }}
+              className="bg-blue-500 text-white font-bold flex flex-row gap-2 items-center justify-center border border-gray-200 dark:border-slate-700 rounded-2xl text-xl shadow-lg px-12 py-4 transition hover:shadow-md"
+            >
+              <FaExternalLinkAlt /> Ver PDF
+            </button>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {encuestaDetails?.respuestas && encuestaDetails?.respuestas.length > 0 ? (
+            encuestaDetails.respuestas.map((e, index) => (
+              <div
+                key={e.id}
+                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm p-4 transition hover:shadow-md"
+              >
+                <h3 className="text-xs font-semibold text-primary-500 mb-2">
+                  {index + 1}. {e.pregunta.pregunta}
+                </h3>
+
+                <p className="text-xs text-gray-700 mb-3">{e.respuesta}</p>
+
+                {e.media && (
+                  <div className="flex flex-col gap-2">
+                    {e.media.mimeType.startsWith("image/") && (
+                      <a
+                        href={e.media.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex justify-start"
+                      >
+                        <img
+                          src={e.media.url}
+                          alt="uploaded"
+                          className="rounded-md max-h-40 object-contain"
+                        />
+                      </a>
+                    )}
+                    <a
+                      href={e.media.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-600 hover:underline break-words"
+                    >
+                      {e.media.filename}
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500 py-10">
+              No hay respuestas disponibles.
+            </div>
+          )}
         </div>
       </div>
+      // <div className="  min-h-[600px] max-w-5xl mx-auto flex justify-center items-center">
+      //   {" "}
+      //   <div className=" flex justify-center items-center text-green-600  bg-opacity-10 bg-green-500 dark:bg-opacity-20 shadow-lg dark:text-green-300 p-4  rounded-md dark:bg-green-700 gap-4">
+      //     Respondido <FaCheck className=" " />
+      //   </div>
+      // </div>
     );
   return (
     
     <div className="w-full flex flex-col">
-        <h5>Formulario {encuestaDetails.formulario?.servicio?.name}</h5>
+
+      <h5>Formularo {encuestaDetails.formulario?.servicio?.name}</h5>
+
       {/* Título principal fuera del contenedor */}
       <div className="w-full flex flex-col items-center p-7">
         <div className="w-full max-w-4xl px-4 flex flex-col gap-4">
@@ -216,25 +315,62 @@ const EncuestaAnswerDetails = () => {
           {/* Flayer estático superior */}
           <div className="w-full flex flex-col items-center justify-center">
             <div className="relative w-full flex items-center justify-between bg-white rounded-xl overflow-hidden mb-6" style={{ minHeight: 180 }}>
+              
               {/* Fondo decorativo inferior */}
               <img src="/Ellipse 9.svg" alt="fondo" className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full pointer-events-none select-none" style={{zIndex:1}} />
+              
               {/* Persona izquierda */}
-              <div className="z-10 flex-1 flex justify-center items-end min-w-[120px]">
+              <div className="z-10 flex-1 flex justify-center items-end min-w-[120px] hidden lg:flex">
                 <img src="/Layer_1.svg" alt="persona" className="w-32 md:w-40 lg:w-44 xl:w-48" />
               </div>
+
               {/* Centro: banner servicio */}
               <div className="z-10 flex-1 flex flex-col items-center justify-center">
-                <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 min-w-[220px] max-w-xs">
-                  <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>Servicio</span>
-                  <span className="text-white font-bold text-2xl md:text-3xl text-center">{encuestaDetails.formulario?.servicio?.name || 'Servicio'}</span>
+                <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 min-w-[280px] lg:min-w-[520px] max-w-xs lg:max-w-xs">
+                  <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>{encuestaDetails.formulario?.servicio?.name}</span>
+                  {/* <span className="text-white font-bold text-2xl md:text-3xl text-center">{encuestaDetails.formulario?.servicio?.name || 'Servicio'}</span> */}
+                  {encuestaDetails.formulario?.linkVideo && (
+                    (() => {
+                      const videoUrl = encuestaDetails.formulario?.linkVideo;
+                      // Extraer el ID del video de YouTube
+                      const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
+                      const match = videoUrl.match(youtubeRegex);
+                      
+                      if (match) {
+                        const videoId = match[1];
+                        return (
+                          <iframe
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            //src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+                            title="YouTube video player"
+                            className="w-full h-[18rem] rounded-lg"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        );
+                      } else {
+                        // Fallback en caso de que el formato no sea reconocido
+                        return (
+                          <div className="w-full h-[18rem] rounded-lg bg-gray-200 flex items-center justify-center">
+                            <span className="text-gray-500">Enlace de YouTube no válido</span>
+                          </div>
+                        );
+                      }
+                    })()
+                  )}
                 </div>
               </div>
+
               {/* Planta derecha */}
-              <div className="z-10 flex-1 flex justify-center items-end min-w-[80px]">
+              <div className="z-10 flex-1 flex justify-center items-end min-w-[80px] hidden lg:flex">
                 <img src="/planta.svg" alt="planta" className="w-20 md:w-24 lg:w-28 xl:w-32" />
               </div>
+
             </div>
+
           </div>
+          
           {/* Fin flayer */}
 
         <motion.div
@@ -259,26 +395,24 @@ const EncuestaAnswerDetails = () => {
             <div className="flex flex-row gap-8 w-full justify-center">
               <button
                 onClick={() => setCurrentPage((prev) => prev - 1)}
-                className={`${
-                  currentPage === 1 &&
-                  "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-                    } flex justify-center gap-2 items-center font-bold p-2 rounded-md max-w-[200px] w-full bg-white text-[#FE6400] border border-[#FFE3C2] shadow-sm hover:bg-orange-50 transition duration-300`}
+                className={`${currentPage === 1 && "!text-gray-500 !bg-gray-200 !cursor-not-allowed"} 
+                flex justify-center gap-2 items-center font-bold p-2 rounded-md max-w-[200px] w-full 
+                bg-white text-[#FE6400] border border-[#FFE3C2] shadow-sm hover:bg-orange-50 transition duration-300`}
                 disabled={currentPage === 1}
               >
                 <img src="/keyboard_backspace.svg" alt="Anterior" className="mr-2 w-6 h-6" />
-                <span className="text-xl">Anterior</span>
+                <span className="text-sm">Anterior</span>
               </button>
 
               <button
                 onClick={() => setCurrentPage((prev) => prev + 1)}
-                className={`${
-                  currentPage === totalPages &&
-                  "!text-gray-500 !bg-gray-200 !cursor-not-allowed"
-                    } flex justify-center gap-2 items-center font-bold text-xl p-2 rounded-md max-w-[200px] w-full bg-[#FE6400] text-white border border-[#FE6400] shadow-sm hover:bg-orange-600 transition duration-300`}
+                className={`${currentPage === totalPages && "!text-gray-500 !bg-gray-200 !cursor-not-allowed"} 
+                flex justify-center gap-2 items-center font-bold text-xl p-2 rounded-md max-w-[200px] w-full 
+                bg-[#FE6400] text-white border border-[#FE6400] shadow-sm hover:bg-orange-600 transition duration-300`}
                 disabled={currentPage === totalPages}
               >
-                    <span className="text-xl">Siguiente</span>
-                    <img src="/flechaderecha.svg" alt="Flecha" className="ml-2 w-6 h-6" />
+                <span className="text-sm">Siguiente</span>
+                <img src="/flechaderecha.svg" alt="Flecha" className="ml-2 w-6 h-6" />
               </button>
             </div>
           )}

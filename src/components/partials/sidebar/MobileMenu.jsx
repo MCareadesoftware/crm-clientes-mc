@@ -36,7 +36,6 @@ const MobileMenu = ({ className = "custom-class" }) => {
   // skin
   const [skin] = useSkin();
   const [isDark] = useDarkMode();
-  console.log(isDark);
   const [mobileMenu, setMobileMenu] = useMobileMenu();
   return (
     <div className={isSemiDark ? "dark" : ""}>
