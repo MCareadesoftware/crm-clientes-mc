@@ -3,9 +3,9 @@ import { FaExternalLinkAlt, FaEyeSlash } from "react-icons/fa";
 const LinkItem = ({ title, link }) => {
 
   return (
-    <div className="flex flex-row w-full bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md transition-all">
+    <div className="flex flex-row w-full bg-gray-50 dark:bg-slate-700 shadow-sm rounded-lg border border-gray-200 dark:border-slate-600 hover:shadow-md transition-all">
       <div className="w-full flex items-center justify-between px-2 py-2">
-        <span className="text-xs font-medium text-gray-700 break-words">{title}</span>
+        <span className="text-xs font-medium text-gray-700 dark:text-slate-200 break-words">{title}</span>
         <span className="text-xs flex items-center gap-2 dark:text-slate-200">
           {!link && <FaEyeSlash className="text-gray-500" />}
           {link && (

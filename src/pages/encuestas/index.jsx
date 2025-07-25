@@ -108,7 +108,7 @@ const Encuestas = () => {
     try {
       if (userRedux) {
         const response = await axios.get(
-          `${BACKEND}/formularioServicioRespuestas?where[servicioCotizacion.cotizacion.cliente][equals]=${userRedux.user.id}&limit=10&sort=createdAt&page=${page}`
+          `${BACKEND}/formularioServicioRespuestas?where[servicioCotizacion.cotizacion.cliente][equals]=${userRedux.user.id}&limit=10&sort=createdAt&page=${page}&depth=4`
         );
 
         setFormulariosList(
@@ -145,7 +145,7 @@ const Encuestas = () => {
     <div>
       <ToastContainer />
       <div className="flex flex-wrap justify-between items-center mb-4">
-        <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
+        <h4 className="font-medium lg:text-xl text-lg capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
           Encuestas
         </h4>
       </div>
@@ -161,6 +161,7 @@ const Encuestas = () => {
           ))}
         </div>
       )}
+      
       {filler === "list" && !isLoaded && (
         <div>
           <ProjectList projects={projects} />

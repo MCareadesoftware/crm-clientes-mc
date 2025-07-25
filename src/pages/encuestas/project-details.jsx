@@ -332,7 +332,7 @@ const ServicioDetails = () => {
           </Card>
         </div>
         <div className="xl:col-span-4 lg:col-span-5 col-span-12">
-          <Card title="Actividad" headerslot={<SelectMonth />}>
+          <Card title="Reuniones y meets" headerslot={<SelectMonth />}>
             <ActividadServicio lists={tareasList} />
           </Card>
         </div>

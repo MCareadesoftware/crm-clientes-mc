@@ -13,6 +13,7 @@ import { es } from "date-fns/locale";
 import axios from "axios";
 import { BACKEND } from "../../configs/envConfig";
 import { convertFirstLetterCapital } from "../../helpers/stringsHelper";
+import { BackgroundColorStatusMap, TextColorStatusMap } from "../../utils/ColorData";
 const ProjectGrid = ({ project }) => {
   project;
 
@@ -61,52 +62,15 @@ const ProjectGrid = ({ project }) => {
         <span className="absolute top-4 right-4 text-xs text-slate-500 font-medium dark:text-white">Plan {project.planServicio?.name}</span>
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
-          <div className="h-8 w-8 rounded bg-[#FE6400] flex items-center justify-center text-white font-bold text-sm">
+          <div className="h-8 w-8 rounded bg-[#FE6400] flex items-center justify-center text-white font-bold text-xs">
             {project.servicio.name.charAt(0)}{project.servicio.name.charAt(1)}
           </div>
-          <span className="font-semibold text-slate-900 text-base dark:text-white">{project.servicio.name}</span>
-          {/* <span className="text-slate-600 dark:text-slate-400 text-sm ">{project.planServicio?.name}</span> */}
+          <span className="font-semibold text-slate-900 text-xs dark:text-white">{project.servicio.name}</span>
         </div>
-          {/* <div>
-          <Dropdown
-            classMenuItems=" w-[130px]"
-            label={
-              <span className="text-lg inline-flex flex-col items-center justify-center h-8 w-8 rounded-full bg-gray-500-f7 dark:bg-slate-900 dark:text-slate-400">
-                <Icon icon="heroicons-outline:dots-vertical" />
-              </span>
-            }
-          >
-            <div>
-              <Menu.Item onClick={() => handleClick(project)}>
-                <div
-                  className="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white
-                   w-full border-b border-b-gray-500 border-opacity-10   px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center
-                     capitalize rtl:space-x-reverse"
-                >
-                  <span className="text-base">
-                    <Icon icon="heroicons:eye" />
-                  </span>
-                  <span>Ver</span>
-                </div>
-              </Menu.Item>
-              
-            </div>
-          </Dropdown>
-        </div> */}
         {/* Estado */}
         <div className="mb-2 flex items-center gap-2">
           <span className="text-xs text-slate-700 dark:text-white">Estado:</span>
-          <span className={`
-            ${
-              project.estado == "Terminado con exito"
-                ? "text-green-500"
-                : project.estado == "Abandonado"
-                ? "text-orange-600"
-                : project.estado == "Congelado"
-                ? "text-blue-400"
-                : "text-gray-700"
-            }
-          `}>
+          <span className={`${BackgroundColorStatusMap[project.estado]} ${TextColorStatusMap[project.estado]} flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md w-fit text-xs font-semibold`}>
             {project.estado}
           </span>
         </div>
@@ -166,11 +130,13 @@ const ProjectGrid = ({ project }) => {
           </div>
         </div> */}
         {/* total date */}
-        <div className="ltr:text-right rtl:text-left">
-          <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
-            Finalizado
-          </span>
-        </div>
+        {project.estado === "Terminado con exito" && (
+          <div className="ltr:text-right rtl:text-left">
+            <span className="inline-flex items-center space-x-1 bg-green-500 bg-opacity-[0.16] text-green-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
+              Finalizado
+            </span>
+          </div>
+        )}
       </Card>
     </div>
   );

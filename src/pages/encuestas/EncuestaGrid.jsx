@@ -56,6 +56,8 @@ const EncuestaGrid = ({ project }) => {
     getTotalTasksCompleted();
   }, []);
 
+  console.log(project)
+
   return (
     <Card>
 
@@ -68,7 +70,7 @@ const EncuestaGrid = ({ project }) => {
             </span>
           </div>
           <div className="ml-3">
-            <div className="font-bold text-lg dark:text-slate-200">
+            <div className="font-bold text-xs dark:text-slate-200">
               {project.formulario.servicio?.name}
             </div>
           </div>
@@ -77,7 +79,7 @@ const EncuestaGrid = ({ project }) => {
 
       {/* description */}
       <div className="mt-4">
-        <div className="text-sm text-slate-600 dark:text-slate-400">
+        <div className="text-xs text-slate-600 dark:text-slate-400">
           Formulario de {project.formulario?.tipo === "entrada" && "entrada"}{" "}
           {project.formulario?.tipo === "satisfaccion" && "satisfacción"}
         </div>
@@ -105,7 +107,7 @@ const EncuestaGrid = ({ project }) => {
       </div>
 
       {/* description */}
-      <div className="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8">
+      <div className="text-slate-600 dark:text-slate-400 text-xs pt-4">
         Plan {project.servicioCotizacion.planServicio?.name}
       </div>
 
@@ -115,7 +117,7 @@ const EncuestaGrid = ({ project }) => {
           <span className="block text-xs text-slate-500 dark:text-slate-400">Fecha Inicio</span>
           <div className="flex items-center mt-1">
             <Icon icon="heroicons-outline:calendar" className="text-slate-400 mr-2" />
-            <span className="text-sm font-medium">
+            <span className="text-xs font-medium">
             {format(
               new Date(project.servicioCotizacion.fechaInicio),
                 "d 'de' MMMM, yyyy",
@@ -161,48 +163,19 @@ const EncuestaGrid = ({ project }) => {
       <div className="mt-6">
         <span className="block text-xs text-slate-500 dark:text-slate-400 mb-2">Encargado:</span>
         <div className="flex items-center">
-        {typeof project.servicioCotizacion.responsable == "object" && (
-            <>
-              {(() => {
-                const responsable = project.servicioCotizacion.responsable;
-                const fotoUrl = responsable?.foto?.url;
-                const isValidUrl = fotoUrl && typeof fotoUrl === 'string' && fotoUrl.trim() !== '';
-                if (isValidUrl) {
-                  return (
-                    <img
-                      src={fotoUrl}
-                      alt="Encargado servicio"
-                      className="rounded-full h-10 w-10 object-cover"
-                    />
-                  );
-                } else {
-                  const name = responsable.name || "";
-                  const parts = name.trim().split(" ");
-                  const first = parts[0]?.charAt(0) || "";
-                  const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
-                  return (
-                    <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center">
-                      <span className="text-white font-medium">
-                        {(first + last).toUpperCase()}
-                      </span>
+        <div className="flex items-center gap-2">
+          {project.servicioCotizacion.responsable?.foto?.url ? (
+            <img src={project.servicioCotizacion?.responsable?.foto?.url} alt="Encargado" className="h-7 w-7 rounded-full object-cover" />
+          ) : (
+            <div className="h-7 w-7 rounded-full bg-[#FE6400] text-white flex items-center justify-center font-bold text-xs">
+              {project.servicioCotizacion?.responsable?.name?.charAt(0)}{project.servicioCotizacion?.responsable?.name?.charAt(1)}
             </div>
-                  );
-                }
-              })()}
-              <div className="ml-3">
-                <div className="font-medium text-sm">
-                  {convertFirstLetterCapital(
-                    project.servicioCotizacion.responsable.name
-                  )}
-                </div>
-                <div className="text-xs text-slate-500">
-                  {convertFirstLetterCapital(
-                    project.servicioCotizacion.responsable.puesto
-                  )}
-                </div>
-              </div>
-            </>
           )}
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold text-[#072142] leading-tight dark:text-white">{convertFirstLetterCapital(project.servicioCotizacion?.responsable?.name)}</span>
+            <span className="text-xs text-slate-400 leading-tight dark:text-white/70">{convertFirstLetterCapital(project.servicioCotizacion?.responsable?.puesto)}</span>
+          </div>
+        </div>
         </div>
       </div>
 

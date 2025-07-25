@@ -37,6 +37,10 @@ const Breadcrumbs = () => {
       if (location.pathname.includes("/historial-servicios/") || location.pathname.includes("/servicios-activos/")) {
         getServiceName(id);
       }
+
+      if (location.pathname.includes("/encuestas/answer/")) {
+        getServiceFormName(id);
+      }
     }
   }, [location, locationName, id]);
 
@@ -52,10 +56,20 @@ const Breadcrumbs = () => {
     }
   };
 
+  const getServiceFormName = async (serviceId) => {
+    try {
+      const response = await axios.get(`${BACKEND}/formularioServicioRespuestas/${serviceId}`);
+      setServiceName(response?.data?.formulario?.servicio?.name)
+    } catch (error) {
+      console.error("Error obteniendo nombre del servicio:", error);
+      setServiceName("Servicio");
+    }
+  }
+
   return (
     <>
       {!isHide ? (
-        <div className="md:mb-6 mb-4 flex space-x-3 rtl:space-x-reverse">
+        <div className="md:pb-6 pb-4 px-2 mb-4 flex space-x-3 rtl:space-x-reverse sticky top-16 pt-[1.5rem] z-10 bg-gray-50 dark:bg-slate-900">          
           <ul className="breadcrumbs">
             <li className="text-primary-500">
               <NavLink to="/servicios-activos" className="text-lg">
@@ -74,7 +88,9 @@ const Breadcrumbs = () => {
                     <Icon icon="heroicons:chevron-right" />
                   </span>
                 </li>
-                <li className="capitalize text-slate-500 dark:text-slate-400">Formulario Google Ads</li>
+                <li className="capitalize text-slate-500 dark:text-slate-400">
+                  {serviceName || "Cargando..."}
+                </li>
               </>
             ) : (location.pathname.includes("/historial-servicios/") || location.pathname.includes("/servicios-activos/")) && id ? (
               <>

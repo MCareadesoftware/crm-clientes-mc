@@ -28,7 +28,7 @@ import EtapasTareasSeguimiento from "../../components/modules/servicios/EtapasTa
 import ActividadServicio from "../../components/modules/servicios/Actividad";
 import Reuniones from "../../components/modules/servicios/Reuniones";
 import qs from "qs";
-import { FaMicrophone, FaUser } from "react-icons/fa";
+import { FaMicrophone, FaUser, FaVolumeUp } from "react-icons/fa";
 import banner from "../../assets/images/all-img/Banner-Google.webp";
 import { useSelector } from "react-redux";
 import ProyectLinks from "@/components/ui/proyect-links";
@@ -84,7 +84,7 @@ const HistorialServicioDetails = () => {
       );
 
       const response = await axios.get(`${BACKEND}/tareasProyectos${stringifiedQuery}`);
-      const relevantTasks = response.data.docs.filter((t) => t.task.isMeeting || t.task.isVisit)
+      const relevantTasks = response.data.docs.filter((t) => t.task.isMeeting || t.task.isVisit).filter((t) => t.delivered)
       setRelevantTasks(relevantTasks)
 
       const uniqueArray = [
@@ -109,8 +109,6 @@ const HistorialServicioDetails = () => {
       console.log(error);
     }
   };
-
-  console.log(dataServicio)
 
   const getLinks = async () => { // Obtenemos los links de los clientes
     try {
@@ -188,11 +186,6 @@ const HistorialServicioDetails = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Card title="Descripción del servicio" icon="/letterservices.svg" className="flex text-xs flex-col w-full bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
           <div className="flex flex-col justify-between text-xs">
-            {/* <div className="text-base font-medium text-slate-800 dark:text-slate-100 mb-3">
-              Descripción del servicio
-            </div> */}
-
-            {/* Nuevo diseño con checks verdes */}
             <ul className="space-y-2 bg-slate-100 dark:bg-slate-700 rounded-md p-4">
               {(() => {
                 const descripcionServicio = (dataServicio.customDescriptionActive
@@ -222,26 +215,6 @@ const HistorialServicioDetails = () => {
                 }
               })()}
             </ul>
-            {/* <div className="flex flex-wrap mt-8">
-              <div className="xl:mr-8 mr-4 mb-3 space-y-1">
-                <div className="font-semibold text-slate-500 dark:text-slate-400">
-                  Existing website
-                </div>
-                <div className="flex items-center space-x-2 text-xs font-normal text-primary-600 dark:text-slate-300 rtl:space-x-reverse">
-                  <Icon icon="heroicons:link" />
-                  <a href="#">www.example.com</a>
-                </div>
-              </div>
-              <div className="xl:mr-8 mr-4 mb-3 space-y-1">
-                <div className="font-semibold text-slate-500 dark:text-slate-400">
-                  Project brief
-                </div>
-                <div className="flex items-center space-x-2 text-xs font-normal text-primary-600 dark:text-slate-300 rtl:space-x-reverse">
-                  <Icon icon="heroicons:link" />
-                  <a href="#">www.example.com</a>
-                </div>
-              </div>
-            </div> */}
             {/* end flex */}
             <div className="bg-slate-100 dark:bg-slate-700 rounded px-4 pt-4 pb-1 flex flex-wrap justify-between mt-6">
               <div className="mr-3 mb-3 space-y-2">
@@ -252,16 +225,6 @@ const HistorialServicioDetails = () => {
                   {dataServicio?.planServicio.name}
                 </div>
               </div>
-              {/* end single */}
-              {/* <div className="mr-3 mb-3 space-y-2">
-                <div className="text-xs font-medium text-slate-600 dark:text-slate-300">
-                  Budget
-                </div>
-                <div className="text-xs text-slate-600 dark:text-slate-300">
-                  $75,800
-                </div>
-              </div> */}
-              {/* end single */}
               <div className="mr-3 mb-3 space-y-2">
                 <div className="text-xs font-medium text-slate-600 dark:text-slate-300">
                   Fecha de Inicio
@@ -289,9 +252,6 @@ const HistorialServicioDetails = () => {
         </Card>
 
         <Card title="Detalles" icon="/lt2.svg" className="flex flex-col w-full bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
-          {/* <div className="-mx-6 custom-calender mb-6">
-            <CalendarView />
-          </div> */}
           <div className="flex flex-col !space-y-4 text-xs">
             <span className="font-medium dark:text-slate-200">Encargad@s</span>
             <ul className=" divide-slate-100 dark:divide-slate-700">
@@ -474,61 +434,6 @@ const HistorialServicioDetails = () => {
                       {dataServicio.isCuentaPublicitaria ? "Si" : "No"}
                     </span>
                 </li>
-
-                {/* <li className="flex flex-row justify-between items-center">
-                           <span className="text-sm font-medium">
-                             Casos de éxito Monstruo Creativo:{" "}
-                           </span>
-                           <a
-                             href={dataServicio.servicio?.successCaseVideo || ""}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                           >
-                             Ver
-                           </a>
-                         </li> */}
-                {/* <li>
-                           <span className="text-sm font-medium">
-                             Video Making-off:{" "}
-                           </span>
-                           <a
-                             href={dataServicio.servicio?.makingOffVideo || ""}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                           >
-                             Ir al video
-                           </a>
-                         </li>
-         
-                         <li>
-                           <span className="text-sm font-medium">
-                             Video del proyecto:{" "}
-                           </span>
-                           <a
-                             href={dataServicio.servicio?.proyectVideo || ""}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                           >
-                             Ir al video
-                           </a>
-                         </li>
-         
-                          */}
-                {/* <li>
-                           <span className="text-sm font-medium">Videos reseña: </span>
-                           <a
-                             href={dataServicio.servicio?.reviewVideo || ""}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             className="text-gray-800 hover:text-blue-600 hover:underline transition-colors text-sm font-bold"
-                           >
-                             Ir al video
-                           </a>
-                         </li> */}
-
                 <li>
                   <hr className="border-slate-200 dark:border-slate-700" />
                 </li>
@@ -605,80 +510,6 @@ const HistorialServicioDetails = () => {
         </Card>
 
         <Card title="Links" icon="/linkIcon.svg" className="flex flex-col w-full dark:bg-slate-800 dark:border-slate-700">
-          {/* <ul className="flex flex-col space-y-2">
-            <li className="flex flex-row justify-between items-center">
-              <span className="text-xs font-medium dark:text-slate-200">Formulario</span>
-              <span className="text-xs flex items-center gap-2 dark:text-slate-200">
-                {serviceForm ? "Sí" : "No"}
-                {serviceForm && (
-                  <a
-                    href={serviceForm}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                    tabIndex={0}
-                    aria-label="Ir al formulario"
-                  >
-                    Link
-                  </a>
-                )}
-              </span>
-            </li>
-            <li className="flex flex-row justify-between items-center">
-              <span className="text-xs font-medium dark:text-slate-200">Link web oficial</span>
-              <span className="text-xs flex items-center gap-2 dark:text-slate-200">
-                {webOficialLink ? "Sí" : "No"}
-                {webOficialLink && (
-                  <a
-                    href={webOficialLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                    tabIndex={0}
-                    aria-label="Ir al sitio web oficial"
-                  >
-                    Link
-                  </a>
-                )}
-              </span>
-            </li>
-            <li className="flex flex-row justify-between items-center">
-              <span className="text-xs font-medium dark:text-slate-200">Link demo - desarrollo</span>
-              <span className="text-xs flex items-center gap-2 dark:text-slate-200">
-                {demoLink ? "Sí" : "No"}
-                {demoLink && (
-                  <a
-                    href={demoLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                    tabIndex={0}
-                    aria-label="Ir al demo de desarrollo"
-                  >
-                    Link
-                  </a>
-                )}
-              </span>
-            </li>
-            <li className="flex flex-row justify-between items-center">
-              <span className="text-xs font-medium dark:text-slate-200">Link capacitación</span>
-              <span className="text-xs flex items-center gap-2 dark:text-slate-200">
-                {capacitacionLink ? "Sí" : "No"}
-                {capacitacionLink && (
-                  <a
-                    href={capacitacionLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                    tabIndex={0}
-                    aria-label="Ir al link de capacitación"
-                  >
-                    Link
-                  </a>
-                )}
-              </span>
-            </li>
-          </ul> */}
           <ProyectLinks 
             servicioData={dataServicio} 
             serviceForm={serviceForm}
@@ -879,18 +710,38 @@ const HistorialServicioDetails = () => {
 
               <hr className="border-slate-200 dark:border-slate-600" />
 
-              {dataServicio.audios && dataServicio.audios.length > 0 && (
+              {dataServicio?.audios && dataServicio?.audios?.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <span className="text-xs font-semibold dark:text-slate-400 text-slate-600">
                     Audios:
                   </span>
-                  {dataServicio.audios.map((audio, i) => {
+                  {dataServicio?.audios?.map((audio, i) => {
                     return (
                       <div key={audio.id} className="flex flex-col gap-1">
                         <span className="text-xs flex flex-row gap-2 items-center font-semibold dark:text-slate-400 text-slate-600 mb-1">
                           <FaMicrophone /> Audio {i + 1}
                         </span>
                         <audio src={audio.url} controls className="w-full h-8" />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              <hr className="border-slate-200 dark:border-slate-600" />
+
+              {dataServicio?.checklistMedia && dataServicio?.checklistMedia?.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold dark:text-slate-400 text-slate-600">
+                    Checklist audios:
+                  </span>
+                  {dataServicio?.checklistMedia?.map((media, i) => {
+                    return (
+                      <div key={media.id} className="flex flex-col gap-1">
+                        <span className="text-xs flex flex-row gap-2 items-center font-semibold dark:text-slate-400 text-slate-600 mb-1">
+                          <FaVolumeUp /> Audio {i + 1}
+                        </span>
+                        <audio src={media.url} controls className="w-full h-8" />
                       </div>
                     )
                   })}

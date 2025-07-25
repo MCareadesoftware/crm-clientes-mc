@@ -18,7 +18,7 @@ const ModalDescuento = ({ open, onClose }) => {
       />
       <div
         className="relative rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center p-0 overflow-hidden"
-        style={{ width: '90vw', maxWidth: 500, minHeight: 260, maxHeight: 400, background: 'linear-gradient(135deg, #FE6400 60%, #FFB347 100%)' }}
+        style={{ width: '100vw', maxWidth: 500, minHeight: 280, maxHeight: 420, background: 'linear-gradient(135deg, #FE6400 60%, #FFB347 100%)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Botón de cierre */}
@@ -47,15 +47,15 @@ const ModalDescuento = ({ open, onClose }) => {
           <p className="text-white text-base md:text-sm mb-1 text-center md:text-left">Activa tu primera campaña en Google Ads con</p>
           <span className="text-white text-lg md:text-xl font-bold mb-2 text-center md:text-left">10% de descuento</span>
           <button
-  onClick={() => {
-    window.open('https://wa.link/awiq4g', '_blank');
-  }}
-  className="bg-[#1A357B] hover:bg-[#0d1d3a] text-white font-bold py-2 px-4 rounded-lg shadow-md mt-2 w-full md:w-auto text-sm md:text-base animate-attract"
-  tabIndex={0}
-  aria-label="Solicita tu cupón ahora"
->
-  SOLICITA TU CUPÓN AHORA
-</button>
+            onClick={() => {
+              window.open('https://wa.link/awiq4g', '_blank');
+            }}
+            className="bg-[#1A357B] hover:bg-[#0d1d3a] text-white font-bold py-2 px-4 rounded-lg shadow-md mt-2 w-full md:w-auto text-sm md:text-base animate-attract"
+            tabIndex={0}
+            aria-label="Solicita tu cupón ahora"
+          >
+            SOLICITA TU CUPÓN AHORA
+          </button>
 
 
         </div>

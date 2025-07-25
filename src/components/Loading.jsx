@@ -29,7 +29,7 @@ const Loading = () => {
       </svg>
       <span className=" inline-block mt-1 font-medium  text-sm">
         {" "}
-        Loading ...
+        Cargando, por favor espera...
       </span>
     </div>
   );

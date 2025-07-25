@@ -23,6 +23,17 @@ const HistorialServicios = () => {
   const { width, breakpoints } = useWidth();
   const [isLoaded, setIsLoaded] = useState(false);
   const userRedux = useSelector((state) => state.user);
+  const [page, setPage] = useState(1);
+  const [serviciosList, setServiciosList] = useState([]);
+
+  const [serviciosMetaData, setServiciosMetaData] = useState({
+    totalPages: 0,
+    page: 0,
+    hasPrevPage: false,
+    hasNextPage: false,
+    totalDocs: 0,
+  });
+  
   const projects = [
     {
       id: 1,
@@ -92,22 +103,12 @@ const HistorialServicios = () => {
   ];
 
   useEffect(() => {}, [filler]);
-  const [page, setPage] = useState(1);
-  const [serviciosMetaData, setServiciosMetaData] = useState({
-    totalPages: 0,
-    page: 0,
-    hasPrevPage: false,
-    hasNextPage: false,
-    totalDocs: 0,
-  });
-  const [serviciosList, setServiciosList] = useState([]);
+
   const getServicios = async () => {
     try {
       setIsLoaded(true);
       if (userRedux) {
-        const response = await axios.get(
-          `${BACKEND}/serviciosCotizaciones?where[cotizacion.cliente][equals]=${userRedux.user.id}&limit=10&sort=createdAt&page=${page}`
-        );
+        const response = await axios.get(`${BACKEND}/serviciosCotizaciones?where[cotizacion.cliente][equals]=${userRedux.user.id}&limit=10&sort=createdAt&page=${page}`    );
         setServiciosList(response.data.docs);
         setServiciosMetaData({
           totalPages: response.data.totalPages,
@@ -133,47 +134,18 @@ const HistorialServicios = () => {
     page + 2,
     serviciosMetaData.totalPages ? serviciosMetaData.totalPages : 5
   );
+
   for (let i = startPage; i <= endPage; i++) {
     pageRange.push(i);
   }
+
   return (
     <div>
       <ToastContainer />
       <div className="flex flex-wrap justify-between items-center mb-4">
-        <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
+        <h4 className="font-medium lg:text-xl text-lg capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
           Historial de Servicios
         </h4>
-        {/* <div
-          className={`${
-            width < breakpoints.md ? "space-x-rb" : ""
-          } md:flex md:space-x-4 md:justify-end items-center rtl:space-x-reverse`}
-        >
-          <Button
-            icon="heroicons:list-bullet"
-            text="Vista lista"
-            disabled={isLoaded}
-            className={`${
-              filler === "list"
-                ? "bg-slate-900 dark:bg-slate-700  text-white"
-                : " bg-white dark:bg-slate-800 dark:text-slate-300"
-            }   h-min text-sm font-normal`}
-            iconClass=" text-lg"
-            onClick={() => setfiller("list")}
-          />
-          <Button
-            icon="heroicons-outline:view-grid"
-            text="Vista grid"
-            disabled={isLoaded}
-            className={`${
-              filler === "grid"
-                ? "bg-slate-900 dark:bg-slate-700 text-white"
-                : " bg-white dark:bg-slate-800 dark:text-slate-300"
-            }   h-min text-sm font-normal`}
-            iconClass=" text-lg"
-            onClick={() => setfiller("grid")}
-          />
-        
-        </div> */}
       </div>
       {isLoaded && filler === "grid" && (
         <GridLoading count={projects?.length} />
@@ -185,10 +157,9 @@ const HistorialServicios = () => {
       {filler === "grid" && !isLoaded && (
         <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
           {serviciosList
-            .filter(
-              (project) =>
-                project.estado != "Abandonado" && project.estado != "Congelado"
-            )
+            // .filter((project) =>
+            //   project.estado != "Abandonado" && project.estado != "Congelado"
+            // )
             .map((project, projectIndex) => (
               <ProjectGrid project={project} key={projectIndex} />
             ))}

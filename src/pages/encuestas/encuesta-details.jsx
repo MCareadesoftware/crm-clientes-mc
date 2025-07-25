@@ -26,8 +26,6 @@ const EncuestaAnswerDetails = () => {
   const idForm = searchParams.get("idform");
   const [encuestaDetails, setEncuestaDetails] = useState(null);
 
-  console.log(encuestaDetails);
-
   const getEncuestaDetails = async () => {
     const responseEncuestaDetails = await axios.get(
       `${BACKEND}/formularioServicioRespuestas/${id}`
@@ -202,49 +200,53 @@ const EncuestaAnswerDetails = () => {
 
         {/* Centro: banner servicio */}
         <div className="z-10 flex-1 flex flex-col items-center justify-center gap-6 mb-8">
-          {encuestaDetails.formulario?.linkVideoFinal && (
-            <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 min-w-[350px] lg:min-w-[600px] max-w-xs lg:max-w-xs">
-              <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>{encuestaDetails.formulario?.servicio?.name}</span>
-              {(() => {
-                const videoUrl = encuestaDetails.formulario?.linkVideoFinal;
-                // Extraer el ID del video de YouTube
-                const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
-                const match = videoUrl.match(youtubeRegex);
-                
-                if (match) {
-                  const videoId = match[1];
-                  return (
-                    <iframe
-                      src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-                      title="YouTube video player"
-                      className="w-full h-[24rem] rounded-lg"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  );
-                } else {
-                  // Fallback en caso de que el formato no sea reconocido
-                  return (
-                    <div className="w-full h-[24rem] rounded-lg bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-500">Enlace de YouTube no válido</span>
-                    </div>
-                  );
-                }
-              })()}
-            </div>
-          )}
-
-          {encuestaDetails?.formulario?.formularioPdf && (
-            <button
-              onClick={() => {
-                window.open(`${encuestaDetails?.formulario?.formularioPdf?.url}`, '_blank');
-              }}
-              className="bg-blue-500 text-white font-bold flex flex-row gap-2 items-center justify-center border border-gray-200 dark:border-slate-700 rounded-2xl text-xl shadow-lg px-12 py-4 transition hover:shadow-md"
-            >
-              <FaExternalLinkAlt /> Ver PDF
-            </button>
-          )}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 w-full max-w-6xl">
+            {encuestaDetails.formulario?.linkVideoFinal && (
+              <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 w-full lg:w-1/2 max-w-md">
+                <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>{encuestaDetails.formulario?.servicio?.name}</span>
+                {(() => {
+                  const videoUrl = encuestaDetails.formulario?.linkVideoFinal;
+                  // Extraer el ID del video de YouTube
+                  const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
+                  const match = videoUrl.match(youtubeRegex);
+                  
+                  if (match) {
+                    const videoId = match[1];
+                    return (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+                        title="YouTube video player"
+                        className="w-full h-[20rem] lg:h-[24rem] rounded-lg"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    );
+                  } else {
+                    // Fallback en caso de que el formato no sea reconocido
+                    return (
+                      <div className="w-full h-[20rem] lg:h-[24rem] rounded-lg bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500">Enlace de YouTube no válido</span>
+                      </div>
+                    );
+                  }
+                })()}
+              </div>
+            )}
+            {encuestaDetails?.formulario?.formularioPdf && (
+              <div className="w-full lg:w-1/2 max-w-md">
+                <div className="bg-[#FE6400] rounded-xl shadow-lg flex flex-col items-center justify-center px-8 py-6 w-full">
+                  <span className="bg-white bg-opacity-40 text-white text-xs px-3 py-1 rounded-full mb-2" style={{color:'#fff'}}>Formulario PDF</span>
+                  <iframe
+                    src={`${encuestaDetails?.formulario?.formularioPdf?.url}`}
+                    title="PDF Formulario"
+                    className="w-full h-[20rem] lg:h-[24rem] rounded-lg"
+                    frameBorder="0"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -258,7 +260,7 @@ const EncuestaAnswerDetails = () => {
                   {index + 1}. {e.pregunta.pregunta}
                 </h3>
 
-                <p className="text-xs text-gray-700 mb-3">{e.respuesta}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">{e.respuesta}</p>
 
                 {e.media && (
                   <div className="flex flex-col gap-2">
@@ -295,18 +297,13 @@ const EncuestaAnswerDetails = () => {
           )}
         </div>
       </div>
-      // <div className="  min-h-[600px] max-w-5xl mx-auto flex justify-center items-center">
-      //   {" "}
-      //   <div className=" flex justify-center items-center text-green-600  bg-opacity-10 bg-green-500 dark:bg-opacity-20 shadow-lg dark:text-green-300 p-4  rounded-md dark:bg-green-700 gap-4">
-      //     Respondido <FaCheck className=" " />
-      //   </div>
-      // </div>
     );
+    
   return (
     
     <div className="w-full flex flex-col">
 
-      <h5>Formularo {encuestaDetails.formulario?.servicio?.name}</h5>
+      <h5>Formulario {encuestaDetails.formulario?.servicio?.name}</h5>
 
       {/* Título principal fuera del contenedor */}
       <div className="w-full flex flex-col items-center p-7">

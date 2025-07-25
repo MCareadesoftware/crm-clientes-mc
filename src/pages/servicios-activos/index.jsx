@@ -18,6 +18,7 @@ import avatar3 from "@/assets/images/avatar/av-3.svg";
 import avatar4 from "@/assets/images/avatar/av-4.svg";
 import { BACKEND } from "../../configs/envConfig";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
 const ServiciosActivos = () => {
   const [filler, setfiller] = useState("grid");
   const { width, breakpoints } = useWidth();
@@ -90,6 +91,7 @@ const ServiciosActivos = () => {
       ],
     },
   ];
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -98,6 +100,7 @@ const ServiciosActivos = () => {
       setIsLoaded(false);
     }, 1500);
   }, [filler]);
+
   const [page, setPage] = useState(1);
   const [serviciosMetaData, setServiciosMetaData] = useState({
     totalPages: 0,
@@ -107,6 +110,7 @@ const ServiciosActivos = () => {
     totalDocs: 0,
   });
   const [serviciosList, setServiciosList] = useState([]);
+
   const getServicios = async () => {
     try {
       if (userRedux) {
@@ -133,44 +137,54 @@ const ServiciosActivos = () => {
     getServicios();
   }, [page]);
 
-
   const pageRange = [];
   const startPage = Math.max(1, page - 2);
   const endPage = Math.min(
     page + 2,
     serviciosMetaData.totalPages ? serviciosMetaData.totalPages : 5
   );
+
   for (let i = startPage; i <= endPage; i++) {
     pageRange.push(i);
   }
+
   return (
     <div>
       <ToastContainer />
+
       <div className="flex flex-wrap justify-between items-center mb-4">
-        <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
+        <h4 className="font-medium lg:text-xl text-lg capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
           Servicios Activos
         </h4>
       </div>
+
       {isLoaded && filler === "grid" && (
         <GridLoading count={projects?.length} />
       )}
+
       {isLoaded && filler === "list" && (
         <TableLoading count={projects?.length} />
       )}
 
       {filler === "grid" && !isLoaded && (
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
-          {serviciosList.map((project, projectIndex) => (
-            <ProjectGrid project={project} key={projectIndex} />
-          ))}
-        </div>
+        serviciosList.length > 0 ? (
+          <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+            {serviciosList.map((project, projectIndex) => (
+              <ProjectGrid project={project} key={projectIndex} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full w-full">
+            <p className="text-gray-500 dark:text-gray-400 text-xs pt-[8rem]">No hay servicios activos</p>
+          </div>
+        )
       )}
+      
       {filler === "list" && !isLoaded && (
         <div>
           <ProjectList projects={projects} />
         </div>
       )}
-
 
       {serviciosList && serviciosList?.length > 0 && (
         <div className="flex flex-col items-center py-10">

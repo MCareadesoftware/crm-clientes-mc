@@ -28,12 +28,16 @@ import EtapasTareasSeguimiento from "../../components/modules/servicios/EtapasTa
 import ActividadServicio from "../../components/modules/servicios/Actividad";
 import Reuniones from "../../components/modules/servicios/Reuniones";
 import qs from "qs";
-import { FaMicrophone, FaUser } from "react-icons/fa";
+import { FaCheck, FaFileInvoice, FaMicrophone, FaSoundcloud, FaUser, FaVolumeUp } from "react-icons/fa";
 import banner from "../../assets/images/all-img/Banner-Google.webp";
 import { BackgroundColorStatusMap, itemColorStatusMap } from "../../utils/ColorData";
 import ChackkIcon from '/chackk.svg';
 import { useSelector } from "react-redux";
 import ProyectLinks from "../../components/ui/proyect-links";
+
+import PDFMonstruoCreativo from "../../components/pdfs/PDFMonstruoCreativo";
+import ObtenerMultiplicador from "../../utils/ObtenerMultiplicador";
+import ObtenerMoneda from "../../utils/ObtenerMoneda";
 
 const ServicioDetails = () => {
   const { id } = useParams();
@@ -91,8 +95,7 @@ const ServicioDetails = () => {
       );
 
       const response = await axios.get(`${BACKEND}/tareasProyectos${stringifiedQuery}`);
-      console.log(response.data.docs.filter((t) => t.task.isMeeting || t.task.isVisit))
-      setRelevantTasks(response.data.docs.filter((t) => t.task.isMeeting || t.task.isVisit))
+      setRelevantTasks(response.data.docs.filter((t) => t.task.isMeeting || t.task.isVisit).filter((t) => t.delivered))
 
       const uniqueArray = [
         ...new Map(
@@ -113,7 +116,7 @@ const ServicioDetails = () => {
 
       setCitasList(() => response.data.docs.filter((t) => t.task.isMeeting));
     } catch (error) {
-      console.log(error);
+      return null
     }
   };
 
@@ -122,7 +125,7 @@ const ServicioDetails = () => {
       const response = await axios.get(`${BACKEND}/LinksServiciosClientes?limit=0&where[cliente][equals]=${user.id}&where[servicio][equals]=${dataServicio?.servicio?.id}`)
       setLinksList(response.data.docs)
     } catch (error) {
-      console.log(error)
+      return null
     }
   }
 
@@ -171,6 +174,110 @@ const ServicioDetails = () => {
     getServicioDetails();
   }, []);
 
+  /// PDF
+  const [pdfOpen, setPdfOpen] = useState(false)
+  const [paises, setPaises] = useState([])
+  const [pagosList, setPagosList] = useState([])
+  const [allServiciosList, setAllServiciosList] = useState([])
+  const [allServiciosCotizacionesList, setAllServiciosCotizacionesList] = useState([])
+  const [currencyExchanges, setCurrencyExchanges] = useState({})
+  const [currency, setCurrency] = useState("PEN")
+
+  const pdfMap = {
+    "67ea9c110e2642a4b0b902e1": "PDFMonstruoCreativo",
+    "67ea9c250e2642a4b0b902fa": "PDFW3b",
+    "67ea9c2c0e2642a4b0b90313": "PDFMundoDigital",
+    "67ea9c320e2642a4b0b9032c": "PDFAllSavfe",
+    "67ea9c3e0e2642a4b0b90345": "PDFConviertelo",
+    "67ea9c440e2642a4b0b9035e": "PDFLucuma",
+  }
+
+  const PDFComponents = {
+    PDFMonstruoCreativo,
+    // PDFAllSavfe,
+    // PDFW3b,
+    // PDFMundoDigital,
+    // PDFConviertelo,
+    // PDFLucuma,
+  }
+
+  const defaultPDF = "PDFMonstruoCreativo"
+  const selectedPDFKey = pdfMap[dataServicio?.marca?.id]
+  const SelectedPDFComponent = PDFComponents[selectedPDFKey] || PDFComponents[defaultPDF]
+
+  // const multiplicador = ObtenerMultiplicador({pais: data?.cliente?.pais || data?.lead?.country, paises: paises})
+  // const flagUrl = paises.find(p => NormalizeText(p.name) === NormalizeText(data?.cliente?.pais || data?.lead?.country))?.bandera?.url
+  
+  const currencyExchange = currencyExchanges[currency]
+
+  const getPaises = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/paises?limit=0`)
+      setPaises(response.data.docs)
+    } catch (error) {
+      return false
+    }
+  }
+  
+  const getPagos = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/pagosCotizaciones?where[cotizacion][equals]=${dataServicio?.cotizacion.id}&sort=createdAt&limit=1000`)
+      setPagosList(response.data.docs)
+    } catch (error) {
+      return false
+    }
+  };
+
+  const getServiciosCotizaciones = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/serviciosCotizaciones?where[cotizacion][equals]=${dataServicio?.cotizacion?.id}&limit=0&depth=4`)
+      setAllServiciosCotizacionesList(response.data.docs)
+    } catch (error) {
+      return false
+    }
+  };
+
+  const getServicios = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/servicios?limit=1000`)
+      setAllServiciosList(response.data.docs)
+    } catch (error) {
+      return false
+    }
+  };
+
+  const getCurrencyExchange = async () => {
+    try {
+      const response = await axios.get(`${BACKEND}/tiposCambio?limit=0`)
+      const currencyExchanges = response.data.docs.reduce((acc, item) => {
+        acc[item.moneda] = item.tipoCambio
+        return acc
+      }, {})
+      setCurrencyExchanges(currencyExchanges)
+    } catch (error) {
+      return false
+    }
+  }
+
+  useEffect(() => {
+    getPaises()
+    getPagos()
+    getServiciosCotizaciones()
+    getServicios()
+    getCurrencyExchange()
+  }, [])
+
+  useEffect(() => {
+    getPaises()
+    getPagos()
+    getServiciosCotizaciones()
+    getServicios()
+    getCurrencyExchange()
+
+      setCurrency(ObtenerMoneda({pais: dataServicio?.cotizacion?.cliente?.pais || dataServicio?.cotizacion?.lead?.country, paises: paises}))
+ 
+  }, [dataServicio])
+
   if (!dataServicio)
     return (
       <div>
@@ -182,9 +289,27 @@ const ServicioDetails = () => {
   return (
     <div className="space-y-5">
 
-      <div className="flex flex-row justify-start items-start border bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 p-4 rounded-md px-8">
+      {SelectedPDFComponent && dataServicio && (
+        <SelectedPDFComponent
+          onClose={() => setPdfOpen(false)}
+          open={pdfOpen}
+          cotizacionData={dataServicio.cotizacion}
+          title={"Vista Previa PDF"}
+          igv={false}
+          comparativo={false}
+          incognitMode={false}
+          moneda={currency}
+          tipoCambio={currencyExchange}
+          paises={paises}
+          pagosList={pagosList}
+          serviciosList={allServiciosCotizacionesList}
+          allServiciosList={allServiciosList}
+        />
+      )}
+
+      <div className="flex flex-row overflow-x-auto justify-center items-center border bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 p-4 rounded-md px-8">
         
-        <div className="flex flex-col gap-1 w-1/5">
+        <div className="flex flex-col gap-1 min-w-[8rem] w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Plan
           </span>
@@ -193,18 +318,18 @@ const ServicioDetails = () => {
           </span>
         </div>
 
-        <div className="flex flex-col gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
+        <div className="flex flex-col min-w-[8rem] gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Estado
           </span>
 
           <div className={`${BackgroundColorStatusMap[dataServicio.estado]} dark:bg-slate-700 flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-md w-fit `}>
-          <div className={`w-2 h-2 ${itemColorStatusMap[dataServicio.estado]} dark:bg-green-700 rounded-full animate-pulse`}></div>
-          <span className="text-slate-800 dark:text-green-300 text-xs font-medium">{dataServicio.estado}</span>
+            <div className={`w-2 h-2 ${itemColorStatusMap[dataServicio.estado]} dark:bg-green-700 rounded-full animate-pulse`}></div>
+            <span className="text-slate-800 dark:text-green-300 text-xs font-medium">{dataServicio.estado}</span>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
+        <div className="flex flex-col min-w-[8rem] gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Fecha inicio
           </span>
@@ -218,7 +343,7 @@ const ServicioDetails = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
+        <div className="flex flex-col min-w-[8rem] gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Fecha fin
           </span>
@@ -232,15 +357,18 @@ const ServicioDetails = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
+        <div className="flex flex-col min-w-[8rem] gap-1 border-l border-gray-200 dark:border-slate-700 pl-4 w-1/5">
           <span className="text-xs text-gray-500 dark:text-slate-400" > 
             Cotización
           </span>
           <div className="flex flex-row gap-2 items-center hover:cursor-pointer">
             <Icon icon="heroicons-outline:eye" className="text-blue-500 dark:text-blue-500" />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-200" > 
+            <button 
+              className="text-xs font-medium text-slate-700 dark:text-slate-200" 
+              onClick={() => setPdfOpen(true)}
+            > 
               Previsualizar
-            </span>
+            </button>
           </div>
         </div>
       </div>
@@ -887,7 +1015,7 @@ const ServicioDetails = () => {
             />
           </div>
 
-          <Card title="Actividad" icon="/letterservices.svg" headerslot={<SelectMonth />}>
+          <Card title="Reuniones y meets" icon="/letterservices.svg" headerslot={<SelectMonth />}>
             <ActividadServicio tasks={relevantTasks} />
           </Card>
 
@@ -906,18 +1034,38 @@ const ServicioDetails = () => {
 
               <hr className="border-slate-200 dark:border-slate-600" />
 
-              {dataServicio.audios && dataServicio.audios.length > 0 && (
+              {dataServicio?.audios && dataServicio?.audios?.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <span className="text-xs font-semibold dark:text-slate-400 text-slate-600">
                     Audios:
                   </span>
-                  {dataServicio.audios.map((audio, i) => {
+                  {dataServicio?.audios?.map((audio, i) => {
                     return (
                       <div key={audio.id} className="flex flex-col gap-1">
                         <span className="text-xs flex flex-row gap-2 items-center font-semibold dark:text-slate-400 text-slate-600 mb-1">
                           <FaMicrophone /> Audio {i + 1}
                         </span>
                         <audio src={audio.url} controls className="w-full h-8" />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              
+              <hr className="border-slate-200 dark:border-slate-600" />
+
+              {dataServicio?.checklistMedia && dataServicio?.checklistMedia?.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold dark:text-slate-400 text-slate-600">
+                    Checklist:
+                  </span>
+                  {dataServicio?.checklistMedia?.map((media, i) => {
+                    return (
+                      <div key={media.id} className="flex flex-col gap-1">
+                        <span className="text-xs flex flex-row gap-2 items-center font-semibold dark:text-slate-400 text-slate-600 mb-1">
+                          <FaVolumeUp /> Audio checklist {i + 1}
+                        </span>
+                        <audio src={media.url} controls className="w-full h-8" />
                       </div>
                     )
                   })}
