@@ -33,6 +33,8 @@ const LoginForm = () => {
 
   const [checked, setChecked] = useState(false);
 
+  console.log(BACKEND);
+
   const login = async (event) => {
     event.preventDefault();
     setIsError(false);
