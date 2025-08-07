@@ -1,1 +1,1 @@
-export const BACKEND = process.env.BACKEND;
+export const BACKEND = import.meta.env.VITE_BACKEND;
