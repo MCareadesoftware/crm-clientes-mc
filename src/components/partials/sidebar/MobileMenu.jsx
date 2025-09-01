@@ -6,7 +6,8 @@ import SimpleBar from "simplebar-react";
 import useSemiDark from "@/hooks/useSemiDark";
 import useSkin from "@/hooks/useSkin";
 import useDarkMode from "@/hooks/useDarkMode";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import Icon from "@/components/ui/Icon";
 
@@ -17,10 +18,14 @@ import LogoMCLargeWhite from "@/assets/images/logo/LogoMCLargeWhite.png";
 import MobileLogoWhite from "@/assets/images/logo/sidebar-logo.webp";
 import svgRabitImage from "@/assets/images/svg/rabit.svg";
 import { socialNetworks } from "../../../constant/data";
+import { clearUser } from "../../../store/userSlice";
+import { toast } from "react-toastify";
 
 const MobileMenu = ({ className = "custom-class" }) => {
   const scrollableNodeRef = useRef();
   const [scroll, setScroll] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleScroll = () => {
       if (scrollableNodeRef.current.scrollTop > 0) {
@@ -37,6 +42,14 @@ const MobileMenu = ({ className = "custom-class" }) => {
   const [skin] = useSkin();
   const [isDark] = useDarkMode();
   const [mobileMenu, setMobileMenu] = useMobileMenu();
+
+  const handleLogout = () => {
+    dispatch(clearUser());
+    setMobileMenu(false);
+    navigate("/");
+    toast.success("Deslogueado");
+  };
+  
   return (
     <div className={isSemiDark ? "dark" : ""}>
       <div className={`${className} fixed top-0 bg-white dark:bg-slate-800 shadow-lg h-full w-[248px] flex flex-col`}>
@@ -89,6 +102,16 @@ const MobileMenu = ({ className = "custom-class" }) => {
                   <Icon icon="heroicons:chevron-right" />
                 </a>
               ))}
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full mt-3 px-2.5 py-3 rounded-md flex justify-between items-center gap-4 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-slate-700 dark:text-red-600 transition-colors"
+              >
+                <span className="menu-icon flex-grow-0">
+                  <Icon icon="heroicons-outline:login" />
+                </span>
+                <span className="text-box flex-grow text-sm">Cerrar sesión</span>
+              </button>
               <div className="w-full mt-4 px-2 py-2 flex flex-row justify-between">
                 <span className="text-box text-sm">@monstruocreativo</span>
                 <span className="text-box text-sm">2025</span>
