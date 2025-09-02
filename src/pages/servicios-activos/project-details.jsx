@@ -34,10 +34,11 @@ import { BackgroundColorStatusMap, itemColorStatusMap } from "../../utils/ColorD
 import ChackkIcon from '/chackk.svg';
 import { useSelector } from "react-redux";
 import ProyectLinks from "../../components/ui/proyect-links";
-
+import { toast } from "react-toastify";
 import PDFMonstruoCreativo from "../../components/pdfs/PDFMonstruoCreativo";
 import ObtenerMultiplicador from "../../utils/ObtenerMultiplicador";
 import ObtenerMoneda from "../../utils/ObtenerMoneda";
+import Textinput from "@/components/ui/Textinput";
 
 const ServicioDetails = () => {
   const { id } = useParams();
@@ -51,6 +52,11 @@ const ServicioDetails = () => {
   const [relevantTasks, setRelevantTasks] = useState([]);
   const [linksList, setLinksList] = useState([]);
   const [serviceForm, setServiceForm] = useState(null);
+  const [gmails, setGmails] = useState([""]);
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const gmailsErrors = gmails.map((v) =>
+    v && !emailRegex.test(v) ? { message: "Ingrese un correo @gmail.com válido" } : null
+  );
 
   const webOficialLink = linksList.find(link => link.titulo === "Link web oficial")?.url || null;
   const demoLink = linksList.find(link => link.titulo === "Link demo")?.url || null;
@@ -277,6 +283,60 @@ const ServicioDetails = () => {
       setCurrency(ObtenerMoneda({pais: dataServicio?.cotizacion?.cliente?.pais || dataServicio?.cotizacion?.lead?.country, paises: paises}))
  
   }, [dataServicio])
+
+  const UpdateClient = async () => {
+    try {
+      const clientId = dataServicio?.cotizacion?.cliente?.id || user?.id;
+      const payloadGmails = gmails
+        .map((v) => (v || "").trim())
+        .filter((v) => v !== "")
+        .map((v) => ({ gmail: v }));
+
+      await axios.put(`${BACKEND}/clientesUser/${clientId}`, {
+        gmails: payloadGmails,
+      });
+
+      setDataServicio((prev) => {
+        if (!prev?.cotizacion?.cliente) return prev;
+        return {
+          ...prev,
+          cotizacion: {
+            ...prev.cotizacion,
+            cliente: {
+              ...prev.cotizacion.cliente,
+              gmails: payloadGmails,
+            },
+          },
+        };
+      });
+
+      toast.success("Correos actualizados con éxito");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al actualizar los correos");
+    }
+  };
+
+  const handleGmailChange = (index, value) => {
+    setGmails((prev) => prev.map((v, i) => (i === index ? value : v)));
+  };
+  const addGmail = () => setGmails((prev) => [...prev, ""]);
+  const removeGmail = (index) =>
+    setGmails((prev) => prev.filter((_, i) => i !== index));
+
+  useEffect(() => {
+    const arrayGmails = dataServicio?.cotizacion?.cliente?.gmails;
+    const singleGmail = dataServicio?.cotizacion?.cliente?.gmail;
+    let list = [];
+    if (Array.isArray(arrayGmails) && arrayGmails.length > 0) {
+      list = arrayGmails.map((e) => (typeof e === "string" ? e : e?.gmail || ""));
+    } else if (singleGmail) {
+      list = [singleGmail];
+    } else {
+      list = [""];
+    }
+    setGmails(list);
+  }, [dataServicio?.cotizacion?.cliente?.gmails, dataServicio?.cotizacion?.cliente?.gmail]);
 
   if (!dataServicio)
     return (
@@ -844,6 +904,56 @@ const ServicioDetails = () => {
             demoLink={demoLink}
             capacitacionLink={capacitacionLink}
           />
+        </Card>
+
+        <Card title="Datos del cliente" icon="/letterservices.svg" className="flex text-xs flex-col w-full bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+         <span className="font-medium dark:text-slate-200">Gmail para acceso a carpetas de Google Drive</span>
+          <div className="mt-2 space-y-2">
+            {gmails.map((email, idx) => (
+              <div key={idx} className="flex items-start gap-2">
+                <div className="flex-1">
+                  <Textinput
+                    type="email"
+                    label={`Correo Gmail ${idx + 1}`}
+                    placeholder="tuusuario@gmail.com"
+                    classLabel="text-xs"
+                    defaultValue={email}
+                    onChange={(e) => handleGmailChange(idx, e.target.value)}
+                    error={gmailsErrors[idx]}
+                    id={`gmail-input-${idx}`}
+                    pattern="^[a-zA-Z0-9._%+-]+@gmail\\.com$"
+                    title="Ingrese un correo que termine en @gmail.com"
+                    className="text-xs"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeGmail(idx)}
+                  disabled={gmails.length <= 1}
+                  className="px-2 py-2 h-9 mt-[15px] rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 disabled:opacity-50"
+                >
+                  Eliminar
+                </button>
+              </div>
+            ))}
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                type="button"
+                onClick={addGmail}
+                className="px-3 py-2 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-200 hover:bg-slate-300"
+              >
+                Añadir correo
+              </button>
+              <button
+                type="button"
+                onClick={UpdateClient}
+                disabled={gmailsErrors.some((e) => e) || gmails.every((v) => !v || v.trim() === "")}
+                className="px-3 py-2 rounded-md bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
         </Card>
       </div>
 
