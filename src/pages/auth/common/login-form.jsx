@@ -50,7 +50,7 @@ const LoginForm = () => {
           setUser({ token: response.data.token, user: response.data.user })
         );
         setTimeout(() => {
-          navigate("/servicios-activos");
+          navigate("/encuestas");
         }, 1500);
       } else {
         toast.error("Credenciales inválidasxs ", {
