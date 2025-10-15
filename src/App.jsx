@@ -19,6 +19,7 @@ import HistorialServicios from "./pages/historial-servicios";
 import HistorialServicioDetails from "./pages/historial-servicios/project-details";
 import EncuestaAnswerDetails from "./pages/encuestas/encuesta-details";
 import ErrorPage from "./pages/404";
+import MisComprobantes from "./pages/mis-comprobantes";
 function App() {
   const dispatch = useDispatch();
   const userRedux = useSelector((state) => state.user.user);
@@ -97,6 +98,14 @@ function App() {
                 element={
                   <Suspense fallback={<Loading />}>
                     <EncuestaAnswerDetails />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="mis-comprobantes"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <MisComprobantes />
                   </Suspense>
                 }
               />

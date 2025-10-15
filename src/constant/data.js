@@ -1,6 +1,6 @@
 import { RiDashboardLine } from "react-icons/ri";
 import { BsBoxes, BsFacebook, BsInstagram, BsLinkedin, BsTiktok, BsYoutube } from "react-icons/bs";
-import { FaRegRectangleList } from "react-icons/fa6";
+import { FaFileInvoice, FaRegRectangleList } from "react-icons/fa6";
 import { TbMessage2Heart } from "react-icons/tb";
 import { FaWandSparkles } from "react-icons/fa6";
 import { HiOutlineGift } from "react-icons/hi2";
@@ -27,6 +27,11 @@ export const menuItems = [
     title: "Encuestas",
     icon: FaWpforms,
     link: "encuestas",
+  },
+  {
+    title: "Mis comprobantes",
+    icon: FaFileInvoice,
+    link: "mis-comprobantes",
   },
   // {
   //   title: "Mensajes",

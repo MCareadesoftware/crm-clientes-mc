@@ -91,7 +91,7 @@ const Profile = () => {
     //   },
     // },
     {
-      label: "Logout",
+      label: "Salir",
       icon: "heroicons-outline:login",
       action: () => {
         dispatch(clearUser());
