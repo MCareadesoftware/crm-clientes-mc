@@ -12,8 +12,10 @@ import Icon from "@/components/ui/Icon";
  * - showUpload?: boolean (default true)
  * - hideDownloadIfMissing?: boolean (default false)
  * - exclusive?: boolean (default false) - show only one action: download if available, otherwise upload
+ * - downloadText?: string (optional caption under download/read action)
+ * - uploadText?: string (optional caption under upload action)
  */
-const FileActionCell = ({ url, downloadLabel, onUpload, variant = "muted", showUpload = true, hideDownloadIfMissing = false, exclusive = false }) => {
+const FileActionCell = ({ downloadIcon="heroicons-outline:arrow-down-tray", uploadIcon="heroicons-outline:arrow-up-tray", readIcon="heroicons-outline:eye", url, downloadLabel, onUpload, variant = "muted", showUpload = true, hideDownloadIfMissing = false, exclusive = false, downloadText, uploadText }) => {
   const isAvailable = Boolean(url && url !== "#");
 
   const baseBtn = "inline-flex items-center justify-center w-8 h-8 rounded-full";
@@ -58,26 +60,42 @@ const FileActionCell = ({ url, downloadLabel, onUpload, variant = "muted", showU
   };
 
   const renderDownload = (
-    <button
-      type="button"
-      onClick={handleDirectDownload}
-      className={isAvailable ? (variant === "success" ? styles.success : styles.primary) : styles.disabled}
-      title={downloadLabel}
-      disabled={!isAvailable}
-    >
-      <Icon icon="heroicons-outline:arrow-down-tray" />
-    </button>
+    <div className="flex flex-col items-center gap-1">
+      <button
+        type="button"
+        onClick={handleDirectDownload}
+        className={isAvailable
+          ? (exclusive ? styles.brand : (variant === "success" ? styles.success : styles.primary))
+          : styles.disabled}
+        title={downloadLabel}
+        disabled={!isAvailable}
+      >
+        <Icon icon={exclusive && isAvailable ? readIcon : downloadIcon} />
+      </button>
+      {downloadText ? (
+        <span className="text-[10px] leading-tight text-slate-600 text-center">
+          {downloadText}
+        </span>
+      ) : null}
+    </div>
   );
 
   const renderUpload = (
-    <button
-      type="button"
-      onClick={onUpload}
-      className={styles.brand}
-      title="Subir archivo"
-    >
-      <Icon icon="heroicons-outline:arrow-up-tray" />
-    </button>
+    <div className="flex flex-col items-center gap-1">
+      <button
+        type="button"
+        onClick={onUpload}
+        className={styles.brand}
+        title="Subir archivo"
+      >
+        <Icon icon={uploadIcon} />
+      </button>
+      {uploadText ? (
+        <span className="text-[10px] leading-tight text-slate-600 text-center">
+          {uploadText}
+        </span>
+      ) : null}
+    </div>
   );
 
   if (exclusive) {

@@ -137,7 +137,7 @@ const MisComprobantes = () => {
       accessor: "idDocumento",
       Cell: (row) => (
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs break-all max-w-[220px] inline-block">
+          <span className="font-mono text-xs inline-block">
             {row?.cell?.value}
           </span>
           <button
@@ -155,25 +155,33 @@ const MisComprobantes = () => {
       Header: "Servicios",
       accessor: "servicios",
       Cell: (row) => (
-        <ul className="list-disc pl-4 space-y-1">
+        <ul className="list-disc pl-4 space-y-1 whitespace-nowrap text-start">
           {row?.cell?.value?.map((s, i) => (
-            <li key={i} className="text-sm">{s}</li>
+            <li key={i} className="text-xs">{s}</li>
           ))}
         </ul>
       ),
     },
-    {
-      Header: "PDF Cotización",
-      accessor: "cotizacionUrl",
-      Cell: (row) => (
-        <FileActionCell url={row?.cell?.value} downloadLabel="Descargar PDF de la cotización" showUpload={false} variant="success" />
-      ),
-    },
+    // {
+    //   Header: "PDF Cotización",
+    //   accessor: "cotizacionUrl",
+    //   Cell: (row) => (
+    //     <FileActionCell url={row?.cell?.value} downloadLabel="Descargar PDF de la cotización" showUpload={false} variant="success" />
+    //   ),
+    // },
     {
       Header: "Contrato cotización",
       accessor: "contratoRecibidoUrl",
       Cell: (row) => (
-        <FileActionCell url={row?.cell?.value} downloadLabel="Descargar contrato de agencia" showUpload={false} variant="success" />
+        <FileActionCell 
+          url={row?.cell?.value} 
+          downloadLabel="Descargar contrato de agencia" 
+          showUpload={false} variant="success" 
+          downloadIcon="heroicons-outline:arrow-down-tray"
+          uploadIcon="heroicons-outline:arrow-up-tray"
+          readIcon="heroicons-outline:eye"
+          downloadText="Descargar contrato"
+        />
       ),
     },
     {
@@ -185,6 +193,8 @@ const MisComprobantes = () => {
           downloadLabel="Descargar contrato firmado"
           variant="success"
           onUpload={() => openUploadFor(row?.row)}
+          downloadText="Ver contrato"
+          uploadText="Subir contrato firmado"
           exclusive
         />
       ),
@@ -193,33 +203,33 @@ const MisComprobantes = () => {
       Header: "Vendedor",
       accessor: "vendedor",
       Cell: (row) => (
-        <div className="text-sm whitespace-pre-line">{row?.cell?.value}</div>
+        <div className="text-xs whitespace-pre-line">{row?.cell?.value}</div>
       ),
     },
     {
       Header: "Fecha creación",
       accessor: "fechaCreacion",
-      Cell: (row) => <span className="text-sm">{row.cell?.value ? FormatDate(row?.cell?.value) : "-"}</span>,
+      Cell: (row) => <span className="text-xs">{row.cell?.value ? FormatDate(row?.cell?.value) : "-"}</span>,
     },
     {
       Header: "Fecha venta",
       accessor: "fechaVenta",
-      Cell: (row) => <span className="text-sm">{row.cell?.value ? FormatDate(row?.cell?.value) : "-"}</span>,
+      Cell: (row) => <span className="text-xs">{row.cell?.value ? FormatDate(row?.cell?.value) : "-"}</span>,
     },
     {
       Header: "Total",
       accessor: "total",
-      Cell: (row) => <span className="text-sm">{row.cell?.value ? FormatCurrency(row?.cell?.value) : "-"}</span>,
+      Cell: (row) => <span className="text-xs">{row.cell?.value ? FormatCurrency(row?.cell?.value) : "-"}</span>,
     },
     {
       Header: "Deuda",
       accessor: "deuda",
-      Cell: (row) => <span className="text-sm">{row.cell?.value ? FormatCurrency(row?.cell?.value) : "-"}</span>,
+      Cell: (row) => <span className="text-xs">{row.cell?.value ? FormatCurrency(row?.cell?.value) : "-"}</span>,
     },
     {
       Header: "N° cuotas",
       accessor: "cuotas",
-      Cell: (row) => <span className="text-sm">{row.cell?.value ? row.cell?.value : "-"}</span>,
+      Cell: (row) => <span className="text-xs">{row.cell?.value ? row.cell?.value : "-"}</span>,
     },
   ];
 
